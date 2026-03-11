@@ -184,14 +184,14 @@
 </nav>
 
 <script>
-    // Route protection — must be logged in as customer
-    if (!localStorage.getItem('phoneNumber')) {
-      window.location.href = 'index.html';
-    }
-    // Block admin/worker from accessing customer pages
-    if (localStorage.getItem('adminLoggedIn')) {
-      window.location.href = '../admin/index.html';
-    }
+  // Route protection — must be logged in as customer
+  if (!localStorage.getItem('phoneNumber')) {
+    window.location.href = 'index.html';
+  }
+  // Block admin from accessing customer pages
+  if (localStorage.getItem('adminLoggedIn')) {
+    window.location.href = '../admin/index.html';
+  }
 
   const name = localStorage.getItem('userName');
   if (name) {

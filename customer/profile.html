@@ -245,11 +245,11 @@
 <div class="support-section-title">Customer Service</div>
 
 <div class="info-section">
-  <a class="support-card info-card" href="/cdn-cgi/l/email-protection#e78f828b97a79d8e97818e9fc984888a">
+  <a class="support-card info-card" href="/cdn-cgi/l/email-protection#c9a1aca5b989b3a0b9afa0b1e7aaa6a4">
     <div class="info-icon">✉️</div>
     <div>
       <div class="info-label">Email Us</div>
-      <div class="info-value"><span class="__cf_email__" data-cfemail="c5ada0a9b585bfacb5a3acbdeba6aaa8">[email&#160;protected]</span></div>
+      <div class="info-value"><span class="__cf_email__" data-cfemail="3e565b524e7e44574e585746105d5153">[email&#160;protected]</span></div>
     </div>
   </a>
 
@@ -287,14 +287,14 @@
 </nav>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Route protection — must be logged in as customer
-    if (!localStorage.getItem('phoneNumber')) {
-      window.location.href = 'index.html';
-    }
-    // Block admin/worker from accessing customer pages
-    if (localStorage.getItem('adminLoggedIn')) {
-      window.location.href = '../admin/index.html';
-    }
+  // Route protection — must be logged in as customer
+  if (!localStorage.getItem('phoneNumber')) {
+    window.location.href = 'login.html';
+  }
+  // Block admin from accessing customer pages
+  if (localStorage.getItem('adminLoggedIn')) {
+    window.location.href = '../admin/index.html';
+  }
 
   const name  = localStorage.getItem('userName')  || '—';
   const phone = localStorage.getItem('phoneNumber') || '—';
@@ -307,4 +307,32 @@
   document.getElementById('infoName').innerText      = name;
   document.getElementById('infoPhone').innerText     = phone !== '—' ? '+91 ' + phone : '—';
   document.getElementById('infoEmail').innerText     = email;
-  document.getEl
+  document.getEl  document.getElementById('infoArea').innerText      = area;
+
+  function logoutUser() {
+    if (confirm('Are you sure you want to logout?')) {
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userArea');
+      localStorage.removeItem('phoneNumber');
+      localStorage.removeItem('bookingService');
+      localStorage.removeItem('bookingProblem');
+      localStorage.removeItem('bookingAddress');
+      localStorage.removeItem('bookingUrgency');
+      localStorage.removeItem('bookingAmount');
+      localStorage.removeItem('bookingIcon');
+      localStorage.removeItem('activeJobId');
+      localStorage.removeItem('assignedWorkerId');
+      localStorage.removeItem('workerName');
+      localStorage.removeItem('workerInitial');
+      localStorage.removeItem('customerName');
+      localStorage.removeItem('customerPhone');
+      localStorage.removeItem('paymentMethod');
+      localStorage.removeItem('paymentStatus');
+      localStorage.removeItem('amountPaid');
+      window.location.href = 'login.html';
+    }
+  }
+</script>
+</body>
+</html>

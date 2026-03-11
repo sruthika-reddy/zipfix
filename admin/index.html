@@ -368,8 +368,12 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Auth guard
-    if (!localStorage.getItem('adminLoggedIn')) {
+    // Auth guard with session expiry (8 hours)
+    const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+    const loginTime = parseInt(localStorage.getItem('adminLoginTime') || '0');
+    const EIGHT_HOURS = 8 * 60 * 60 * 1000;
+    if (!adminLoggedIn || (Date.now() - loginTime > EIGHT_HOURS)) {
+      localStorage.removeItem('adminLoggedIn');
       window.location.href = 'login.html';
     }
 

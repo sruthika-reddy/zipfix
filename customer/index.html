@@ -176,5 +176,11 @@
     </div>
   </section>
 
+<script>
+    // If already logged in, go straight to dashboard
+    if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
+      window.location.href = 'dashboard.html';
+    }
+</script>
 </body>
 </html>

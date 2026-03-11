@@ -65,6 +65,11 @@
 </div>
 
 <script>
+    // If already logged in, go straight to dashboard
+    if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
+      window.location.href = 'dashboard.html';
+    }
+
   // Show phone number
   const phone = localStorage.getItem('phoneNumber') || '';
   document.getElementById('phoneDisplay').innerText = '+91 ' + phone;

@@ -64,6 +64,11 @@
 </div>
 
 <script>
+    // If already logged in, go straight to dashboard
+    if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
+      window.location.href = 'dashboard.html';
+    }
+
   function clearErr() {
     document.getElementById('phoneWrap').classList.remove('err');
     document.getElementById('phoneErr').style.display = 'none';

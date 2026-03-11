@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix Worker — Dashboard</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0a0a0a; color:white; min-height:100vh; }
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#1a1a1a; }
+  .logo { font-size:22px; font-weight:900; color:#ff8c00; letter-spacing:2px; }
+  .profile-icon { width:40px; height:40px; background-color:#ff8c00; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; color:#0a0a0a; cursor:pointer; font-size:16px; }
+  .welcome-section { padding:25px 25px 0 25px; }
+  .welcome-section h2 { font-size:24px; font-weight:900; }
+  .welcome-section h2 span { color:#ff8c00; }
+  .welcome-section p { color:#aaaaaa; margin-top:5px; font-size:14px; }
+  .toggle-section { margin:20px 25px; background-color:#1a1a1a; border-radius:20px; padding:20px 25px; display:flex; justify-content:space-between; align-items:center; }
+  .toggle-info h4 { font-size:17px; font-weight:800; }
+  .toggle-info p { font-size:13px; color:#aaaaaa; margin-top:4px; }
+  .toggle-switch { width:60px; height:32px; background-color:#333; border-radius:50px; cursor:pointer; position:relative; transition:background-color 0.3s; }
+  .toggle-switch.online { background-color:#00ff88; }
+  .toggle-knob { width:26px; height:26px; background-color:white; border-radius:50%; position:absolute; top:3px; left:3px; transition:left 0.3s; }
+  .toggle-switch.online .toggle-knob { left:31px; }
+  .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:0 25px 20px 25px; }
+  .stat-card { background-color:#1a1a1a; border-radius:18px; padding:20px 15px; text-align:center; }
+  .stat-card h3 { font-size:22px; font-weight:900; color:#ff8c00; }
+  .stat-card p { font-size:12px; color:#aaaaaa; margin-top:5px; }
+  .section-title { padding:0 25px 12px 25px; font-size:17px; font-weight:800; }
+  .job-request { margin:0 25px 15px 25px; background-color:#1a1a1a; border-radius:20px; padding:20px; border:2px solid #ff8c00; animation:borderPulse 2s infinite; }
+  @keyframes borderPulse { 0%{border-color:#ff8c00} 50%{border-color:#2a1a00} 100%{border-color:#ff8c00} }
+  .job-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+  .job-service { font-size:18px; font-weight:900; }
+  .job-urgency { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:800; background-color:#2a1a00; color:#ff8c00; }
+  .job-urgency.emergency { background-color:#3a0000; color:#ff3b3b; }
+  .job-urgency.urgent { background-color:#2a1500; color:#ffaa00; }
+  .job-details { font-size:14px; color:#aaaaaa; line-height:1.6; margin-bottom:15px; }
+  .job-meta { display:flex; gap:15px; margin-bottom:15px; font-size:13px; color:#aaaaaa; flex-wrap:wrap; }
+  .job-actions { display:flex; gap:12px; }
+  .btn-accept { flex:2; padding:15px; background-color:#ff8c00; color:#0a0a0a; font-size:16px; font-weight:800; border:none; border-radius:12px; cursor:pointer; }
+  .btn-decline { flex:1; padding:15px; background-color:#2a2a2a; color:#aaaaaa; font-size:16px; font-weight:800; border:none; border-radius:12px; cursor:pointer; }
+  .timer-bar { height:4px; background-color:#2a2a2a; border-radius:10px; margin-bottom:15px; overflow:hidden; }
+  .timer-fill { height:100%; background-color:#ff8c00; border-radius:10px; width:100%; transition:width 1s linear; }
+  .no-jobs { margin:0 25px; background-color:#1a1a1a; border-radius:20px; padding:40px 20px; text-align:center; color:#aaaaaa; font-size:15px; }
+  .no-jobs .icon { font-size:50px; margin-bottom:15px; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#1a1a1a; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #333; }
+  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaaaaa; gap:4px; }
+  .nav-item.active { color:#ff8c00; }
+  .nav-icon { font-size:22px; }
+  .spacer { height:80px; }
+  .offline-notice { margin:0 25px 15px; background-color:#1a1a1a; border-radius:20px; padding:25px 20px; text-align:center; color:#555; font-size:14px; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<nav class="navbar">
+  <div class="logo">ZIPFIX</div>
+  <div class="profile-icon" id="workerInitial" onclick="profileMenu()">?</div>
+</nav>
+
+<div class="welcome-section">
+  <h2>Hello, <span id="workerName">Worker</span> 👷</h2>
+  <p id="workerSkillArea">Loading...</p>
+</div>
+
+<div class="toggle-section">
+  <div class="toggle-info">
+    <h4 id="toggleTitle">You are Offline</h4>
+    <p id="toggleSubtitle">Toggle to start receiving jobs</p>
+  </div>
+  <div class="toggle-switch" id="toggleSwitch" onclick="toggleOnline()">
+    <div class="toggle-knob"></div>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3 id="todayEarnings">₹0</h3>
+    <p>Today's Earnings</p>
+  </div>
+  <div class="stat-card">
+    <h3 id="todayJobs">0</h3>
+    <p>Jobs Today</p>
+  </div>
+  <div class="stat-card">
+    <h3 id="myRating">4.9⭐</h3>
+    <p>My Rating</p>
+  </div>
+</div>
+
+<div class="section-title" id="jobSectionTitle">Job Requests</div>
+<div id="jobArea">
+  <div class="offline-notice">Go online to start receiving job requests 👆</div>
+</div>
+
+<div class="spacer"></div>
+
+<nav class="bottom-nav">
+  <div class="nav-item active">
+    <div class="nav-icon">🏠</div>
+    <div>Home</div>
+  </div>
+  <div class="nav-item" onclick="window.location.href='earnings.html'">
+    <div class="nav-icon">💰</div>
+    <div>Earnings</div>
+  </div>
+  <div class="nav-item" onclick="window.location.href='profile.html'">
+    <div class="nav-icon">👤</div>
+    <div>Profile</div>
+  </div>
+</nav>
+
+<script>
+  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Auth guard
+  const workerName  = localStorage.getItem('workerName');
+  const workerSkill = localStorage.getItem('workerSkill');
+  const workerArea  = localStorage.getItem('workerArea');
+  const workerId    = localStorage.getItem('workerId');
+  if (!workerName)  { window.location.href = 'login.html'; }
+
+  // Set UI
+  document.getElementById('workerName').innerText     = workerName.split(' ')[0];
+  document.getElementById('workerInitial').innerText  = workerName.charAt(0).toUpperCase();
+  document.getElementById('workerSkillArea').innerText = (workerSkill || '') + ' • ' + (workerArea || 'Hyderabad');
+
+  const skillIcons = { 'Plumber':'🔧','Electrician':'⚡','Locksmith':'🔑','AC Repair':'❄️','Carpenter':'🪛','Painter':'🖌️' };
+
+  // Load today's stats from Supabase
+  async function loadTodayStats() {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const { data } = await db
+        .from('jobs')
+        .select('amount')
+        .eq('worker_id', workerId)
+        .eq('status', 'completed')
+        .gte('created_at', today);
+
+      if (data) {
+        const total = data.reduce((sum, j) => sum + (j.amount || 0), 0);
+        document.getElementById('todayEarnings').innerText = '₹' + total;
+        document.getElementById('todayJobs').innerText     = data.length;
+      }
+    } catch (e) { /* silently fail */ }
+  }
+  loadTodayStats();
+
+  // Online/Offline toggle
+  let isOnline = false;
+  let pollInterval = null;
+  let timerInterval = null;
+
+  function toggleOnline() {
+    isOnline = !isOnline;
+    const toggle   = document.getElementById('toggleSwitch');
+    const title    = document.getElementById('toggleTitle');
+    const subtitle = document.getElementById('toggleSubtitle');
+
+    if (isOnline) {
+      toggle.classList.add('online');
+      title.innerText    = 'You are Online ✅';
+      subtitle.innerText = 'You are now receiving job requests';
+      startPolling();
+    } else {
+      toggle.classList.remove('online');
+      title.innerText    = 'You are Offline';
+      subtitle.innerText = 'Toggle to start receiving jobs';
+      stopPolling();
+      document.getElementById('jobArea').innerHTML =
+        '<div class="offline-notice">Go online to start receiving job requests 👆</div>';
+      document.getElementById('jobSectionTitle').innerText = 'Job Requests';
+    }
+  }
+
+  // Poll Supabase every 5s for new jobs
+  function startPolling() {
+    pollJobs(); // immediate first check
+    pollInterval = setInterval(pollJobs, 5000);
+  }
+
+  function stopPolling() {
+    if (pollInterval) clearInterval(pollInterval);
+    if (timerInterval) clearInterval(timerInterval);
+  }
+
+  let currentJobId = null;
+
+  async function pollJobs() {
+    if (!isOnline) return;
+    try {
+      const { data, error } = await db
+        .from('jobs')
+        .select('*')
+        .eq('service', workerSkill)
+        .eq('status', 'pending')
+        .is('worker_id', null)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        const job = data[0];
+        if (job.id !== currentJobId) {
+          currentJobId = job.id;
+          showJobRequest(job);
+        }
+      } else if (!currentJobId) {
+        showNoJobs();
+      }
+    } catch (e) {
+      console.error('Poll error:', e);
+    }
+  }
+
+  function showNoJobs() {
+    currentJobId = null;
+    document.getElementById('jobSectionTitle').innerText = 'Job Requests';
+    document.getElementById('jobArea').innerHTML = `
+      <div class="no-jobs">
+        <div class="icon">😴</div>
+        <p>No job requests right now.<br/>Stay online to receive jobs!</p>
+      </div>`;
+  }
+
+  function showJobRequest(job) {
+    const urgencyClass = job.urgency === 'emergency' ? 'emergency' : (job.urgency === 'urgent' ? 'urgent' : '');
+    const urgencyLabel = job.urgency === 'emergency' ? '🚨 Emergency' : (job.urgency === 'urgent' ? '⚡ Urgent' : '🕐 Normal');
+    const icon = skillIcons[job.service] || '🔧';
+
+    document.getElementById('jobSectionTitle').innerText = 'Incoming Job Request 🔔';
+    document.getElementById('jobArea').innerHTML = `
+      <div class="job-request">
+        <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+        <div class="job-header">
+          <div class="job-service">${icon} ${job.service} Needed</div>
+          <div class="job-urgency ${urgencyClass}">${urgencyLabel}</div>
+        </div>
+        <div class="job-details">"${job.problem || 'No description provided'}"</div>
+        <div class="job-meta">
+          <span>📍 ${job.customer_address || 'Address not provided'}</span>
+          <span>💰 ₹${job.amount || 0}</span>
+        </div>
+        <div class="job-actions">
+          <button class="btn-accept" onclick="acceptJob(${job.id})">✅ Accept Job</button>
+          <button class="btn-decline" onclick="declineJob()">✗ Decline</button>
+        </div>
+      </div>`;
+
+    startJobTimer(job.id);
+  }
+
+  let timeLeft = 30;
+  function startJobTimer(jobId) {
+    if (timerInterval) clearInterval(timerInterval);
+    timeLeft = 30;
+    const fill = document.getElementById('timerFill');
+    if (fill) fill.style.width = '100%';
+
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      const fill = document.getElementById('timerFill');
+      if (fill) fill.style.width = ((timeLeft / 30) * 100) + '%';
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        declineJob();
+      }
+    }, 1000);
+  }
+
+  async function acceptJob(jobId) {
+    clearInterval(timerInterval);
+    clearInterval(pollInterval);
+    try {
+      const { data, error } = await db
+        .from('jobs')
+        .update({ status: 'accepted', worker_id: workerId })
+        .eq('id', jobId)
+        .eq('status', 'pending') // prevent double-accept
+        .select()
+        .single();
+
+      if (error || !data) {
+        alert('⚠️ This job was just taken by another worker. Searching for next job...');
+        currentJobId = null;
+        startPolling();
+        return;
+      }
+
+      // Save job details to localStorage for job.html
+      localStorage.setItem('activeJobId',       data.id);
+      localStorage.setItem('bookingService',     data.service);
+      localStorage.setItem('bookingProblem',     data.problem);
+      localStorage.setItem('bookingAddress',     data.customer_address);
+      localStorage.setItem('bookingUrgency',     data.urgency);
+      localStorage.setItem('bookingAmount',      data.amount);
+      localStorage.setItem('customerName',       data.customer_name);
+      localStorage.setItem('customerPhone',      data.customer_phone);
+
+      window.location.href = 'job.html';
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  function declineJob() {
+    clearInterval(timerInterval);
+    currentJobId = null;
+    showNoJobs();
+  }
+
+  function profileMenu() {
+    if (confirm('👷 ' + workerName + '\n' + workerId + '\n\nDo you want to logout?')) {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  }
+</script>
+</body>
+</html>

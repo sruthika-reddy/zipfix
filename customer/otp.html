@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix — Verify OTP</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0f0f0f; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  .otp-box { background-color:#1a1a1a; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; }
+  .logo { font-size:28px; font-weight:900; color:#00d4ff; letter-spacing:3px; margin-bottom:10px; }
+  .tagline { font-size:14px; color:#aaaaaa; margin-bottom:30px; }
+  h2 { font-size:24px; font-weight:800; margin-bottom:10px; }
+  .subtitle { font-size:14px; color:#aaaaaa; margin-bottom:5px; }
+  .phone-display { font-size:16px; font-weight:800; color:#00d4ff; margin-bottom:25px; }
+  .otp-inputs { display:flex; justify-content:center; gap:12px; margin-bottom:12px; }
+  .otp-inputs input {
+    width:55px; height:55px; background-color:#2a2a2a; border:2px solid #333;
+    border-radius:15px; color:white; font-size:24px; font-weight:800;
+    text-align:center; outline:none; transition:border-color 0.2s;
+  }
+  .otp-inputs input:focus { border-color:#00d4ff; }
+  .otp-inputs input.err { border-color:#ff3b3b; animation:shake 0.3s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+  .inline-err { color:#ff3b3b; font-size:13px; margin-bottom:18px; min-height:20px; }
+  .btn-main { width:100%; padding:18px; background-color:#00d4ff; color:#0f0f0f; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; }
+  .btn-main:hover { background-color:#00b8d9; }
+  .btn-main:disabled { background-color:#444; cursor:not-allowed; }
+  .resend { font-size:14px; color:#aaaaaa; }
+  .resend span { color:#00d4ff; cursor:pointer; font-weight:700; }
+  .resend-msg { font-size:13px; color:#00ff88; margin-top:10px; min-height:20px; }
+  .clear-link { color:#555; font-size:11px; cursor:pointer; margin-top:15px; display:inline-block; }
+</style>
+
+<div class="otp-box">
+  <div class="logo">ZIPFIX</div>
+  <div class="tagline">Emergency help in minutes</div>
+
+  <h2>Verify your number</h2>
+  <p class="subtitle">OTP sent to</p>
+  <div class="phone-display" id="phoneDisplay">+91 XXXXXXXXXX</div>
+
+  <div class="otp-inputs">
+    <input type="number" id="otp1" maxlength="1" />
+    <input type="number" id="otp2" maxlength="1" />
+    <input type="number" id="otp3" maxlength="1" />
+    <input type="number" id="otp4" maxlength="1" />
+    <input type="number" id="otp5" maxlength="1" />
+    <input type="number" id="otp6" maxlength="1" />
+  </div>
+
+  <div class="inline-err" id="otpErr"></div>
+
+  <button class="btn-main" id="verifyBtn" onclick="verifyOTP()">Verify OTP</button>
+
+  <p class="resend">
+    Didn't receive OTP?
+    <span onclick="resendOTP()">Resend</span>
+  </p>
+  <div class="resend-msg" id="resendMsg"></div>
+
+  <div class="clear-link" onclick="clearAll()">🗑️ Clear Storage (Testing Only)</div>
+</div>
+
+<script>
+  // Show phone number
+  const phone = localStorage.getItem('phoneNumber') || '';
+  document.getElementById('phoneDisplay').innerText = '+91 ' + phone;
+
+  const inputs = document.querySelectorAll('.otp-inputs input');
+
+  // Auto-jump between boxes
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', function () {
+      if (this.value.length > 1) this.value = this.value.slice(0, 1);
+      // Clear error styling
+      document.getElementById('otpErr').innerText = '';
+      inputs.forEach(i => i.classList.remove('err'));
+      // Jump to next
+      if (this.value && index < inputs.length - 1) inputs[index + 1].focus();
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Backspace' && !this.value && index > 0) inputs[index - 1].focus();
+    });
+  });
+
+  // ✅ Auto-focus first OTP box on page load
+  window.addEventListener('load', () => {
+    setTimeout(() => inputs[0].focus(), 150);
+  });
+
+  function verifyOTP() {
+    let otp = '';
+    inputs.forEach(i => { otp += i.value; });
+
+    if (otp.length < 6) {
+      document.getElementById('otpErr').innerText = 'Please enter all 6 digits';
+      inputs.forEach(i => { if (!i.value) i.classList.add('err'); });
+      return;
+    }
+
+    const btn = document.getElementById('verifyBtn');
+    btn.innerText = 'Verifying...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const isRegistered = localStorage.getItem('userName');
+      // No welcome alert — go straight to dashboard or register
+      if (isRegistered) {
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'register.html';
+      }
+    }, 600);
+  }
+
+  function resendOTP() {
+    // No alert — show inline message instead
+    document.getElementById('resendMsg').innerText = '✅ OTP resent to +91 ' + phone;
+    inputs.forEach(i => i.value = '');
+    inputs[0].focus();
+    setTimeout(() => {
+      document.getElementById('resendMsg').innerText = '';
+    }, 3000);
+  }
+
+  function clearAll() {
+    localStorage.clear();
+    document.getElementById('resendMsg').innerText = '🗑️ Storage cleared!';
+    setTimeout(() => { document.getElementById('resendMsg').innerText = ''; }, 2000);
+  }
+</script>
+</body>
+</html>

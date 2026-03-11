@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix Admin Dashboard</title>
+</head>
+<body>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  body {
+    background-color: #050505;
+    color: white;
+    min-height: 100vh;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background-color: #111111;
+    border-bottom: 2px solid #ff3b3b;
+  }
+
+  .logo {
+    font-size: 22px;
+    font-weight: 900;
+    color: #ff3b3b;
+    letter-spacing: 2px;
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .admin-badge {
+    background-color: #2a0000;
+    color: #ff3b3b;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .logout-btn {
+    background: none;
+    border: 2px solid #ff3b3b;
+    color: #ff3b3b;
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .content {
+    padding: 25px;
+  }
+
+  .welcome {
+    margin-bottom: 25px;
+  }
+
+  .welcome h2 {
+    font-size: 24px;
+    font-weight: 900;
+  }
+
+  .welcome p {
+    color: #aaaaaa;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .stat-card {
+    background-color: #111111;
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #222;
+  }
+
+  .stat-card h3 {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ff3b3b;
+  }
+
+  .stat-card p {
+    font-size: 12px;
+    color: #aaaaaa;
+    margin-top: 5px;
+  }
+
+  .stat-card .trend {
+    font-size: 12px;
+    color: #00ff88;
+    margin-top: 5px;
+  }
+
+  .section-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-title span {
+    font-size: 13px;
+    color: #ff3b3b;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .worker-card {
+    background-color: #111111;
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    border: 1px solid #222;
+  }
+
+  .worker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .worker-name {
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .worker-details {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .status-pending  { background-color: #2a2000; color: #ffcc00; }
+  .status-approved { background-color: #1a3a1a; color: #00ff88; }
+  .status-banned   { background-color: #2a0000; color: #ff3b3b; }
+
+  .worker-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-approve {
+    flex: 1;
+    padding: 10px;
+    background-color: #1a3a1a;
+    color: #00ff88;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .btn-reject {
+    flex: 1;
+    padding: 10px;
+    background-color: #2a0000;
+    color: #ff3b3b;
+    border: none;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .job-card {
+    background-color: #111111;
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    border: 1px solid #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .job-info h4 {
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .job-info p {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-top: 4px;
+  }
+
+  .job-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .in-progress { background-color: #1a1a3a; color: #00d4ff; }
+  .completed   { background-color: #1a3a1a; color: #00ff88; }
+  .pending-job { background-color: #2a2000; color: #ffcc00; }
+  .accepted    { background-color: #2a1a00; color: #ff8c00; }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .nav-card {
+    background-color: #111111;
+    border-radius: 18px;
+    padding: 25px 15px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #222;
+  }
+
+  .nav-card:hover {
+    border-color: #ff3b3b;
+    background-color: #1a0000;
+  }
+
+  .nav-card .icon {
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
+
+  .nav-card p {
+    font-size: 13px;
+    font-weight: 700;
+    color: #aaaaaa;
+  }
+
+  .loading-text {
+    color: #555;
+    font-size: 14px;
+    padding: 15px 0;
+    text-align: center;
+  }
+
+  .refresh-bar {
+    text-align: center;
+    font-size: 12px;
+    color: #444;
+    margin-bottom: 20px;
+  }
+
+  .refresh-bar span {
+    color: #ff3b3b;
+    cursor: pointer;
+  }
+</style>
+
+  <nav class="navbar">
+    <div class="logo">ZIPFIX</div>
+    <div class="navbar-right">
+      <div class="admin-badge">⚡ Admin Panel</div>
+      <button class="logout-btn" onclick="adminLogout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="content">
+
+    <div class="welcome">
+      <h2>Admin Dashboard 🔴</h2>
+      <p id="currentTime">Loading live data...</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3 id="totalUsers">—</h3>
+        <p>Total Customers</p>
+        <div class="trend">↑ Live count</div>
+      </div>
+      <div class="stat-card">
+        <h3 id="totalWorkers">—</h3>
+        <p>Active Workers</p>
+        <div class="trend">↑ Approved only</div>
+      </div>
+      <div class="stat-card">
+        <h3 id="totalJobs">—</h3>
+        <p>Total Jobs Done</p>
+        <div class="trend">↑ Completed</div>
+      </div>
+      <div class="stat-card">
+        <h3 id="pendingWorkers">—</h3>
+        <p>Pending Approvals</p>
+        <div class="trend" style="color:#ffcc00;">⏳ Needs review</div>
+      </div>
+    </div>
+
+    <div class="refresh-bar">
+      Auto-refreshes every 30s •
+      <span onclick="loadDashboard()">🔄 Refresh Now</span>
+    </div>
+
+    <div class="section-title">
+      Pending Worker Approvals
+      <span onclick="window.location.href='workers.html'">View All →</span>
+    </div>
+
+    <div id="pendingWorkersList">
+      <div class="loading-text">⏳ Loading workers...</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">
+      Live Jobs Right Now
+      <span onclick="window.location.href='jobs.html'">View All →</span>
+    </div>
+
+    <div id="liveJobsList">
+      <div class="loading-text">⏳ Loading jobs...</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">
+      Quick Navigation
+    </div>
+
+    <div class="nav-grid">
+      <div class="nav-card" onclick="window.location.href='workers.html'">
+        <div class="icon">👷</div>
+        <p>Manage Workers</p>
+      </div>
+      <div class="nav-card" onclick="window.location.href='complaints.html'">
+        <div class="icon">⚠️</div>
+        <p>Complaints</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Auth guard
+    if (!localStorage.getItem('adminLoggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    // Update time
+    const now = new Date();
+    document.getElementById('currentTime').innerText =
+      'Last updated: ' + now.toLocaleTimeString() + ' • ' + now.toLocaleDateString();
+
+    async function loadDashboard() {
+      try {
+        const [usersRes, workersRes, jobsRes, pendingRes] = await Promise.all([
+          db.from('users').select('id',    { count: 'exact', head: true }),
+          db.from('workers').select('id',  { count: 'exact', head: true }).eq('status', 'approved'),
+          db.from('jobs').select('id',     { count: 'exact', head: true }).eq('status', 'completed'),
+          db.from('workers').select('id',  { count: 'exact', head: true }).eq('status', 'pending')
+        ]);
+
+        document.getElementById('totalUsers').innerText     = usersRes.count    ?? 0;
+        document.getElementById('totalWorkers').innerText   = workersRes.count  ?? 0;
+        document.getElementById('totalJobs').innerText      = jobsRes.count     ?? 0;
+        document.getElementById('pendingWorkers').innerText = pendingRes.count  ?? 0;
+
+        const t = new Date();
+        document.getElementById('currentTime').innerText =
+          'Last updated: ' + t.toLocaleTimeString() + ' • ' + t.toLocaleDateString();
+
+        loadPendingWorkers();
+        loadLiveJobs();
+
+      } catch(e) {
+        console.error('Dashboard error:', e);
+      }
+    }
+
+    async function loadPendingWorkers() {
+      const { data } = await db
+        .from('workers')
+        .select('*')
+        .eq('status', 'pending')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      const container = document.getElementById('pendingWorkersList');
+
+      if (!data || data.length === 0) {
+        container.innerHTML = '<div class="loading-text">✅ No pending approvals right now</div>';
+        return;
+      }
+
+      container.innerHTML = data.map(w => `
+        <div class="worker-card">
+          <div class="worker-header">
+            <div class="worker-name">${w.name || '—'}</div>
+            <div class="status-badge status-pending">⏳ Pending</div>
+          </div>
+          <div class="worker-details">
+            ${w.skill || '—'} • ${w.experience || '—'} • ${w.area || '—'}<br/>
+            📱 ${w.phone || '—'} • 🪪 ${w.id_type || '—'}
+          </div>
+          <div class="worker-actions">
+            <button class="btn-approve" onclick="approveWorker('${w.id}', '${w.name}')">✅ Approve</button>
+            <button class="btn-reject"  onclick="rejectWorker('${w.id}',  '${w.name}')">❌ Reject</button>
+          </div>
+        </div>`).join('');
+    }
+
+    async function loadLiveJobs() {
+      const { data } = await db
+        .from('jobs')
+        .select('*')
+        .in('status', ['pending', 'accepted', 'in_progress'])
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      const container = document.getElementById('liveJobsList');
+
+      if (!data || data.length === 0) {
+        container.innerHTML = '<div class="loading-text">😴 No active jobs right now</div>';
+        return;
+      }
+
+      const statusClass = { pending: 'pending-job', accepted: 'accepted', in_progress: 'in-progress', completed: 'completed' };
+      const statusLabel = { pending: '⏳ Pending', accepted: '✅ Accepted', in_progress: '🔧 In Progress', completed: '✅ Done' };
+
+      container.innerHTML = data.map(j => `
+        <div class="job-card">
+          <div class="job-info">
+            <h4>${j.service || '—'} • ${j.customer_address || '—'}</h4>
+            <p>👤 ${j.customer_name || '—'} • 💰 ₹${j.amount || 0} • ⚡ ${j.urgency || 'normal'}</p>
+          </div>
+          <div class="job-status ${statusClass[j.status] || ''}">${statusLabel[j.status] || j.status}</div>
+        </div>`).join('');
+    }
+
+    async function approveWorker(id, name) {
+      if (!confirm('Approve ' + name + ' as a ZipFix worker?')) return;
+
+      const workerId = 'ZF-' + Math.floor(1000 + Math.random() * 9000);
+
+      const { error } = await db
+        .from('workers')
+        .update({ status: 'approved', worker_id: workerId })
+        .eq('id', id);
+
+      if (error) { alert('Error: ' + error.message); return; }
+
+      alert('✅ ' + name + ' approved!\n\nWorker ID: ' + workerId + '\n\nThey can now login with this ID.\nShare it with them via phone/WhatsApp.');
+      loadDashboard();
+    }
+
+    async function rejectWorker(id, name) {
+      if (!confirm('Reject ' + name + "'s application?")) return;
+
+      const { error } = await db
+        .from('workers')
+        .update({ status: 'rejected' })
+        .eq('id', id);
+
+      if (error) { alert('Error: ' + error.message); return; }
+      alert('❌ ' + name + ' rejected.');
+      loadDashboard();
+    }
+
+    function adminLogout() {
+      if (confirm('Logout from admin panel?')) {
+        localStorage.removeItem('adminLoggedIn');
+        window.location.href = 'login.html';
+      }
+    }
+
+    // Load on start
+    loadDashboard();
+
+    // Auto refresh every 30 seconds
+    setInterval(loadDashboard, 30000);
+  </script>
+
+</body>
+</html>

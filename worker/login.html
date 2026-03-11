@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix Worker — Login</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0a0a0a; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .login-box { background-color:#1a1a1a; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; }
+  .logo { font-size:28px; font-weight:900; color:#ff8c00; letter-spacing:3px; margin-bottom:5px; text-align:center; }
+  .worker-badge { display:flex; align-items:center; justify-content:center; gap:8px; background-color:#2a1a00; color:#ff8c00; padding:6px 15px; border-radius:50px; font-size:13px; font-weight:700; margin:0 auto 35px auto; width:fit-content; }
+  h2 { font-size:22px; font-weight:800; margin-bottom:5px; }
+  .subtitle { font-size:14px; color:#aaaaaa; margin-bottom:30px; }
+  .input-group { margin-bottom:20px; }
+  .input-group label { display:block; font-size:13px; font-weight:700; color:#aaaaaa; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
+  .phone-input { display:flex; align-items:center; background-color:#2a2a2a; border-radius:15px; padding:5px 15px; border:2px solid #333; transition:border-color 0.2s; }
+  .phone-input:focus-within { border-color:#ff8c00; }
+  .phone-input.err { border-color:#ff3b3b !important; }
+  .country-code { font-size:16px; font-weight:700; color:white; padding-right:10px; border-right:1px solid #444; margin-right:10px; }
+  .phone-input input { background:none; border:none; outline:none; color:white; font-size:18px; width:100%; padding:12px 0; }
+  .input-group input[type="text"] { width:100%; padding:15px 20px; background-color:#2a2a2a; border:2px solid #333; border-radius:15px; color:white; font-size:16px; outline:none; transition:border-color 0.2s; }
+  .input-group input[type="text"]:focus { border-color:#ff8c00; }
+  .input-group input[type="text"].err { border-color:#ff3b3b; }
+  .field-err { color:#ff3b3b; font-size:12px; margin-top:6px; display:none; }
+  .btn-main { width:100%; padding:18px; background-color:#ff8c00; color:#0a0a0a; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-top:10px; }
+  .btn-main:hover { background-color:#e67e00; }
+  .btn-main:disabled { background-color:#555; cursor:not-allowed; }
+  .register-link { text-align:center; margin-top:20px; font-size:14px; color:#aaaaaa; }
+  .register-link span { color:#ff8c00; cursor:pointer; font-weight:700; }
+  .back-link { text-align:center; margin-top:12px; font-size:13px; color:#555; cursor:pointer; }
+  .status-msg { border-radius:15px; padding:15px 18px; margin-top:15px; font-size:14px; line-height:1.6; display:none; }
+  .msg-pending  { background:#1f1a00; border:1px solid #ffcc00; color:#ffcc00; }
+  .msg-rejected { background:#1f0000; border:1px solid #ff3b3b; color:#ff8888; }
+  .msg-banned   { background:#1f0000; border:1px solid #ff3b3b; color:#ff8888; }
+  .msg-notfound { background:#1a1a1a; border:1px solid #444;    color:#aaaaaa; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<div class="login-box">
+  <div class="logo">ZIPFIX</div>
+  <div class="worker-badge">👷 Worker Portal</div>
+
+  <h2>Welcome back!</h2>
+  <p class="subtitle">Login to start accepting jobs</p>
+
+  <div class="input-group">
+    <label>Phone Number</label>
+    <div class="phone-input" id="phoneWrap">
+      <div class="country-code">+91</div>
+      <input type="number" id="phoneNumber" placeholder="98765 43210"
+        oninput="clearField('phoneWrap','phoneErr')" />
+    </div>
+    <div class="field-err" id="phoneErr">Please enter a valid 10-digit number</div>
+  </div>
+
+  <div class="input-group">
+    <label>Worker ID</label>
+    <input type="text" id="workerId" placeholder="Enter your Worker ID (e.g. ZF-1234)"
+      oninput="clearField('workerId','workerIdErr')" />
+    <div class="field-err" id="workerIdErr">Invalid Worker ID — format must be ZF-XXXX</div>
+  </div>
+
+  <!-- Status messages (no popups) -->
+  <div class="status-msg msg-pending"  id="msgPending">⏳ Your application is still under review. Check back soon or <a href="status.html" style="color:#ffcc00;font-weight:700;">check your status →</a></div>
+  <div class="status-msg msg-rejected" id="msgRejected">❌ Your application was not approved. Contact <strong>help@zipfix.com</strong> for support.</div>
+  <div class="status-msg msg-banned"   id="msgBanned">🚫 Your account has been suspended. Contact <strong>help@zipfix.com</strong>.</div>
+  <div class="status-msg msg-notfound" id="msgNotFound">🤔 No worker found with this phone and Worker ID. Double-check your details.</div>
+
+  <button class="btn-main" id="loginBtn" onclick="workerLogin()">Login & Go Online</button>
+
+  <div class="register-link">
+    New worker?
+    <span onclick="window.location.href='register.html'">Apply to join ZipFix</span>
+  </div>
+  <div class="back-link" onclick="window.location.href='index.html'">← Back to home</div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const allMsgs = ['msgPending','msgRejected','msgBanned','msgNotFound'];
+
+  function hideAllMsgs() {
+    allMsgs.forEach(id => document.getElementById(id).style.display = 'none');
+  }
+
+  function clearField(elId, errId) {
+    document.getElementById(elId).classList.remove('err');
+    document.getElementById(errId).style.display = 'none';
+    hideAllMsgs();
+  }
+
+  function showErr(elId, errId) {
+    document.getElementById(elId).classList.add('err');
+    document.getElementById(errId).style.display = 'block';
+  }
+
+  async function workerLogin() {
+    const phone    = document.getElementById('phoneNumber').value.trim();
+    const workerId = document.getElementById('workerId').value.trim().toUpperCase();
+    const btn      = document.getElementById('loginBtn');
+
+    hideAllMsgs();
+    let hasErr = false;
+
+    if (phone.length < 10) { showErr('phoneWrap','phoneErr'); hasErr = true; }
+    if (!workerId || !workerId.startsWith('ZF-')) { showErr('workerId','workerIdErr'); hasErr = true; }
+    if (hasErr) return;
+
+    btn.innerText = 'Verifying...';
+    btn.disabled  = true;
+
+    try {
+      const { data, error } = await db
+        .from('workers').select('*')
+        .eq('phone', '+91' + phone)
+        .eq('worker_id', workerId)
+        .single();
+
+      btn.innerText = 'Login & Go Online';
+      btn.disabled  = false;
+
+      if (error || !data) { document.getElementById('msgNotFound').style.display = 'block'; return; }
+
+      if (data.status === 'pending')  { document.getElementById('msgPending').style.display  = 'block'; return; }
+      if (data.status === 'rejected') { document.getElementById('msgRejected').style.display = 'block'; return; }
+      if (data.status === 'banned')   { document.getElementById('msgBanned').style.display   = 'block'; return; }
+
+      localStorage.setItem('workerPhone',  phone);
+      localStorage.setItem('workerId',     workerId);
+      localStorage.setItem('workerName',   data.name);
+      localStorage.setItem('workerSkill',  data.skill);
+      localStorage.setItem('workerArea',   data.area);
+      localStorage.setItem('workerStatus', data.status);
+      localStorage.setItem('workerDbId',   data.id);
+
+      alert('OTP sent to +91 ' + phone); // ✅ only alert kept
+      window.location.href = 'otp.html';
+
+    } catch (err) {
+      btn.innerText = 'Login & Go Online';
+      btn.disabled  = false;
+      document.getElementById('msgNotFound').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>

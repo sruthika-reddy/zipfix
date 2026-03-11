@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix — Finding Worker</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0f0f0f; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:30px; }
+  .container { width:100%; max-width:400px; }
+  .logo { font-size:24px; font-weight:900; color:#00d4ff; letter-spacing:3px; margin-bottom:50px; }
+  .radar { position:relative; width:220px; height:220px; margin:0 auto 50px auto; }
+  .radar-circle { position:absolute; border-radius:50%; border:2px solid #00d4ff; top:50%; left:50%; transform:translate(-50%,-50%); animation:radarPulse 2s infinite; opacity:0; }
+  .radar-circle:nth-child(1) { width:60px; height:60px; animation-delay:0s; }
+  .radar-circle:nth-child(2) { width:120px; height:120px; animation-delay:0.5s; }
+  .radar-circle:nth-child(3) { width:180px; height:180px; animation-delay:1s; }
+  .radar-circle:nth-child(4) { width:220px; height:220px; animation-delay:1.5s; }
+  @keyframes radarPulse {
+    0%   { opacity:1; transform:translate(-50%,-50%) scale(0.8); }
+    100% { opacity:0; transform:translate(-50%,-50%) scale(1.1); }
+  }
+  .center-icon { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:50px; }
+  h2 { font-size:26px; font-weight:900; margin-bottom:10px; }
+  .subtitle { font-size:15px; color:#aaaaaa; margin-bottom:40px; line-height:1.6; }
+  .status-steps { text-align:left; background-color:#1a1a1a; border-radius:20px; padding:25px; margin-bottom:30px; }
+  .step { display:flex; align-items:center; gap:15px; padding:12px 0; border-bottom:1px solid #2a2a2a; font-size:15px; color:#aaaaaa; }
+  .step:last-child { border-bottom:none; }
+  .step.done   { color:white; }
+  .step.active { color:#00d4ff; font-weight:700; }
+  .step-icon { font-size:20px; width:30px; text-align:center; }
+  .cancel-btn { background:none; border:2px solid #333; color:#aaaaaa; padding:15px 40px; border-radius:50px; font-size:15px; cursor:pointer; }
+  .cancel-btn:hover { border-color:#ff3b3b; color:#ff3b3b; }
+  .wait-note { font-size:12px; color:#555; margin-top:15px; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<div class="container">
+
+  <div class="logo">ZIPFIX</div>
+
+  <div class="radar">
+    <div class="radar-circle"></div>
+    <div class="radar-circle"></div>
+    <div class="radar-circle"></div>
+    <div class="radar-circle"></div>
+    <div class="center-icon" id="centerIcon">📍</div>
+  </div>
+
+  <h2 id="mainText">Finding Worker...</h2>
+  <p class="subtitle" id="subText">
+    Searching for available workers<br/>near your location in Hyderabad
+  </p>
+
+  <div class="status-steps">
+    <div class="step done" id="step1">
+      <div class="step-icon">✅</div>
+      <div>Booking received</div>
+    </div>
+    <div class="step active" id="step2">
+      <div class="step-icon">🔍</div>
+      <div>Finding nearby workers</div>
+    </div>
+    <div class="step" id="step3">
+      <div class="step-icon">👷</div>
+      <div>Connecting to worker</div>
+    </div>
+    <div class="step" id="step4">
+      <div class="step-icon">✅</div>
+      <div>Worker confirmed</div>
+    </div>
+  </div>
+
+  <button class="cancel-btn" onclick="cancelBooking()">Cancel Search</button>
+  <div class="wait-note" id="waitNote">Posting your job to nearby workers...</div>
+
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const serviceIcons = {
+    'Plumber':'🔧','Electrician':'⚡','Locksmith':'🔑',
+    'AC Repair':'❄️','Carpenter':'🪛','Painter':'🖌️'
+  };
+
+  const servicePrices = {
+    'Plumber':299,'Electrician':349,'Locksmith':249,
+    'AC Repair':499,'Carpenter':299,'Painter':399
+  };
+
+  // Read booking details from localStorage (set by booking.html)
+  const service  = localStorage.getItem('bookingService')  || 'Plumber';
+  const problem  = localStorage.getItem('bookingProblem')  || '';
+  const address  = localStorage.getItem('bookingAddress')  || '';
+  const urgency  = localStorage.getItem('bookingUrgency')  || 'normal';
+  const custName = localStorage.getItem('userName')        || 'Customer';
+  const custPhone= localStorage.getItem('phoneNumber')     || '';
+
+  // Calculate amount based on urgency
+  let basePrice = servicePrices[service] || 299;
+  if (urgency === 'emergency') basePrice = basePrice * 2;
+  else if (urgency === 'urgent') basePrice = Math.round(basePrice * 1.5);
+  const amount = basePrice + 49; // including platform fee
+
+  document.getElementById('centerIcon').innerText = serviceIcons[service] || '🔧';
+
+  let jobId       = null;
+  let pollInterval = null;
+  let cancelled   = false;
+
+  // Step 1 — Insert job into Supabase immediately
+  async function postJob() {
+    try {
+      const { data, error } = await db
+        .from('jobs')
+        .insert([{
+          customer_name:    custName,
+          customer_phone:   custPhone,
+          customer_address: address,
+          service:          service,
+          problem:          problem,
+          urgency:          urgency,
+          amount:           amount,
+          status:           'pending',
+          worker_id:        null
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      jobId = data.id;
+      localStorage.setItem('activeJobId', jobId);
+
+      document.getElementById('waitNote').innerText =
+        'Job posted! Waiting for a ' + service + ' to accept...';
+
+      // Step 2 — Start polling for worker acceptance
+      setTimeout(advanceToStep3, 2000);
+      pollInterval = setInterval(checkForWorker, 3000);
+
+    } catch (e) {
+      document.getElementById('waitNote').innerText = '⚠️ Error: ' + e.message;
+      console.error(e);
+    }
+  }
+
+  // Visual step progression
+  function advanceToStep3() {
+    if (cancelled) return;
+    document.getElementById('step2').className = 'step done';
+    document.getElementById('step3').className = 'step active';
+    document.getElementById('mainText').innerText = 'Almost There...';
+    document.getElementById('subText').innerText =
+      'Connecting you to the best ' + service + ' near you';
+  }
+
+  // Poll Supabase every 3s to see if a worker accepted
+  async function checkForWorker() {
+    if (cancelled || !jobId) return;
+    try {
+      const { data, error } = await db
+        .from('jobs')
+        .select('*, workers(*)')
+        .eq('id', jobId)
+        .single();
+
+      if (error) throw error;
+
+      if (data.status === 'accepted' && data.worker_id) {
+        clearInterval(pollInterval);
+        workerFound(data);
+      }
+    } catch (e) {
+      console.error('Poll error:', e);
+    }
+  }
+
+  // Worker accepted — save their info and navigate
+  async function workerFound(job) {
+    if (cancelled) return;
+
+    // Fetch worker details
+    let workerName   = 'Your Worker';
+    let workerInitial = 'W';
+    let workerSkill  = service;
+
+    try {
+      const { data: worker } = await db
+        .from('workers')
+        .select('name, skill, area')
+        .eq('worker_id', job.worker_id)
+        .single();
+
+      if (worker) {
+        workerName    = worker.name;
+        workerInitial = worker.name.charAt(0).toUpperCase();
+        workerSkill   = worker.skill;
+      }
+    } catch (e) { /* use defaults */ }
+
+    // Save worker info to localStorage for worker.html
+    localStorage.setItem('workerName',    workerName);
+    localStorage.setItem('workerInitial', workerInitial);
+    localStorage.setItem('assignedWorkerId', job.worker_id);
+
+    // Animate final steps
+    document.getElementById('step3').className = 'step done';
+    document.getElementById('step4').className = 'step active';
+    document.getElementById('mainText').innerText = 'Worker Found! 🎉';
+    document.getElementById('subText').innerText  =
+      workerName + ' is on the way!';
+    document.getElementById('centerIcon').innerText = '🎉';
+    document.getElementById('waitNote').innerText =
+      '✅ ' + workerName + ' accepted your job!';
+
+    setTimeout(() => {
+      window.location.href = 'worker.html';
+    }, 2000);
+  }
+
+  async function cancelBooking() {
+    if (!confirm('Are you sure you want to cancel?')) return;
+    cancelled = true;
+    clearInterval(pollInterval);
+
+    // Mark job as cancelled in Supabase
+    if (jobId) {
+      try {
+        await db.from('jobs').update({ status: 'cancelled' }).eq('id', jobId);
+      } catch (e) { /* ignore */ }
+      localStorage.removeItem('activeJobId');
+    }
+
+    window.location.href = 'dashboard.html';
+  }
+
+  // Start the whole flow on page load
+  postJob();
+</script>
+
+</body>
+</html>

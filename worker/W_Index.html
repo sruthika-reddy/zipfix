@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix — Join as a Worker</title>
+</head>
+<body>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  body {
+    background-color: #0a0a0a;
+    color: white;
+    min-height: 100vh;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background-color: #111111;
+    border-bottom: 2px solid #ff8c00;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ff8c00;
+    letter-spacing: 2px;
+  }
+
+  .nav-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn-outline {
+    padding: 12px 24px;
+    background-color: transparent;
+    color: #ff8c00;
+    font-size: 15px;
+    font-weight: 800;
+    border: 2px solid #ff8c00;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+
+  .btn-outline:hover {
+    background-color: #ff8c00;
+    color: #0a0a0a;
+  }
+
+  .btn-main {
+    padding: 12px 24px;
+    background-color: #ff8c00;
+    color: #0a0a0a;
+    font-size: 15px;
+    font-weight: 800;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+
+  .btn-main:hover {
+    background-color: #e67e00;
+  }
+
+  /* HERO */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 70px 25px 50px;
+  }
+
+  .worker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #2a1a00;
+    color: #ff8c00;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+  }
+
+  .hero h1 {
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 span {
+    color: #ff8c00;
+  }
+
+  .hero p {
+    font-size: 17px;
+    color: #aaaaaa;
+    max-width: 380px;
+    line-height: 1.7;
+    margin-bottom: 35px;
+  }
+
+  .hero .btn-main {
+    padding: 18px 50px;
+    font-size: 18px;
+    border-radius: 15px;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: space-around;
+    background-color: #111111;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+    padding: 25px 20px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-item h3 {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ff8c00;
+  }
+
+  .stat-item p {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-top: 4px;
+  }
+
+  /* HOW IT WORKS */
+  .section {
+    padding: 0 25px 50px;
+    text-align: center;
+  }
+
+  .section-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ff8c00;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .section h2 {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 35px;
+  }
+
+  .steps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .step-card {
+    background-color: #111111;
+    border-radius: 20px;
+    padding: 22px 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-align: left;
+    border: 1px solid #1f1f1f;
+  }
+
+  .step-number {
+    width: 45px;
+    height: 45px;
+    background-color: #ff8c00;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+    color: #0a0a0a;
+    flex-shrink: 0;
+  }
+
+  .step-info h4 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .step-info p {
+    font-size: 13px;
+    color: #aaaaaa;
+    line-height: 1.5;
+  }
+
+  /* SKILLS */
+  .skills-section {
+    padding: 0 25px 50px;
+    text-align: center;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .skill-card {
+    background-color: #111111;
+    border-radius: 18px;
+    padding: 22px 10px;
+    text-align: center;
+    border: 1px solid #1f1f1f;
+  }
+
+  .skill-card .icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  .skill-card p {
+    font-size: 13px;
+    font-weight: 700;
+    color: #cccccc;
+  }
+
+  /* EARNINGS HIGHLIGHT */
+  .earnings-section {
+    margin: 0 25px 50px;
+    background: linear-gradient(135deg, #2a1a00, #1a0f00);
+    border: 2px solid #ff8c00;
+    border-radius: 25px;
+    padding: 35px 25px;
+    text-align: center;
+  }
+
+  .earnings-section h2 {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .earnings-section p {
+    font-size: 15px;
+    color: #aaaaaa;
+    margin-bottom: 25px;
+    line-height: 1.6;
+  }
+
+  .earn-amount {
+    font-size: 52px;
+    font-weight: 900;
+    color: #ff8c00;
+    margin-bottom: 5px;
+  }
+
+  .earn-note {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-bottom: 25px;
+  }
+
+  .earnings-section .btn-main {
+    padding: 16px 40px;
+    font-size: 16px;
+    border-radius: 15px;
+  }
+
+  /* FOOTER CTA */
+  .footer-cta {
+    background-color: #111111;
+    border-top: 2px solid #ff8c00;
+    padding: 40px 25px;
+    text-align: center;
+  }
+
+  .footer-cta h2 {
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+
+  .footer-cta p {
+    font-size: 14px;
+    color: #aaaaaa;
+    margin-bottom: 25px;
+  }
+
+  .footer-cta .btn-main {
+    padding: 18px 50px;
+    font-size: 17px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-login {
+    font-size: 14px;
+    color: #aaaaaa;
+    margin-top: 15px;
+  }
+
+  .footer-login span {
+    color: #ff8c00;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .footer-bottom {
+    padding: 20px 25px;
+    text-align: center;
+    font-size: 12px;
+    color: #444;
+  }
+</style>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">ZIPFIX</div>
+  <div class="nav-buttons">
+    <button class="btn-outline" onclick="window.location.href='login.html'">Login</button>
+    <button class="btn-main"    onclick="window.location.href='register.html'">Register</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="worker-badge">👷 Worker Portal</div>
+  <h1>Earn Money Doing <br/><span>What You Do Best.</span></h1>
+  <p>Join ZipFix and get paid jobs from customers near you — 24/7, any day, any time. No middlemen.</p>
+  <button class="btn-main" onclick="window.location.href='register.html'">
+    Start Earning Today
+  </button>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <h3>247+</h3>
+    <p>Active Workers</p>
+  </div>
+  <div class="stat-item">
+    <h3>₹15K</h3>
+    <p>Avg Monthly Earn</p>
+  </div>
+  <div class="stat-item">
+    <h3>1,800+</h3>
+    <p>Jobs Completed</p>
+  </div>
+  <div class="stat-item">
+    <h3>4.8⭐</h3>
+    <p>Worker Rating</p>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-label">How It Works</div>
+  <h2>3 Simple Steps</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-info">
+        <h4>Register & Get Verified</h4>
+        <p>Submit your details and ID. Our team approves you within 24 hours.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-info">
+        <h4>Go Online & Accept Jobs</h4>
+        <p>Toggle online on the dashboard. Get real-time job requests near you.</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div class="step-info">
+        <h4>Complete Job & Get Paid</h4>
+        <p>Finish the job, mark it complete. Payment lands in your account instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills-section">
+  <div class="section-label">We're Hiring</div>
+  <h2 style="margin-bottom:25px;">Skills We Need</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="icon">🔧</div>
+      <p>Plumber</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">⚡</div>
+      <p>Electrician</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">🔑</div>
+      <p>Locksmith</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">❄️</div>
+      <p>AC Repair</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">🪛</div>
+      <p>Carpenter</p>
+    </div>
+    <div class="skill-card">
+      <div class="icon">🖌️</div>
+      <p>Painter</p>
+    </div>
+  </div>
+</section>
+
+<!-- EARNINGS HIGHLIGHT -->
+<div class="earnings-section">
+  <h2>How Much Can You Earn?</h2>
+  <p>Top workers in Hyderabad are earning</p>
+  <div class="earn-amount">₹15,000+</div>
+  <div class="earn-note">per month • Paid instantly after each job</div>
+  <button class="btn-main" onclick="window.location.href='register.html'">
+    Join & Start Earning 💰
+  </button>
+</div>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <h2>Ready to Get Started? 👷</h2>
+  <p>Register in under 2 minutes and start receiving job requests in your area.</p>
+  <button class="btn-main" onclick="window.location.href='register.html'">
+    Apply to Join ZipFix
+  </button>
+  <div class="footer-login">
+    Already a worker?
+    <span onclick="window.location.href='login.html'">Login here →</span>
+  </div>
+</div>
+
+<div class="footer-bottom">
+  © 2025 ZipFix • help@zipfix.com • Hyderabad, India
+</div>
+
+</body>
+</html>

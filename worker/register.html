@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix Worker — Register</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0a0a0a; color:white; min-height:100vh; padding:20px; }
+  .header { text-align:center; padding:30px 0 25px 0; }
+  .logo { font-size:28px; font-weight:900; color:#ff8c00; letter-spacing:3px; margin-bottom:8px; }
+  .worker-badge { display:inline-flex; align-items:center; gap:8px; background-color:#2a1a00; color:#ff8c00; padding:6px 15px; border-radius:50px; font-size:13px; font-weight:700; margin-bottom:20px; }
+  h2 { font-size:24px; font-weight:900; margin-bottom:8px; }
+  .subtitle { font-size:14px; color:#aaaaaa; }
+  .form-box { background-color:#1a1a1a; border-radius:25px; padding:30px 25px; margin-bottom:20px; }
+  .form-box h4 { font-size:13px; color:#ff8c00; text-transform:uppercase; letter-spacing:1px; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #2a2a2a; }
+  .input-group { margin-bottom:20px; }
+  .input-group label { display:block; font-size:13px; font-weight:700; color:#aaaaaa; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
+  .input-group input, .input-group select { width:100%; padding:15px 20px; background-color:#2a2a2a; border:2px solid #333; border-radius:15px; color:white; font-size:16px; outline:none; transition:border-color 0.2s; }
+  .input-group input:focus, .input-group select:focus { border-color:#ff8c00; }
+  .input-group select option { background-color:#2a2a2a; }
+  .input-group input.err, .input-group select.err { border-color:#ff3b3b; }
+  .field-err { color:#ff3b3b; font-size:12px; margin-top:6px; display:none; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+  .phone-row { display:flex; align-items:center; background-color:#2a2a2a; border:2px solid #333; border-radius:15px; overflow:hidden; transition:border-color 0.2s; }
+  .phone-row:focus-within { border-color:#ff8c00; }
+  .phone-row.err { border-color:#ff3b3b; }
+  .phone-prefix { padding:15px; font-size:16px; font-weight:700; color:#ff8c00; border-right:2px solid #333; white-space:nowrap; }
+  .phone-row input { border:none !important; border-radius:0 !important; background:none !important; padding:15px !important; outline:none; color:white; font-size:16px; width:100%; }
+  .notice-box { background-color:#2a1a00; border:2px solid #ff8c00; border-radius:20px; padding:20px 25px; margin-bottom:20px; font-size:14px; line-height:1.8; color:#ffcc88; }
+  .notice-box h4 { color:#ff8c00; font-size:15px; margin-bottom:10px; }
+  .btn-main { width:100%; padding:20px; background-color:#ff8c00; color:#0a0a0a; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-bottom:15px; }
+  .btn-main:hover { background-color:#e67e00; }
+  .btn-main:disabled { background-color:#555; cursor:not-allowed; }
+  .login-link { text-align:center; font-size:14px; color:#aaaaaa; margin-bottom:40px; }
+  .login-link span { color:#ff8c00; cursor:pointer; font-weight:700; }
+
+  /* Success card — replaces alert */
+  .success-card { display:none; background-color:#0d1f0d; border:2px solid #00ff88; border-radius:25px; padding:35px 25px; text-align:center; margin-bottom:20px; }
+  .success-card .icon { font-size:55px; margin-bottom:15px; }
+  .success-card h3 { font-size:22px; font-weight:900; color:#00ff88; margin-bottom:10px; }
+  .success-card p { font-size:14px; color:#aaaaaa; line-height:1.8; margin-bottom:20px; }
+  .btn-check-status { width:100%; padding:16px; background-color:#00ff88; color:#0a0a0a; font-size:16px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:10px; }
+  .btn-go-login { width:100%; padding:14px; background-color:#1a1a1a; color:#aaaaaa; font-size:15px; font-weight:700; border:none; border-radius:15px; cursor:pointer; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<div id="formSection">
+  <div class="header">
+    <div class="logo">ZIPFIX</div>
+    <div class="worker-badge">👷 Worker Registration</div>
+    <h2>Join ZipFix Workers</h2>
+    <p class="subtitle">Fill in your details to start earning</p>
+  </div>
+
+  <div class="form-box">
+    <h4>👤 Personal Details</h4>
+    <div class="input-group">
+      <label>Full Name</label>
+      <input type="text" id="fullName" placeholder="Enter your full name"
+        oninput="clearErr('fullName','errFullName')" />
+      <div class="field-err" id="errFullName">Please enter your full name</div>
+    </div>
+    <div class="input-group">
+      <label>Phone Number</label>
+      <div class="phone-row" id="phoneRow">
+        <div class="phone-prefix">+91</div>
+        <input type="number" id="phoneNumber" placeholder="98765 43210"
+          oninput="clearErr('phoneRow','errPhone')" />
+      </div>
+      <div class="field-err" id="errPhone">Please enter a valid 10-digit number</div>
+    </div>
+    <div class="two-col">
+      <div class="input-group">
+        <label>Age</label>
+        <input type="number" id="age" placeholder="25" min="18" max="60"
+          oninput="clearErr('age','errAge')" />
+        <div class="field-err" id="errAge">Must be 18 or older</div>
+      </div>
+      <div class="input-group">
+        <label>Gender</label>
+        <select id="gender" onchange="clearErr('gender','errGender')">
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="field-err" id="errGender">Please select gender</div>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Area in Hyderabad</label>
+      <select id="area" onchange="clearErr('area','errArea')">
+        <option value="">Select your area</option>
+        <option value="Banjara Hills">Banjara Hills</option>
+        <option value="Jubilee Hills">Jubilee Hills</option>
+        <option value="Madhapur">Madhapur</option>
+        <option value="Gachibowli">Gachibowli</option>
+        <option value="Hitech City">Hitech City</option>
+        <option value="Kondapur">Kondapur</option>
+        <option value="Kukatpally">Kukatpally</option>
+        <option value="Secunderabad">Secunderabad</option>
+        <option value="Begumpet">Begumpet</option>
+        <option value="Ameerpet">Ameerpet</option>
+        <option value="Other">Other</option>
+      </select>
+      <div class="field-err" id="errArea">Please select your area</div>
+    </div>
+  </div>
+
+  <div class="form-box">
+    <h4>🔧 Work Details</h4>
+    <div class="input-group">
+      <label>Your Skill</label>
+      <select id="skill" onchange="clearErr('skill','errSkill')">
+        <option value="">Select your skill</option>
+        <option value="Plumber">🔧 Plumber</option>
+        <option value="Electrician">⚡ Electrician</option>
+        <option value="Locksmith">🔑 Locksmith</option>
+        <option value="AC Repair">❄️ AC Repair</option>
+        <option value="Carpenter">🪛 Carpenter</option>
+        <option value="Painter">🖌️ Painter</option>
+      </select>
+      <div class="field-err" id="errSkill">Please select your skill</div>
+    </div>
+    <div class="input-group">
+      <label>Years of Experience</label>
+      <select id="experience" onchange="clearErr('experience','errExperience')">
+        <option value="">Select experience</option>
+        <option value="Less than 1 year">Less than 1 year</option>
+        <option value="1-3 years">1-3 years</option>
+        <option value="3-5 years">3-5 years</option>
+        <option value="5-10 years">5-10 years</option>
+        <option value="10+ years">10+ years</option>
+      </select>
+      <div class="field-err" id="errExperience">Please select your experience</div>
+    </div>
+  </div>
+
+  <div class="form-box">
+    <h4>🪪 ID Verification</h4>
+    <div class="input-group">
+      <label>ID Type</label>
+      <select id="idType" onchange="clearErr('idType','errIdType')">
+        <option value="">Select ID type</option>
+        <option value="Aadhar">Aadhar Card</option>
+        <option value="PAN">PAN Card</option>
+        <option value="Driving License">Driving License</option>
+        <option value="Voter ID">Voter ID</option>
+      </select>
+      <div class="field-err" id="errIdType">Please select ID type</div>
+    </div>
+    <div class="input-group">
+      <label>ID Number</label>
+      <input type="text" id="idNumber" placeholder="Enter your ID number"
+        oninput="clearErr('idNumber','errIdNumber')" />
+      <div class="field-err" id="errIdNumber">Please enter your ID number</div>
+    </div>
+  </div>
+
+  <div class="notice-box">
+    <h4>📋 Before You Apply</h4>
+    ✅ Background verification will be done<br/>
+    ✅ Your ID will be verified by our team<br/>
+    ✅ You will receive Worker ID within 24 hours<br/>
+    ✅ You must pass a skill test before going live<br/>
+    ⚠️ False information will result in permanent ban
+  </div>
+
+  <button class="btn-main" id="submitBtn" onclick="submitApplication()">Submit Application</button>
+
+  <div class="login-link">
+    Already have Worker ID?
+    <span onclick="window.location.href='login.html'">Login here</span>
+  </div>
+</div>
+
+<!-- Success card shown after submission instead of alert -->
+<div class="success-card" id="successCard">
+  <div class="icon">🎉</div>
+  <h3>Application Submitted!</h3>
+  <p>
+    Our team will verify your details and send your Worker ID (<strong style="color:white">ZF-XXXX</strong>) within <strong style="color:white">24 hours</strong>.<br/><br/>
+    Come back to check your status anytime using your phone number.
+  </p>
+  <button class="btn-check-status" onclick="window.location.href='status.html'">🔍 Check My Status</button>
+  <button class="btn-go-login"     onclick="window.location.href='login.html'">Login Page</button>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  function clearErr(elId, errId) {
+    document.getElementById(elId).classList.remove('err');
+    document.getElementById(errId).style.display = 'none';
+  }
+
+  function markErr(elId, errId) {
+    document.getElementById(elId).classList.add('err');
+    document.getElementById(errId).style.display = 'block';
+    return true;
+  }
+
+  async function submitApplication() {
+    const name       = document.getElementById('fullName').value.trim();
+    const phone      = document.getElementById('phoneNumber').value.trim();
+    const age        = document.getElementById('age').value;
+    const gender     = document.getElementById('gender').value;
+    const area       = document.getElementById('area').value;
+    const skill      = document.getElementById('skill').value;
+    const experience = document.getElementById('experience').value;
+    const idType     = document.getElementById('idType').value;
+    const idNumber   = document.getElementById('idNumber').value.trim();
+
+    let hasErr = false;
+    if (!name)                       hasErr = markErr('fullName',   'errFullName');
+    if (!phone || phone.length < 10) hasErr = markErr('phoneRow',   'errPhone');
+    if (!age || parseInt(age) < 18)  hasErr = markErr('age',        'errAge');
+    if (!gender)                     hasErr = markErr('gender',     'errGender');
+    if (!area)                       hasErr = markErr('area',       'errArea');
+    if (!skill)                      hasErr = markErr('skill',      'errSkill');
+    if (!experience)                 hasErr = markErr('experience', 'errExperience');
+    if (!idType)                     hasErr = markErr('idType',     'errIdType');
+    if (!idNumber)                   hasErr = markErr('idNumber',   'errIdNumber');
+    if (hasErr) {
+      // Scroll to first error
+      document.querySelector('.err').scrollIntoView({ behavior:'smooth', block:'center' });
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.innerText = 'Submitting...';
+    btn.disabled  = true;
+
+    try {
+      const { error } = await db.from('workers').insert([{
+        phone:      '+91' + phone,
+        name:       name,
+        skill:      skill,
+        area:       area,
+        experience: experience,
+        id_type:    idType,
+        id_number:  idNumber,
+        status:     'pending'
+      }]);
+
+      if (error) throw error;
+
+      // Show success card instead of alert
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('successCard').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      btn.innerText = 'Submit Application';
+      btn.disabled  = false;
+      // Show error inline
+      const errDiv = document.createElement('div');
+      errDiv.style.cssText = 'background:#1f0000;border:1px solid #ff3b3b;color:#ff8888;border-radius:12px;padding:14px;margin-bottom:15px;font-size:14px;';
+      errDiv.innerText = '⚠️ Submission failed: ' + err.message;
+      btn.before(errDiv);
+    }
+  }
+</script>
+</body>
+</html>

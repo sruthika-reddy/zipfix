@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix Worker — Job Complete</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0a0a0a; color:white; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:25px; }
+  .complete-box { width:100%; max-width:420px; text-align:center; }
+  .success-circle { width:120px; height:120px; background:linear-gradient(135deg,#00ff88,#00cc66); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:55px; margin:0 auto 25px auto; animation:popIn 0.5s ease; }
+  @keyframes popIn { 0%{transform:scale(0);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+  h1 { font-size:32px; font-weight:900; margin-bottom:10px; color:#00ff88; }
+  .subtitle { font-size:15px; color:#aaaaaa; margin-bottom:35px; line-height:1.6; }
+  .earnings-card { background-color:#1a1a1a; border-radius:25px; padding:30px; margin-bottom:20px; text-align:center; }
+  .earnings-card h4 { font-size:13px; color:#aaaaaa; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
+  .earnings-amount { font-size:52px; font-weight:900; color:#ff8c00; margin-bottom:5px; }
+  .earnings-note { font-size:13px; color:#aaaaaa; }
+  .stats-row { display:flex; justify-content:space-around; background-color:#1a1a1a; border-radius:20px; padding:20px; margin-bottom:20px; }
+  .stat { text-align:center; }
+  .stat h4 { font-size:22px; font-weight:900; color:#ff8c00; }
+  .stat p { font-size:12px; color:#aaaaaa; margin-top:5px; }
+  .rating-received { background-color:#1a1a1a; border-radius:20px; padding:20px 25px; margin-bottom:25px; display:flex; align-items:center; justify-content:space-between; }
+  .rating-received h4 { font-size:15px; font-weight:800; }
+  .rating-received p { font-size:13px; color:#aaaaaa; margin-top:4px; }
+  .stars { font-size:24px; }
+  .btn-main { width:100%; padding:20px; background-color:#ff8c00; color:#0a0a0a; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-bottom:12px; }
+  .btn-main:hover { background-color:#e67e00; }
+  .btn-secondary { width:100%; padding:18px; background-color:#1a1a1a; color:#aaaaaa; font-size:16px; font-weight:700; border:none; border-radius:15px; cursor:pointer; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<div class="complete-box">
+
+  <div class="success-circle">✅</div>
+  <h1>Job Done! 🎉</h1>
+  <p class="subtitle">Great work! Your payment is being<br/>processed and will reflect shortly.</p>
+
+  <div class="earnings-card">
+    <h4>You Earned</h4>
+    <div class="earnings-amount" id="earnedAmount">₹—</div>
+    <div class="earnings-note">Payment processing • Usually instant</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat">
+      <h4 id="totalJobs">—</h4>
+      <p>Jobs Today</p>
+    </div>
+    <div class="stat">
+      <h4 id="totalEarnings">₹—</h4>
+      <p>Earned Today</p>
+    </div>
+    <div class="stat">
+      <h4 id="myRating">4.9⭐</h4>
+      <p>Your Rating</p>
+    </div>
+  </div>
+
+  <div class="rating-received">
+    <div>
+      <h4>Customer Rating</h4>
+      <p id="ratingText">Waiting for customer...</p>
+    </div>
+    <div class="stars" id="ratingStars">⏳</div>
+  </div>
+
+  <button class="btn-main" onclick="goToDashboard()">🏠 Back to Dashboard</button>
+  <button class="btn-secondary" onclick="window.location.href='earnings.html'">💰 View Earnings</button>
+
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const workerId  = localStorage.getItem('workerId');
+  const lastAmt   = localStorage.getItem('lastJobAmount') || 0;
+  const lastRating = localStorage.getItem('lastRating');
+
+  document.getElementById('earnedAmount').innerText = '₹' + lastAmt;
+
+  // Show rating if given
+  if (lastRating) {
+    document.getElementById('ratingStars').innerText = '⭐'.repeat(parseInt(lastRating));
+    const labels = {'1':'Poor','2':'Fair','3':'Good','4':'Great','5':'Excellent!'};
+    document.getElementById('ratingText').innerText = 'Customer rated: ' + labels[lastRating];
+  }
+
+  // Load today's stats from Supabase
+  async function loadTodayStats() {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const { data } = await db
+        .from('jobs')
+        .select('amount')
+        .eq('worker_id', workerId)
+        .eq('status', 'completed')
+        .gte('created_at', today);
+
+      if (data) {
+        const total = data.reduce((sum, j) => sum + (j.amount || 0), 0);
+        document.getElementById('totalJobs').innerText     = data.length;
+        document.getElementById('totalEarnings').innerText = '₹' + total;
+      }
+    } catch (e) { /* silently fail */ }
+  }
+  loadTodayStats();
+
+  function goToDashboard() {
+    // Clear active job
+    localStorage.removeItem('activeJobId');
+    localStorage.removeItem('bookingService');
+    localStorage.removeItem('bookingProblem');
+    localStorage.removeItem('bookingAddress');
+    localStorage.removeItem('bookingUrgency');
+    localStorage.removeItem('bookingAmount');
+    localStorage.removeItem('customerName');
+    localStorage.removeItem('customerPhone');
+    localStorage.removeItem('lastJobAmount');
+    window.location.href = 'dashboard.html';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix</title>
+</head>
+<body>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  body {
+    background-color: #0f0f0f;
+    color: white;
+    min-height: 100vh;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background-color: #1a1a1a;
+  }
+
+  .logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #00d4ff;
+    letter-spacing: 2px;
+  }
+
+  .nav-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn-main {
+    padding: 14px 30px;
+    background-color: #00d4ff;
+    color: #0f0f0f;
+    font-size: 16px;
+    font-weight: 800;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+
+  .btn-main:hover {
+    background-color: #00b8d9;
+  }
+
+  .btn-outline {
+    padding: 14px 30px;
+    background-color: transparent;
+    color: #00d4ff;
+    font-size: 16px;
+    font-weight: 800;
+    border: 2px solid #00d4ff;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+
+  .btn-outline:hover {
+    background-color: #00d4ff;
+    color: #0f0f0f;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .hero h1 span {
+    color: #00d4ff;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: #aaaaaa;
+    margin-top: 20px;
+    max-width: 400px;
+  }
+
+  .hero .btn-main {
+    margin-top: 40px;
+    padding: 18px 50px;
+    font-size: 18px;
+  }
+
+  .services {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 40px 20px;
+  }
+
+  .service-card {
+    background-color: #1a1a1a;
+    border-radius: 20px;
+    padding: 30px;
+    width: 160px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .service-card:hover {
+    background-color: #00d4ff;
+    color: #0f0f0f;
+  }
+
+  .service-card .icon {
+    font-size: 40px;
+  }
+
+  .service-card p {
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+</style>
+
+  <nav class="navbar">
+    <div class="logo">ZIPFIX</div>
+    <div class="nav-buttons">
+      <button class="btn-outline" onclick="window.location.href='login.html'">Login</button>
+      <button class="btn-main" onclick="window.location.href='register.html'">Register</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Emergency Help <br /><span>In Minutes.</span></h1>
+    <p>Plumber, Electrician, Locksmith — available 24/7 at your doorstep. Any time. Any emergency.</p>
+    <button class="btn-main" onclick="window.location.href='register.html'">Find a Worker Now</button>
+  </section>
+
+  <section class="services">
+    <div class="service-card">
+      <div class="icon">🔧</div>
+      <p>Plumber</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">⚡</div>
+      <p>Electrician</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">🔑</div>
+      <p>Locksmith</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">❄️</div>
+      <p>AC Repair</p>
+    </div>
+    <div class="service-card">
+      <div class="icon">🪛</div>
+      <p>Carpenter</p>
+    </div>
+  </section>
+
+</body>
+</html>

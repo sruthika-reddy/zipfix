@@ -287,8 +287,12 @@
 </nav>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Route protection — must be logged in as customer
-  if (!localStorage.getItem('phoneNumber')) {
+  // Route protection — must be logged in as customer with full data
+  if (!localStorage.getItem('phoneNumber') || !localStorage.getItem('userName')) {
+    localStorage.removeItem('phoneNumber');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userArea');
     window.location.href = 'login.html';
   }
   // Block admin from accessing customer pages

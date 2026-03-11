@@ -472,8 +472,17 @@
 </div>
 
 <div class="footer-bottom">
-  © 2025 ZipFix • help@zipfix.com • Hyderabad, India
+  © 2025 ZipFix • <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="">help@zipfix.com</a> • Hyderabad, India
 </div>
+
+<script>
+  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
+    window.location.href = 'dashboard.html';
+  }
+  if (localStorage.getItem('adminLoggedIn')) {
+    window.location.href = '../admin/index.html';
+  }
+</script>
 
 </body>
 </html>

@@ -195,6 +195,15 @@
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  // Redirect if already logged in as worker
+  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
+    window.location.href = 'dashboard.html';
+  }
+  // Block admin from accessing worker pages
+  if (localStorage.getItem('adminLoggedIn')) {
+    window.location.href = '../admin/index.html';
+  }
+
   function clearErr(elId, errId) {
     document.getElementById(elId).classList.remove('err');
     document.getElementById(errId).style.display = 'none';

@@ -66,8 +66,8 @@
 
   <!-- Status messages (no popups) -->
   <div class="status-msg msg-pending"  id="msgPending">⏳ Your application is still under review. Check back soon or <a href="status.html" style="color:#ffcc00;font-weight:700;">check your status →</a></div>
-  <div class="status-msg msg-rejected" id="msgRejected">❌ Your application was not approved. Contact <strong>help@zipfix.com</strong> for support.</div>
-  <div class="status-msg msg-banned"   id="msgBanned">🚫 Your account has been suspended. Contact <strong>help@zipfix.com</strong>.</div>
+  <div class="status-msg msg-rejected" id="msgRejected">❌ Your application was not approved. Contact <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89e1ece5f9c9f3e0f9efe0f1a7eae6e4">[email&#160;protected]</a></strong> for support.</div>
+  <div class="status-msg msg-banned"   id="msgBanned">🚫 Your account has been suspended. Contact <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d1518110d3d07140d1b1405531e1210">[email&#160;protected]</a></strong>.</div>
   <div class="status-msg msg-notfound" id="msgNotFound">🤔 No worker found with this phone and Worker ID. Double-check your details.</div>
 
   <button class="btn-main" id="loginBtn" onclick="workerLogin()">Login & Go Online</button>
@@ -79,10 +79,19 @@
   <div class="back-link" onclick="window.location.href='index.html'">← Back to home</div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Redirect if already logged in as worker
+  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
+    window.location.href = 'dashboard.html';
+  }
+  // Block admin from accessing worker pages
+  if (localStorage.getItem('adminLoggedIn')) {
+    window.location.href = '../admin/index.html';
+  }
 
   const allMsgs = ['msgPending','msgRejected','msgBanned','msgNotFound'];
 
@@ -138,17 +147,4 @@
       localStorage.setItem('workerSkill',  data.skill);
       localStorage.setItem('workerArea',   data.area);
       localStorage.setItem('workerStatus', data.status);
-      localStorage.setItem('workerDbId',   data.id);
-
-      alert('OTP sent to +91 ' + phone); // ✅ only alert kept
-      window.location.href = 'otp.html';
-
-    } catch (err) {
-      btn.innerText = 'Login & Go Online';
-      btn.disabled  = false;
-      document.getElementById('msgNotFound').style.display = 'block';
-    }
-  }
-</script>
-</body>
-</html>
+      localSto

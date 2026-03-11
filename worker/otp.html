@@ -60,6 +60,8 @@
   const workerName = localStorage.getItem('workerName');
   const phone      = localStorage.getItem('workerPhone') || '';
   if (!workerName) { window.location.href = 'login.html'; }
+  // Block admin from accessing worker pages
+  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
   document.getElementById('phoneDisplay').innerText = '+91 ' + phone;
 

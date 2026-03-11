@@ -158,8 +158,8 @@
       • Area not currently serviceable<br/><br/>
       Contact our support team for more details.
     </p>
-    <a href="mailto:help@zipfix.com">
-      <button class="btn-contact">✉️ Contact help@zipfix.com</button>
+    <a href="/cdn-cgi/l/email-protection#c9a1aca5b989b3a0b9afa0b1e7aaa6a4">
+      <button class="btn-contact">✉️ Contact <span class="__cf_email__" data-cfemail="3b535e574b7b41524b5d524315585456">[email&#160;protected]</span></button>
     </a>
   </div>
 
@@ -171,8 +171,8 @@
       Your account has been suspended due to a policy violation.<br/><br/>
       Contact our support team if you believe this is a mistake.
     </p>
-    <a href="mailto:help@zipfix.com">
-      <button class="btn-contact">✉️ Contact help@zipfix.com</button>
+    <a href="/cdn-cgi/l/email-protection#99f1fcf5e9d9e3f0e9fff0e1b7faf6f4">
+      <button class="btn-contact">✉️ Contact <span class="__cf_email__" data-cfemail="93fbf6ffe3d3e9fae3f5faebbdf0fcfe">[email&#160;protected]</span></button>
     </a>
   </div>
 
@@ -192,10 +192,15 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Redirect if already logged in as worker
+  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
+    window.location.href = 'dashboard.html';
+  }
 
   let approvedWorkerId = '';
 
@@ -261,21 +266,4 @@
     navigator.clipboard.writeText(approvedWorkerId).then(() => {
       const btn = document.querySelector('.copy-btn');
       btn.innerText = '✅ Copied!';
-      setTimeout(() => { btn.innerText = '📋 Copy Worker ID'; }, 2000);
-    }).catch(() => {
-      alert('Your Worker ID: ' + approvedWorkerId);
-    });
-  }
-
-  function goToLogin() {
-    window.location.href = 'login.html';
-  }
-
-  // Allow pressing Enter to check
-  document.getElementById('phoneNumber').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkStatus();
-  });
-</script>
-
-</body>
-</html>
+      setTimeout(() => { btn.innerText = '📋 Copy Worker ID'

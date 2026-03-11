@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix — Profile</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0f0f0f; color:white; min-height:100vh; }
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 30px; background-color:#1a1a1a; }
+  .logo { font-size:22px; font-weight:900; color:#00d4ff; letter-spacing:2px; }
+  .back-btn { background:none; border:none; color:#00d4ff; font-size:22px; cursor:pointer; }
+  .avatar-section { display:flex; flex-direction:column; align-items:center; padding:40px 30px 30px; gap:12px; }
+  .avatar-circle { width:90px; height:90px; background-color:#00d4ff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:38px; font-weight:900; color:#0f0f0f; }
+  .avatar-name { font-size:22px; font-weight:900; }
+  .avatar-area { font-size:14px; color:#aaaaaa; }
+  .info-section { padding:0 30px; display:flex; flex-direction:column; gap:15px; }
+  .info-card { background-color:#1a1a1a; border-radius:18px; padding:18px 22px; display:flex; align-items:center; gap:16px; }
+  .info-icon { font-size:24px; width:40px; text-align:center; }
+  .info-label { font-size:12px; color:#aaaaaa; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .info-value { font-size:16px; font-weight:700; color:white; }
+  .support-section-title { padding:25px 30px 12px; font-size:16px; font-weight:800; color:#aaaaaa; text-transform:uppercase; letter-spacing:1px; }
+  .support-card { background-color:#1a1a1a; border-radius:18px; padding:18px 22px; display:flex; align-items:center; gap:16px; text-decoration:none; color:white; }
+  .coming-soon { font-size:11px; color:#555; font-weight:700; margin-top:3px; }
+  .logout-btn { margin:25px 30px 0; width:calc(100% - 60px); padding:18px; background-color:#ff3b3b; color:white; font-size:16px; font-weight:800; border:none; border-radius:15px; cursor:pointer; letter-spacing:1px; }
+  .logout-btn:hover { background-color:#e02e2e; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#1a1a1a; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #333; }
+  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaaaaa; gap:4px; }
+  .nav-item.active { color:#00d4ff; }
+  .nav-item .nav-icon { font-size:22px; }
+  .spacer { height:100px; }
+</style>
+
+<nav class="navbar">
+  <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
+  <div class="logo">ZIPFIX</div>
+  <div style="width:40px"></div>
+</nav>
+
+<div class="avatar-section">
+  <div class="avatar-circle" id="avatarInitial">?</div>
+  <div class="avatar-name" id="avatarName">—</div>
+  <div class="avatar-area" id="avatarArea">📍 —</div>
+</div>
+
+<div class="info-section">
+  <div class="info-card">
+    <div class="info-icon">👤</div>
+    <div>
+      <div class="info-label">Full Name</div>
+      <div class="info-value" id="infoName">—</div>
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="info-icon">📱</div>
+    <div>
+      <div class="info-label">Phone Number</div>
+      <div class="info-value" id="infoPhone">—</div>
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="info-icon">✉️</div>
+    <div>
+      <div class="info-label">Email Address</div>
+      <div class="info-value" id="infoEmail">—</div>
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="info-icon">📍</div>
+    <div>
+      <div class="info-label">Area</div>
+      <div class="info-value" id="infoArea">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="support-section-title">Customer Service</div>
+
+<div class="info-section">
+  <a class="support-card info-card" href="mailto:help@zipfix.com">
+    <div class="info-icon">✉️</div>
+    <div>
+      <div class="info-label">Email Us</div>
+      <div class="info-value">help@zipfix.com</div>
+    </div>
+  </a>
+  <div class="info-card">
+    <div class="info-icon">📞</div>
+    <div>
+      <div class="info-label">Call Us</div>
+      <div class="info-value">—</div>
+      <div class="coming-soon">Phone number coming soon</div>
+    </div>
+  </div>
+</div>
+
+<button class="logout-btn" onclick="logoutUser()">🚪 Logout</button>
+
+<div class="spacer"></div>
+
+<nav class="bottom-nav">
+  <div class="nav-item" onclick="window.location.href='dashboard.html'">
+    <div class="nav-icon">🏠</div><div>Home</div>
+  </div>
+  <div class="nav-item" onclick="window.location.href='bookings.html'">
+    <div class="nav-icon">📋</div><div>Bookings</div>
+  </div>
+  <div class="nav-item" onclick="window.location.href='track.html'">
+    <div class="nav-icon">📍</div><div>Track</div>
+  </div>
+  <div class="nav-item active">
+    <div class="nav-icon">👤</div><div>Profile</div>
+  </div>
+</nav>
+
+<script>
+  // Route protection — need both phoneNumber AND userName
+  var p = localStorage.getItem('phoneNumber');
+  var n = localStorage.getItem('userName');
+  if (!p || !n) {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }
+
+  // Load and display data
+  var name  = localStorage.getItem('userName')    || '';
+  var phone = localStorage.getItem('phoneNumber') || '';
+  var email = localStorage.getItem('userEmail')   || '';
+  var area  = localStorage.getItem('userArea')    || '';
+
+  document.getElementById('avatarInitial').innerText = name ? name.charAt(0).toUpperCase() : '?';
+  document.getElementById('avatarName').innerText    = name  || '—';
+  document.getElementById('avatarArea').innerText    = '📍 ' + (area  || '—');
+  document.getElementById('infoName').innerText      = name  || '—';
+  document.getElementById('infoPhone').innerText     = phone ? '+91 ' + phone : '—';
+  document.getElementById('infoEmail').innerText     = email || '—';
+  document.getElementById('infoArea').innerText      = area  || '—';
+
+  function logoutUser() {
+    if (confirm('Are you sure you want to logout?')) {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  }
+</script>
+</body>
+</html>

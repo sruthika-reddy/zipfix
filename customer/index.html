@@ -1,96 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ZipFix — Emergency Help in Minutes</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-    body { background:#0f0f0f; color:white; min-height:100vh; }
-
-    /* NAVBAR */
-    .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 30px; background:#111; border-bottom:2px solid #00d4ff22; }
-    .logo { font-size:24px; font-weight:900; color:#00d4ff; letter-spacing:3px; }
-    .nav-btns { display:flex; gap:12px; }
-    .btn-outline { padding:10px 22px; background:transparent; color:#00d4ff; border:2px solid #00d4ff; border-radius:50px; font-size:14px; font-weight:800; cursor:pointer; }
-    .btn-outline:hover { background:#00d4ff; color:#0f0f0f; }
-    .btn-nav { padding:10px 22px; background:#00d4ff; color:#0f0f0f; border:none; border-radius:50px; font-size:14px; font-weight:800; cursor:pointer; }
-    .btn-nav:hover { background:#00b8d9; }
-
-    /* HERO */
-    .hero { display:flex; flex-direction:column; align-items:center; text-align:center; padding:70px 25px 50px; }
-    .badge { display:inline-flex; align-items:center; gap:8px; background:#001a2a; color:#00d4ff; padding:8px 20px; border-radius:50px; font-size:13px; font-weight:700; margin-bottom:25px; border:1px solid #00d4ff44; }
-    .hero h1 { font-size:46px; font-weight:900; line-height:1.2; margin-bottom:20px; }
-    .hero h1 span { color:#00d4ff; }
-    .hero p { font-size:17px; color:#aaaaaa; max-width:400px; line-height:1.7; margin-bottom:35px; }
-    .hero-btns { display:flex; flex-direction:column; gap:12px; width:100%; max-width:320px; }
-    .btn-main { padding:18px; background:#00d4ff; color:#0f0f0f; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; width:100%; }
-    .btn-main:hover { background:#00b8d9; }
-    .btn-secondary { padding:16px; background:#1a1a1a; color:#aaaaaa; font-size:16px; font-weight:700; border:none; border-radius:15px; cursor:pointer; width:100%; }
-    .btn-secondary:hover { background:#222; color:white; }
-
-    /* STATS */
-    .stats-bar { display:flex; justify-content:space-around; background:#111; border-top:1px solid #222; border-bottom:1px solid #222; padding:25px 20px; flex-wrap:wrap; gap:20px; }
-    .stat { text-align:center; }
-    .stat h3 { font-size:28px; font-weight:900; color:#00d4ff; }
-    .stat p { font-size:13px; color:#aaaaaa; margin-top:4px; }
-
-    /* HOW IT WORKS */
-    .section { padding:50px 25px; text-align:center; }
-    .section-label { font-size:13px; font-weight:700; color:#00d4ff; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
-    .section h2 { font-size:28px; font-weight:900; margin-bottom:35px; }
-    .steps { display:flex; flex-direction:column; gap:15px; max-width:420px; margin:0 auto; }
-    .step { background:#111; border-radius:20px; padding:22px 25px; display:flex; align-items:center; gap:20px; text-align:left; border:1px solid #1f1f1f; }
-    .step-num { width:45px; height:45px; background:#00d4ff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; color:#0f0f0f; flex-shrink:0; }
-    .step h4 { font-size:16px; font-weight:800; margin-bottom:4px; }
-    .step p { font-size:13px; color:#aaaaaa; line-height:1.5; }
-
-    /* SERVICES */
-    .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:420px; margin:0 auto; }
-    .service-card { background:#111; border-radius:18px; padding:22px 10px; text-align:center; border:1px solid #1f1f1f; cursor:pointer; }
-    .service-card:hover { background:#00d4ff22; border-color:#00d4ff; }
-    .service-card .icon { font-size:32px; margin-bottom:8px; }
-    .service-card p { font-size:13px; font-weight:700; color:#ccc; }
-
-    /* CTA */
-    .cta { background:#111; border-top:2px solid #00d4ff; padding:50px 25px; text-align:center; }
-    .cta h2 { font-size:26px; font-weight:900; margin-bottom:10px; }
-    .cta p { font-size:15px; color:#aaaaaa; margin-bottom:30px; }
-    .cta .btn-main { max-width:320px; margin:0 auto 12px auto; display:block; }
-
-    /* FOOTER */
-    .footer { padding:20px 25px; text-align:center; font-size:12px; color:#333; }
-    .footer a { color:#00d4ff44; text-decoration:none; }
-    /* Hidden worker/admin links — only accessible via direct URL */
-    .hidden-links { display:none; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix — Emergency Help In Minutes</title>
 </head>
 <body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#0f0f0f; color:white; min-height:100vh; }
 
-<!-- NAVBAR -->
+  .navbar {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 30px; background-color:#1a1a1a;
+  }
+  .logo { font-size:26px; font-weight:900; color:#00d4ff; letter-spacing:3px; }
+  .btn-login {
+    padding:12px 28px; background-color:transparent; color:#00d4ff;
+    font-size:15px; font-weight:800; border:2px solid #00d4ff;
+    border-radius:50px; cursor:pointer; transition:all 0.2s;
+  }
+  .btn-login:hover { background-color:#00d4ff; color:#0f0f0f; }
+
+  .hero {
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; text-align:center;
+    padding:80px 25px;
+    min-height:calc(100vh - 72px);
+  }
+  .badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background-color:#001a2a; border:1px solid #00d4ff44;
+    border-radius:50px; padding:8px 18px; margin-bottom:28px;
+    font-size:13px; font-weight:700; color:#00d4ff;
+  }
+  .hero h1 {
+    font-size:clamp(38px, 9vw, 62px); font-weight:900;
+    line-height:1.15; margin-bottom:20px;
+  }
+  .hero h1 span { color:#00d4ff; }
+  .hero p {
+    font-size:16px; color:#aaaaaa; max-width:360px;
+    line-height:1.7; margin-bottom:40px;
+  }
+  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .btn-primary {
+    padding:17px 38px; background-color:#00d4ff; color:#0f0f0f;
+    font-size:17px; font-weight:900; border:none; border-radius:50px;
+    cursor:pointer; transition:background-color 0.2s;
+  }
+  .btn-primary:hover { background-color:#00b8d9; }
+  .btn-secondary {
+    padding:17px 38px; background-color:transparent; color:white;
+    font-size:17px; font-weight:800; border:2px solid #333;
+    border-radius:50px; cursor:pointer; transition:border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color:#00d4ff; color:#00d4ff; }
+</style>
+
 <nav class="navbar">
   <div class="logo">ZIPFIX</div>
-  <div class="nav-btns">
-    <button class="btn-outline" onclick="window.location.href='customer/login.html'">Login</button>
-  </div>
+  <button class="btn-login" onclick="window.location.href='customer/login.html'">Login</button>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="badge">⚡ Available 24/7</div>
-  <h1>Emergency Help<br/><span>At Your Doorstep.</span></h1>
-  <p>Get a verified plumber, electrician, locksmith or any home service professional in under 30 minutes.</p>
+  <div class="badge">⚡ Available 24/7 in Hyderabad</div>
+  <h1>Emergency Help<br/><span>In Minutes.</span></h1>
+  <p>Plumber, Electrician, Locksmith — verified workers at your doorstep. Any time. Any emergency.</p>
   <div class="hero-btns">
-    <button class="btn-main" onclick="window.location.href='customer/login.html'">🚀 Book a Service Now</button>
+    <button class="btn-primary" onclick="window.location.href='customer/login.html'">🚀 Book a Service Now</button>
     <button class="btn-secondary" onclick="window.location.href='customer/register.html'">Create Account</button>
   </div>
 </section>
 
-
-<!-- FOOTER -->
-<div class="footer">
-  © 2025 ZipFix • help@zipfix.com • Hyderabad, India
-</div>
-
+<script>
+  if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
+    window.location.href = 'customer/dashboard.html';
+  }
+</script>
 </body>
 </html>

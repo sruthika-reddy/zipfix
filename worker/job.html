@@ -8,41 +8,40 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0a0a0a; color:white; min-height:100vh; }
-  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#1a1a1a; gap:15px; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
   .navbar h3 { font-size:20px; font-weight:800; }
-  .status-banner { background:linear-gradient(135deg,#2a1a00,#1a0f00); border-bottom:3px solid #ff8c00; padding:20px 25px; display:flex; align-items:center; gap:15px; }
+  .status-banner { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border-bottom:3px solid #00b894; padding:20px 25px; display:flex; align-items:center; gap:15px; }
   .status-icon { font-size:40px; }
-  .status-info h3 { font-size:18px; font-weight:900; color:#ff8c00; }
-  .status-info p { font-size:13px; color:#aaaaaa; margin-top:3px; }
+  .status-info h3 { font-size:18px; font-weight:900; color:#00b894; }
+  .status-info p { font-size:13px; color:#888; margin-top:3px; }
   .content { padding:20px 25px; }
-  .info-card { background-color:#1a1a1a; border-radius:20px; padding:20px 25px; margin-bottom:15px; }
-  .info-card h4 { font-size:13px; color:#ff8c00; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
-  .info-row { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid #2a2a2a; font-size:14px; gap:15px; }
+  .info-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px 25px; margin-bottom:15px; }
+  .info-card h4 { font-size:13px; color:#00b894; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
+  .info-row { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid #ede9df; font-size:14px; gap:15px; }
   .info-row:last-child { border-bottom:none; }
-  .info-row .label { color:#aaaaaa; flex-shrink:0; }
-  .info-row .value { font-weight:600; text-align:right; color:white; }
-  .info-row .value.highlight { color:#ff8c00; }
-  .problem-box { background-color:#2a2a2a; border-radius:12px; padding:15px; font-size:14px; color:#cccccc; line-height:1.6; margin-top:10px; }
+  .info-row .label { color:#888; flex-shrink:0; }
+  .info-row .value { font-weight:700; text-align:right; color:#1a1a1a; }
+  .info-row .value.highlight { color:#00b894; }
+  .problem-box { background-color:#f2efe8; border-radius:12px; padding:15px; font-size:14px; color:#555; line-height:1.6; margin-top:10px; }
   .action-buttons { display:flex; flex-direction:column; gap:12px; margin-bottom:15px; }
-  .btn-navigate { width:100%; padding:18px; background-color:#1a3a1a; color:#00ff88; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; }
-  .btn-call     { width:100%; padding:18px; background-color:#1a1a3a; color:#00d4ff; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; }
-  .btn-arrived  { width:100%; padding:18px; background-color:#ff8c00; color:#0a0a0a; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; }
-  .btn-complete { width:100%; padding:20px; background-color:#00ff88; color:#0a0a0a; font-size:20px; font-weight:900; border:none; border-radius:15px; cursor:pointer; display:none; margin-top:5px; }
+  .btn-navigate { width:100%; padding:18px; background-color:#e8f8f4; color:#00b894; font-size:17px; font-weight:800; border:2px solid #00b89433; border-radius:15px; cursor:pointer; }
+  .btn-call     { width:100%; padding:18px; background-color:#f0f4ff; color:#3b82f6; font-size:17px; font-weight:800; border:2px solid #3b82f633; border-radius:15px; cursor:pointer; }
+  .btn-arrived  { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
+  .btn-arrived:hover { background-color:#009e7f; }
+  .btn-complete { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:20px; font-weight:900; border:none; border-radius:15px; cursor:pointer; display:none; margin-top:5px; transition:background-color 0.2s; }
+  .btn-complete:hover { background-color:#009e7f; }
   .checklist { list-style:none; padding:0; }
-  .checklist li { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #2a2a2a; font-size:14px; cursor:pointer; color:#aaaaaa; }
+  .checklist li { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #ede9df; font-size:14px; cursor:pointer; color:#888; }
   .checklist li:last-child { border-bottom:none; }
-  .checklist li.checked { color:white; text-decoration:line-through; opacity:0.6; }
-  .check-icon { width:24px; height:24px; border-radius:50%; border:2px solid #444; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
-  .checklist li.checked .check-icon { background-color:#00ff88; border-color:#00ff88; color:#0a0a0a; }
+  .checklist li.checked { color:#1a1a1a; text-decoration:line-through; opacity:0.5; }
+  .check-icon { width:24px; height:24px; border-radius:50%; border:2px solid #ccc8bc; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+  .checklist li.checked .check-icon { background-color:#00b894; border-color:#00b894; color:#fff; }
   .spacer { height:20px; }
 </style>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<nav class="navbar">
-  <h3>Active Job 🔧</h3>
-</nav>
+<nav class="navbar"><h3>Active Job 🔧</h3></nav>
 
 <div class="status-banner" id="statusBanner">
   <div class="status-icon">🚗</div>
@@ -53,25 +52,12 @@
 </div>
 
 <div class="content">
-
   <div class="info-card">
     <h4>👤 Customer Details</h4>
-    <div class="info-row">
-      <span class="label">Name</span>
-      <span class="value" id="customerName">Loading...</span>
-    </div>
-    <div class="info-row">
-      <span class="label">📍 Address</span>
-      <span class="value" id="customerAddress">Loading...</span>
-    </div>
-    <div class="info-row">
-      <span class="label">📞 Phone</span>
-      <span class="value highlight" id="customerPhone">Loading...</span>
-    </div>
-    <div class="info-row">
-      <span class="label">💰 You Earn</span>
-      <span class="value highlight" id="jobAmount">₹—</span>
-    </div>
+    <div class="info-row"><span class="label">Name</span><span class="value" id="customerName">Loading...</span></div>
+    <div class="info-row"><span class="label">📍 Address</span><span class="value" id="customerAddress">Loading...</span></div>
+    <div class="info-row"><span class="label">📞 Phone</span><span class="value highlight" id="customerPhone">Loading...</span></div>
+    <div class="info-row"><span class="label">💰 You Earn</span><span class="value highlight" id="jobAmount">₹—</span></div>
   </div>
 
   <div class="info-card">
@@ -81,7 +67,7 @@
 
   <div class="info-card">
     <h4>✅ Job Checklist</h4>
-    <ul class="checklist" id="checklist">
+    <ul class="checklist">
       <li onclick="toggleCheck(this)"><div class="check-icon"></div>Reached customer location</li>
       <li onclick="toggleCheck(this)"><div class="check-icon"></div>Showed ID to customer</li>
       <li onclick="toggleCheck(this)"><div class="check-icon"></div>Inspected the problem</li>
@@ -90,16 +76,12 @@
     </ul>
   </div>
 
-  <div class="action-buttons" id="actionBtns">
+  <div class="action-buttons">
     <button class="btn-navigate" onclick="navigate()">🗺️ Navigate To Customer</button>
     <button class="btn-call"     onclick="callCustomer()">📞 Call Customer</button>
     <button class="btn-arrived"  id="arrivedBtn" onclick="markArrived()">📍 Mark As Arrived</button>
   </div>
-
-  <button class="btn-complete" id="completeBtn" onclick="completeJob()">
-    ✅ Mark Job Complete
-  </button>
-
+  <button class="btn-complete" id="completeBtn" onclick="completeJob()">✅ Mark Job Complete</button>
   <div class="spacer"></div>
 </div>
 
@@ -108,56 +90,36 @@
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // Route protection — must be logged in as worker
-  if (!localStorage.getItem('workerName') || !localStorage.getItem('workerId')) {
-    window.location.href = 'login.html';
-  }
-  // Block admin from accessing worker pages
-  if (localStorage.getItem('adminLoggedIn')) {
-    window.location.href = '../admin/index.html';
-  }
-
-  // Guard
+  if (!localStorage.getItem('workerName')||!localStorage.getItem('workerId')) { window.location.href='login.html'; }
+  if (localStorage.getItem('adminLoggedIn')) { window.location.href='../admin/index.html'; }
   const activeJobId = localStorage.getItem('activeJobId');
-  if (!activeJobId) { window.location.href = 'dashboard.html'; }
+  if (!activeJobId) { window.location.href='dashboard.html'; }
 
-  // Load from localStorage (already saved by dashboard when accepting)
-  document.getElementById('customerName').innerText    = localStorage.getItem('customerName')    || '—';
-  document.getElementById('customerPhone').innerText   = localStorage.getItem('customerPhone')   || '—';
-  document.getElementById('customerAddress').innerText = localStorage.getItem('bookingAddress')  || '—';
-  document.getElementById('customerProblem').innerText = localStorage.getItem('bookingProblem')  || '—';
-  document.getElementById('jobAmount').innerText       = '₹' + (localStorage.getItem('bookingAmount') || '—');
+  document.getElementById('customerName').innerText    = localStorage.getItem('customerName')   ||'—';
+  document.getElementById('customerPhone').innerText   = localStorage.getItem('customerPhone')  ||'—';
+  document.getElementById('customerAddress').innerText = localStorage.getItem('bookingAddress') ||'—';
+  document.getElementById('customerProblem').innerText = localStorage.getItem('bookingProblem') ||'—';
+  document.getElementById('jobAmount').innerText       = '₹'+(localStorage.getItem('bookingAmount')||'—');
 
   function toggleCheck(item) {
     item.classList.toggle('checked');
-    item.querySelector('.check-icon').innerText = item.classList.contains('checked') ? '✓' : '';
-
-    const all     = document.querySelectorAll('.checklist li');
-    const checked = document.querySelectorAll('.checklist li.checked');
-    document.getElementById('completeBtn').style.display =
-      (checked.length === all.length) ? 'block' : 'none';
+    item.querySelector('.check-icon').innerText = item.classList.contains('checked')?'✓':'';
+    const all=document.querySelectorAll('.checklist li'), checked=document.querySelectorAll('.checklist li.checked');
+    document.getElementById('completeBtn').style.display = (checked.length===all.length)?'block':'none';
   }
 
   function navigate() {
-    const address = localStorage.getItem('bookingAddress') || '';
-    const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(address + ', Hyderabad');
-    window.open(mapsUrl, '_blank');
+    const addr = localStorage.getItem('bookingAddress')||'';
+    window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr+', Hyderabad'),'_blank');
   }
 
   function callCustomer() {
-    const phone = localStorage.getItem('customerPhone') || '';
-    if (phone) {
-      window.location.href = 'tel:+91' + phone;
-    } else {
-      alert('Customer phone not available');
-    }
+    const phone = localStorage.getItem('customerPhone')||'';
+    if(phone) window.location.href='tel:+91'+phone; else alert('Phone not available');
   }
 
   async function markArrived() {
-    try {
-      await db.from('jobs').update({ status: 'in_progress' }).eq('id', activeJobId);
-    } catch (e) { /* continue anyway */ }
-
+    try { await db.from('jobs').update({status:'in_progress'}).eq('id',activeJobId); } catch(e){}
     document.getElementById('jobStatus').innerText    = 'Arrived ✅';
     document.getElementById('jobStatusSub').innerText = 'You have reached customer location';
     document.getElementById('arrivedBtn').style.display = 'none';
@@ -165,22 +127,12 @@
   }
 
   async function completeJob() {
-    const amount = parseInt(localStorage.getItem('bookingAmount')) || 0;
-
+    const amount = parseInt(localStorage.getItem('bookingAmount'))||0;
     try {
-      await db.from('jobs').update({
-        status:       'completed',
-        completed_at: new Date().toISOString()
-      }).eq('id', activeJobId);
-    } catch (e) {
-      alert('Error completing job: ' + e.message);
-      return;
-    }
-
-    // Save for complete.html
-    localStorage.setItem('lastJobAmount', amount);
-    localStorage.setItem('lastJobService', localStorage.getItem('bookingService') || '');
-
+      await db.from('jobs').update({status:'completed',completed_at:new Date().toISOString()}).eq('id',activeJobId);
+    } catch(e){ alert('Error: '+e.message); return; }
+    localStorage.setItem('lastJobAmount',  amount);
+    localStorage.setItem('lastJobService', localStorage.getItem('bookingService')||'');
     window.location.href = 'complete.html';
   }
 </script>

@@ -8,97 +8,57 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0a0a0a; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-
-  .box { background-color:#1a1a1a; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; }
-
-  .logo { font-size:28px; font-weight:900; color:#ff8c00; letter-spacing:3px; margin-bottom:5px; text-align:center; }
-  .worker-badge { display:flex; align-items:center; justify-content:center; gap:8px; background-color:#2a1a00; color:#ff8c00; padding:6px 15px; border-radius:50px; font-size:13px; font-weight:700; margin:0 auto 35px auto; width:fit-content; }
-
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .box { background-color:#fffdf7; border:1px solid #ede9df; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; }
+  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:5px; text-align:center; }
+  .worker-badge { display:flex; align-items:center; justify-content:center; gap:8px; background-color:#e8f8f4; color:#00b894; padding:6px 15px; border-radius:50px; font-size:13px; font-weight:700; margin:0 auto 35px auto; width:fit-content; border:1px solid #00b89433; }
   h2 { font-size:22px; font-weight:800; margin-bottom:8px; }
-  .subtitle { font-size:14px; color:#aaaaaa; margin-bottom:30px; line-height:1.6; }
-
+  .subtitle { font-size:14px; color:#888; margin-bottom:30px; line-height:1.6; }
   .input-group { margin-bottom:20px; }
-  .input-group label { display:block; font-size:13px; font-weight:700; color:#aaaaaa; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
-  .phone-input { display:flex; align-items:center; background-color:#2a2a2a; border-radius:15px; padding:5px 15px; border:2px solid #333; }
-  .phone-input:focus-within { border-color:#ff8c00; }
-  .country-code { font-size:16px; font-weight:700; color:white; padding-right:10px; border-right:1px solid #444; margin-right:10px; }
-  .phone-input input { background:none; border:none; outline:none; color:white; font-size:18px; width:100%; padding:12px 0; }
+  .input-group label { display:block; font-size:13px; font-weight:700; color:#888; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
+  .phone-input { display:flex; align-items:center; background-color:#f2efe8; border-radius:15px; padding:5px 15px; border:2px solid #ede9df; transition:border-color 0.2s; }
+  .phone-input:focus-within { border-color:#00b894; }
+  .country-code { font-size:16px; font-weight:700; color:#1a1a1a; padding-right:10px; border-right:1px solid #ccc8bc; margin-right:10px; }
+  .phone-input input { background:none; border:none; outline:none; color:#1a1a1a; font-size:18px; width:100%; padding:12px 0; }
+  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
+  .btn-main:hover { background-color:#009e7f; }
+  .btn-main:disabled { background-color:#aaa; cursor:not-allowed; }
 
-  .btn-main { width:100%; padding:18px; background-color:#ff8c00; color:#0a0a0a; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; }
-  .btn-main:hover { background-color:#e67e00; }
-  .btn-main:disabled { background-color:#555; cursor:not-allowed; }
+  .result { display:none; margin-top:25px; border-radius:22px; padding:30px 25px; text-align:center; }
+  .result .status-icon { font-size:50px; margin-bottom:15px; }
+  .result h3 { font-size:20px; font-weight:900; margin-bottom:10px; }
+  .result p { font-size:14px; color:#888; line-height:1.7; margin-bottom:20px; }
 
-  /* ── Result cards ── */
-  .result { display:none; margin-top:30px; border-radius:22px; padding:30px 25px; text-align:center; }
+  .result.pending  { background:#fffbe6; border:2px solid #f0c040; }
+  .result.pending h3 { color:#886600; }
+  .result.approved { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border:2px solid #00b894; }
+  .result.approved h3 { color:#00b894; }
+  .result.rejected { background:#fff0f0; border:2px solid #e74c3c; }
+  .result.rejected h3 { color:#c0392b; }
+  .result.banned   { background:#fff0f0; border:2px solid #e74c3c; }
+  .result.notfound { background:#f5f4ef; border:2px solid #ede9df; }
+  .result.notfound h3 { color:#888; }
 
-  /* Pending */
-  .result.pending {
-    background-color:#1f1a00;
-    border:2px solid #ffcc00;
-  }
-  .result.pending .status-icon { font-size:55px; margin-bottom:15px; }
-  .result.pending h3 { font-size:20px; font-weight:900; color:#ffcc00; margin-bottom:10px; }
-  .result.pending p  { font-size:14px; color:#aaaaaa; line-height:1.7; }
-
-  /* Approved */
-  .result.approved {
-    background-color:#0d1f0d;
-    border:2px solid #00ff88;
-  }
-  .result.approved .status-icon { font-size:55px; margin-bottom:15px; }
-  .result.approved h3 { font-size:20px; font-weight:900; color:#00ff88; margin-bottom:10px; }
-  .result.approved p  { font-size:14px; color:#aaaaaa; margin-bottom:20px; line-height:1.7; }
-  .worker-id-box { background-color:#0a2a0a; border:2px dashed #00ff88; border-radius:15px; padding:18px; margin:15px 0 20px; }
-  .worker-id-label { font-size:12px; color:#aaaaaa; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-  .worker-id-value { font-size:36px; font-weight:900; color:#00ff88; letter-spacing:4px; }
-  .copy-btn { background:none; border:2px solid #00ff88; color:#00ff88; padding:10px 25px; border-radius:50px; font-size:14px; font-weight:700; cursor:pointer; margin-bottom:20px; }
-  .copy-btn:hover { background-color:#00ff88; color:#0a0a0a; }
-  .btn-login { width:100%; padding:16px; background-color:#ff8c00; color:#0a0a0a; font-size:16px; font-weight:800; border:none; border-radius:15px; cursor:pointer; }
-  .btn-login:hover { background-color:#e67e00; }
-
-  /* Rejected */
-  .result.rejected {
-    background-color:#1f0000;
-    border:2px solid #ff3b3b;
-  }
-  .result.rejected .status-icon { font-size:55px; margin-bottom:15px; }
-  .result.rejected h3 { font-size:20px; font-weight:900; color:#ff3b3b; margin-bottom:10px; }
-  .result.rejected p  { font-size:14px; color:#aaaaaa; line-height:1.7; margin-bottom:20px; }
-  .btn-contact { width:100%; padding:16px; background-color:#2a0000; color:#ff3b3b; font-size:15px; font-weight:800; border:2px solid #ff3b3b; border-radius:15px; cursor:pointer; }
-
-  /* Banned */
-  .result.banned {
-    background-color:#1f0000;
-    border:2px solid #ff3b3b;
-  }
-
-  /* Not found */
-  .result.notfound {
-    background-color:#111;
-    border:2px solid #333;
-  }
-  .result.notfound h3 { font-size:18px; font-weight:900; color:#aaaaaa; margin:10px 0; }
-  .result.notfound p  { font-size:14px; color:#555; line-height:1.7; }
-
-  .back-link { text-align:center; margin-top:20px; font-size:13px; color:#555; cursor:pointer; }
-  .back-link span { color:#666; }
-
-  /* Worker details strip */
-  .worker-detail-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #1a2a1a; font-size:13px; }
+  .worker-id-box { background-color:#fff; border:2px dashed #00b894; border-radius:15px; padding:18px; margin:15px 0 20px; }
+  .worker-id-label { font-size:12px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .worker-id-value { font-size:36px; font-weight:900; color:#00b894; letter-spacing:4px; }
+  .copy-btn { background:none; border:2px solid #00b894; color:#00b894; padding:10px 25px; border-radius:50px; font-size:14px; font-weight:700; cursor:pointer; margin-bottom:20px; transition:all 0.2s; }
+  .copy-btn:hover { background-color:#00b894; color:#fff; }
+  .worker-detail-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e8f8f4; font-size:13px; }
   .worker-detail-row:last-child { border-bottom:none; }
-  .worker-detail-row .lbl { color:#aaaaaa; }
-  .worker-detail-row .val { font-weight:700; color:white; }
+  .worker-detail-row .lbl { color:#888; }
+  .worker-detail-row .val { font-weight:700; color:#1a1a1a; }
+  .btn-action { width:100%; padding:16px; background-color:#00b894; color:#fff; font-size:16px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-top:5px; }
+  .btn-secondary { width:100%; padding:14px; background-color:#f2efe8; color:#888; font-size:15px; font-weight:700; border:none; border-radius:15px; cursor:pointer; margin-top:10px; }
+  .back-link { text-align:center; margin-top:20px; font-size:13px; color:#aaa; cursor:pointer; }
 </style>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <div class="box">
   <div class="logo">ZIPFIX</div>
   <div class="worker-badge">👷 Application Status</div>
-
   <h2>Check Your Status</h2>
-  <p class="subtitle">Enter your registered phone number to see your application status and Worker ID.</p>
+  <p class="subtitle">Enter your registered phone number to see your application status.</p>
 
   <div class="input-group">
     <label>Phone Number</label>
@@ -107,158 +67,97 @@
       <input type="number" id="phoneNumber" placeholder="98765 43210" />
     </div>
   </div>
+  <button class="btn-main" id="checkBtn" onclick="checkStatus()">🔍 Check My Status</button>
 
-  <button class="btn-main" id="checkBtn" onclick="checkStatus()">
-    🔍 Check My Status
-  </button>
-
-  <!-- ── PENDING ── -->
+  <!-- PENDING -->
   <div class="result pending" id="resultPending">
     <div class="status-icon">⏳</div>
-    <h3>Application Under Review</h3>
-    <p>
-      Your application has been received and is being reviewed by our team.<br/><br/>
-      ✅ We verify your ID and background<br/>
-      ✅ This usually takes up to <strong style="color:white">24 hours</strong><br/><br/>
-      Come back here anytime to check your status.
-    </p>
+    <h3>Under Review</h3>
+    <p>Your application has been received and is being reviewed by our team. This usually takes up to <strong>24 hours</strong>.<br/><br/>Come back here anytime to check.</p>
   </div>
 
-  <!-- ── APPROVED ── -->
+  <!-- APPROVED -->
   <div class="result approved" id="resultApproved">
     <div class="status-icon">🎉</div>
     <h3>You're Approved!</h3>
-    <p>Welcome to ZipFix! Your Worker ID is ready. Use it to login and start earning.</p>
-
+    <p>Welcome to ZipFix! Use your Worker ID below to login and start earning.</p>
     <div class="worker-id-box">
       <div class="worker-id-label">Your Worker ID</div>
       <div class="worker-id-value" id="workerIdDisplay">ZF-XXXX</div>
     </div>
-
     <button class="copy-btn" onclick="copyId()">📋 Copy Worker ID</button>
-
-    <div style="background:#0a1a0a; border-radius:12px; padding:15px; margin-bottom:20px; text-align:left;">
+    <div style="background:#fff;border-radius:12px;padding:15px;margin-bottom:20px;text-align:left;">
       <div class="worker-detail-row"><span class="lbl">Name</span><span class="val" id="approvedName">—</span></div>
       <div class="worker-detail-row"><span class="lbl">Skill</span><span class="val" id="approvedSkill">—</span></div>
       <div class="worker-detail-row"><span class="lbl">Area</span><span class="val" id="approvedArea">—</span></div>
     </div>
-
-    <button class="btn-login" onclick="goToLogin()">🚀 Go to Login & Start Earning</button>
+    <button class="btn-action" onclick="window.location.href='login.html'">🚀 Go to Login & Start Earning</button>
   </div>
 
-  <!-- ── REJECTED ── -->
+  <!-- REJECTED -->
   <div class="result rejected" id="resultRejected">
     <div class="status-icon">❌</div>
-    <h3>Application Not Approved</h3>
-    <p>
-      Unfortunately your application was not approved at this time.<br/><br/>
-      This could be due to:<br/>
-      • ID verification failed<br/>
-      • Incomplete information<br/>
-      • Area not currently serviceable<br/><br/>
-      Contact our support team for more details.
-    </p>
-    <a href="/cdn-cgi/l/email-protection#c9a1aca5b989b3a0b9afa0b1e7aaa6a4">
-      <button class="btn-contact">✉️ Contact <span class="__cf_email__" data-cfemail="3b535e574b7b41524b5d524315585456">[email&#160;protected]</span></button>
-    </a>
+    <h3>Application Rejected</h3>
+    <p>Unfortunately your application was not approved.<br/><br/>This could be due to ID verification failure, incomplete info, or area not serviceable.<br/><br/>Contact <strong>help@zipfix.com</strong> for support.</p>
+    <button class="btn-secondary" onclick="window.location.href='register.html'">📝 Apply Again</button>
   </div>
 
-  <!-- ── BANNED ── -->
+  <!-- BANNED -->
   <div class="result banned" id="resultBanned">
     <div class="status-icon">🚫</div>
-    <h3 style="color:#ff3b3b; font-size:20px; font-weight:900; margin-bottom:10px;">Account Suspended</h3>
-    <p style="font-size:14px; color:#aaaaaa; line-height:1.7; margin-bottom:20px;">
-      Your account has been suspended due to a policy violation.<br/><br/>
-      Contact our support team if you believe this is a mistake.
-    </p>
-    <a href="/cdn-cgi/l/email-protection#99f1fcf5e9d9e3f0e9fff0e1b7faf6f4">
-      <button class="btn-contact">✉️ Contact <span class="__cf_email__" data-cfemail="93fbf6ffe3d3e9fae3f5faebbdf0fcfe">[email&#160;protected]</span></button>
-    </a>
+    <h3>Account Suspended</h3>
+    <p>Your account has been suspended due to a policy violation.<br/><br/>Contact <strong>help@zipfix.com</strong> if you believe this is a mistake.</p>
   </div>
 
-  <!-- ── NOT FOUND ── -->
+  <!-- NOT FOUND -->
   <div class="result notfound" id="resultNotFound">
-    <div class="status-icon" style="font-size:45px; margin-bottom:10px;">🤔</div>
+    <div class="status-icon">🤔</div>
     <h3>No Application Found</h3>
-    <p>We couldn't find an application for this phone number.<br/><br/>
-    Double-check the number or register first.</p>
-    <button class="btn-login" style="margin-top:20px;" onclick="window.location.href='register.html'">
-      📝 Register Now
-    </button>
+    <p>We couldn't find an application for this phone number. Double-check or register first.</p>
+    <button class="btn-action" onclick="window.location.href='register.html'">📝 Register Now</button>
   </div>
 
-  <div class="back-link">
-    <span onclick="window.location.href='index.html'">← Back to home</span>
-  </div>
+  <div class="back-link" onclick="window.location.href='index.html'">← Back to home</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // Redirect if already logged in as worker
-  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
-    window.location.href = 'dashboard.html';
-  }
+  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) { window.location.href = 'dashboard.html'; }
 
   let approvedWorkerId = '';
 
   function hideAll() {
-    ['resultPending','resultApproved','resultRejected','resultBanned','resultNotFound']
-      .forEach(id => document.getElementById(id).style.display = 'none');
+    ['resultPending','resultApproved','resultRejected','resultBanned','resultNotFound'].forEach(id => document.getElementById(id).style.display='none');
   }
 
   async function checkStatus() {
     const phone = document.getElementById('phoneNumber').value.trim();
     if (phone.length < 10) { alert('Please enter a valid 10-digit phone number'); return; }
-
     const btn = document.getElementById('checkBtn');
-    btn.innerText = 'Checking...';
-    btn.disabled  = true;
+    btn.innerText = 'Checking...'; btn.disabled = true;
     hideAll();
-
     try {
-      const { data, error } = await db
-        .from('workers')
-        .select('name, skill, area, status, worker_id')
-        .eq('phone', '+91' + phone)
-        .single();
-
-      btn.innerText = '🔍 Check My Status';
-      btn.disabled  = false;
-
-      if (error || !data) {
-        document.getElementById('resultNotFound').style.display = 'block';
-        return;
-      }
-
-      if (data.status === 'pending') {
-        document.getElementById('resultPending').style.display = 'block';
-
-      } else if (data.status === 'approved') {
+      const { data, error } = await db.from('workers').select('name,skill,area,status,worker_id').eq('phone','+91'+phone).single();
+      btn.innerText = '🔍 Check My Status'; btn.disabled = false;
+      if (error || !data) { document.getElementById('resultNotFound').style.display='block'; return; }
+      if (data.status === 'pending')  { document.getElementById('resultPending').style.display='block'; }
+      else if (data.status === 'approved') {
         approvedWorkerId = data.worker_id || '';
-        document.getElementById('workerIdDisplay').innerText  = approvedWorkerId;
-        document.getElementById('approvedName').innerText     = data.name  || '—';
-        document.getElementById('approvedSkill').innerText    = data.skill || '—';
-        document.getElementById('approvedArea').innerText     = data.area  || '—';
-
-        // Pre-fill localStorage so login is easier
+        document.getElementById('workerIdDisplay').innerText = approvedWorkerId;
+        document.getElementById('approvedName').innerText    = data.name  || '—';
+        document.getElementById('approvedSkill').innerText   = data.skill || '—';
+        document.getElementById('approvedArea').innerText    = data.area  || '—';
         localStorage.setItem('workerPhone', phone);
-
-        document.getElementById('resultApproved').style.display = 'block';
-
-      } else if (data.status === 'rejected') {
-        document.getElementById('resultRejected').style.display = 'block';
-
-      } else if (data.status === 'banned') {
-        document.getElementById('resultBanned').style.display = 'block';
+        document.getElementById('resultApproved').style.display='block';
       }
-
-    } catch (e) {
-      btn.innerText = '🔍 Check My Status';
-      btn.disabled  = false;
-      alert('Error: ' + e.message);
+      else if (data.status === 'rejected') { document.getElementById('resultRejected').style.display='block'; }
+      else if (data.status === 'banned')   { document.getElementById('resultBanned').style.display='block'; }
+    } catch(e) {
+      btn.innerText = '🔍 Check My Status'; btn.disabled = false;
+      alert('Error: '+e.message);
     }
   }
 
@@ -266,4 +165,9 @@
     navigator.clipboard.writeText(approvedWorkerId).then(() => {
       const btn = document.querySelector('.copy-btn');
       btn.innerText = '✅ Copied!';
-      setTimeout(() => { btn.innerText = '📋 Copy Worker ID'
+      setTimeout(() => { btn.innerText = '📋 Copy Worker ID'; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>

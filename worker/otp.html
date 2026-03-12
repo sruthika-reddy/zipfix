@@ -8,30 +8,29 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0a0a0a; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .otp-box { background-color:#1a1a1a; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; }
-  .logo { font-size:28px; font-weight:900; color:#ff8c00; letter-spacing:3px; margin-bottom:5px; }
-  .worker-badge { display:inline-flex; align-items:center; gap:8px; background-color:#2a1a00; color:#ff8c00; padding:6px 15px; border-radius:50px; font-size:13px; font-weight:700; margin-bottom:35px; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .otp-box { background-color:#fffdf7; border:1px solid #ede9df; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; }
+  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:5px; }
+  .worker-badge { display:inline-flex; align-items:center; gap:8px; background-color:#e8f8f4; color:#00b894; padding:6px 15px; border-radius:50px; font-size:13px; font-weight:700; margin-bottom:35px; border:1px solid #00b89433; }
   h2 { font-size:24px; font-weight:800; margin-bottom:10px; }
-  .subtitle { font-size:14px; color:#aaaaaa; margin-bottom:5px; }
-  .phone-display { font-size:16px; font-weight:800; color:#ff8c00; margin-bottom:30px; }
+  .subtitle { font-size:14px; color:#888; margin-bottom:5px; }
+  .phone-display { font-size:16px; font-weight:800; color:#00b894; margin-bottom:30px; }
   .otp-inputs { display:flex; justify-content:center; gap:12px; margin-bottom:15px; }
-  .otp-inputs input { width:55px; height:55px; background-color:#2a2a2a; border:2px solid #333; border-radius:15px; color:white; font-size:24px; font-weight:800; text-align:center; outline:none; transition:border-color 0.2s; }
-  .otp-inputs input:focus { border-color:#ff8c00; }
-  .otp-inputs input.err { border-color:#ff3b3b; }
-  .inline-err { color:#ff3b3b; font-size:13px; margin-bottom:20px; display:none; }
-  .btn-main { width:100%; padding:18px; background-color:#ff8c00; color:#0a0a0a; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; }
-  .btn-main:hover { background-color:#e67e00; }
-  .btn-main:disabled { background-color:#555; cursor:not-allowed; }
-  .resend { font-size:14px; color:#aaaaaa; }
-  .resend span { color:#ff8c00; cursor:pointer; font-weight:700; }
-  .resend-msg { font-size:13px; color:#00ff88; margin-top:8px; display:none; }
+  .otp-inputs input { width:55px; height:55px; background-color:#f2efe8; border:2px solid #ede9df; border-radius:15px; color:#1a1a1a; font-size:24px; font-weight:800; text-align:center; outline:none; transition:border-color 0.2s; }
+  .otp-inputs input:focus { border-color:#00b894; }
+  .otp-inputs input.err { border-color:#e74c3c; }
+  .inline-err { color:#e74c3c; font-size:13px; margin-bottom:20px; display:none; }
+  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; transition:background-color 0.2s; }
+  .btn-main:hover { background-color:#009e7f; }
+  .btn-main:disabled { background-color:#aaa; cursor:not-allowed; }
+  .resend { font-size:14px; color:#888; }
+  .resend span { color:#00b894; cursor:pointer; font-weight:700; }
+  .resend-msg { font-size:13px; color:#00b894; margin-top:8px; display:none; }
 </style>
 
 <div class="otp-box">
   <div class="logo">ZIPFIX</div>
   <div class="worker-badge">👷 Worker Portal</div>
-
   <h2>Verify your number</h2>
   <p class="subtitle">OTP sent to</p>
   <div class="phone-display" id="phoneDisplay">+91 XXXXXXXXXX</div>
@@ -44,75 +43,48 @@
     <input type="number" id="otp5" maxlength="1" />
     <input type="number" id="otp6" maxlength="1" />
   </div>
-
   <div class="inline-err" id="otpErr">Please enter all 6 digits</div>
 
   <button class="btn-main" id="verifyBtn" onclick="verifyOTP()">Verify & Go Online</button>
-
-  <p class="resend">
-    Didn't receive OTP?
-    <span onclick="resendOtp()">Resend</span>
-  </p>
+  <p class="resend">Didn't receive OTP? <span onclick="resendOtp()">Resend</span></p>
   <div class="resend-msg" id="resendMsg">✅ OTP resent to your number</div>
 </div>
 
 <script>
   const workerName = localStorage.getItem('workerName');
-  const phone      = localStorage.getItem('workerPhone') || '';
-  if (!workerName) { window.location.href = 'login.html'; }
-  // Block admin from accessing worker pages
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
+  const phone      = localStorage.getItem('workerPhone')||'';
+  if (!workerName) { window.location.href='login.html'; }
+  if (localStorage.getItem('adminLoggedIn')) { window.location.href='../admin/index.html'; }
 
-  document.getElementById('phoneDisplay').innerText = '+91 ' + phone;
-
+  document.getElementById('phoneDisplay').innerText = '+91 '+phone;
   const inputs = document.querySelectorAll('.otp-inputs input');
 
-  inputs.forEach((input, index) => {
-    input.addEventListener('input', function () {
-      if (this.value.length > 1) this.value = this.value.slice(0, 1);
-      // Clear error on typing
-      document.getElementById('otpErr').style.display = 'none';
-      inputs.forEach(i => i.classList.remove('err'));
-      // Auto jump
-      if (this.value && index < inputs.length - 1) inputs[index + 1].focus();
+  inputs.forEach((input,index)=>{
+    input.addEventListener('input',function(){
+      if(this.value.length>1) this.value=this.value.slice(0,1);
+      document.getElementById('otpErr').style.display='none';
+      inputs.forEach(i=>i.classList.remove('err'));
+      if(this.value&&index<inputs.length-1) inputs[index+1].focus();
     });
-    input.addEventListener('keydown', function (e) {
-      if (e.key === 'Backspace' && !this.value && index > 0) inputs[index - 1].focus();
+    input.addEventListener('keydown',function(e){
+      if(e.key==='Backspace'&&!this.value&&index>0) inputs[index-1].focus();
     });
   });
 
-  // ✅ Auto-focus first box as soon as page loads
-  window.addEventListener('load', () => {
-    setTimeout(() => inputs[0].focus(), 100);
-  });
+  window.addEventListener('load',()=>{ setTimeout(()=>inputs[0].focus(),100); });
 
   function verifyOTP() {
-    let otp = '';
-    inputs.forEach(i => { otp += i.value; });
-
-    if (otp.length < 6) {
-      document.getElementById('otpErr').style.display = 'block';
-      inputs.forEach(i => { if (!i.value) i.classList.add('err'); });
-      return;
-    }
-
-    const btn = document.getElementById('verifyBtn');
-    btn.innerText = 'Verifying...';
-    btn.disabled  = true;
-
-    // No welcome alert — just navigate directly
-    setTimeout(() => {
-      window.location.href = 'dashboard.html';
-    }, 600);
+    let otp=''; inputs.forEach(i=>{ otp+=i.value; });
+    if(otp.length<6){ document.getElementById('otpErr').style.display='block'; inputs.forEach(i=>{ if(!i.value) i.classList.add('err'); }); return; }
+    const btn=document.getElementById('verifyBtn');
+    btn.innerText='Verifying...'; btn.disabled=true;
+    setTimeout(()=>{ window.location.href='dashboard.html'; },600);
   }
 
   function resendOtp() {
-    document.getElementById('resendMsg').style.display = 'block';
-    setTimeout(() => {
-      document.getElementById('resendMsg').style.display = 'none';
-    }, 3000);
-    inputs.forEach(i => i.value = '');
-    inputs[0].focus();
+    document.getElementById('resendMsg').style.display='block';
+    setTimeout(()=>{ document.getElementById('resendMsg').style.display='none'; },3000);
+    inputs.forEach(i=>i.value=''); inputs[0].focus();
   }
 </script>
 </body>

@@ -12,8 +12,7 @@
 
   .navbar {
     display:flex; justify-content:space-between; align-items:center;
-    padding:20px 30px; background-color:#fffdf7;
-    border-bottom:1px solid #ede9df;
+    padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df;
   }
   .logo { font-size:26px; font-weight:900; color:#00b894; letter-spacing:3px; }
   .btn-login {
@@ -61,7 +60,7 @@
 
 <nav class="navbar">
   <div class="logo">ZIPFIX</div>
-  <button class="btn-login" onclick="window.location.href='customer/login.html'">Login</button>
+  <button class="btn-login" onclick="window.location.href='login.html'">Login</button>
 </nav>
 
 <section class="hero">
@@ -69,14 +68,14 @@
   <h1>Emergency Help<br/><span>In Minutes.</span></h1>
   <p>Plumber, Electrician, Locksmith — verified workers at your doorstep. Any time. Any emergency.</p>
   <div class="hero-btns">
-    <button class="btn-primary" onclick="window.location.href='customer/login.html'">🚀 Book a Service Now</button>
-    <button class="btn-secondary" onclick="window.location.href='customer/register.html'">Create Account</button>
+    <button class="btn-primary" onclick="window.location.href='login.html'">🚀 Book a Service Now</button>
+    <button class="btn-secondary" onclick="window.location.href='register.html'">Create Account</button>
   </div>
 </section>
 
 <script>
   if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
-    window.location.href = 'customer/dashboard.html';
+    window.location.href = 'dashboard.html';
   }
 </script>
 </body>

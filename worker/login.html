@@ -9,66 +9,90 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
   body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .login-box { background-color:#fffdf7; border:1px solid #ede9df; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; }
-  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:5px; text-align:center; }
-  .worker-badge { display:flex; align-items:center; justify-content:center; gap:8px; background-color:#e8f8f4; color:#00b894; padding:6px 15px; border-radius:50px; font-size:13px; font-weight:700; margin:0 auto 35px auto; width:fit-content; border:1px solid #00b89433; }
-  h2 { font-size:22px; font-weight:800; margin-bottom:5px; }
-  .subtitle { font-size:14px; color:#888; margin-bottom:30px; }
-  .input-group { margin-bottom:20px; }
-  .input-group label { display:block; font-size:13px; font-weight:700; color:#888; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
+  .login-box { background-color:#fffdf7; border:1px solid #ede9df; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
+  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:10px; }
+  .tagline { font-size:14px; color:#aaa; margin-bottom:40px; }
+  h2 { font-size:24px; font-weight:800; margin-bottom:10px; color:#1a1a1a; }
+  .subtitle { font-size:14px; color:#888; margin-bottom:20px; }
+  .phone-wrap { margin-bottom:6px; }
   .phone-input { display:flex; align-items:center; background-color:#f2efe8; border-radius:15px; padding:5px 15px; border:2px solid #ede9df; transition:border-color 0.2s; }
   .phone-input:focus-within { border-color:#00b894; }
   .phone-input.err { border-color:#e74c3c !important; }
-  .country-code { font-size:16px; font-weight:700; color:#1a1a1a; padding-right:10px; border-right:1px solid #ccc8bc; margin-right:10px; }
+  .country-code { font-size:16px; font-weight:700; color:#00b894; padding-right:10px; border-right:1px solid #ccc8bc; margin-right:10px; }
   .phone-input input { background:none; border:none; outline:none; color:#1a1a1a; font-size:18px; width:100%; padding:12px 0; }
-  .input-group input[type="text"] { width:100%; padding:15px 20px; background-color:#f2efe8; border:2px solid #ede9df; border-radius:15px; color:#1a1a1a; font-size:16px; outline:none; transition:border-color 0.2s; }
-  .input-group input[type="text"]:focus { border-color:#00b894; }
-  .input-group input[type="text"].err { border-color:#e74c3c; }
-  .field-err { color:#e74c3c; font-size:12px; margin-top:6px; display:none; }
-  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-top:10px; transition:background-color 0.2s; }
+  .field-err { color:#e74c3c; font-size:12px; margin-bottom:14px; display:none; text-align:left; }
+  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; margin-top:10px; transition:background-color 0.2s; }
   .btn-main:hover { background-color:#009e7f; }
-  .btn-main:disabled { background-color:#aaa; cursor:not-allowed; }
-  .register-link { text-align:center; margin-top:20px; font-size:14px; color:#888; }
+  .btn-main:disabled { background-color:#ccc; cursor:not-allowed; }
+  .register-link { font-size:14px; color:#888; margin-bottom:20px; }
   .register-link span { color:#00b894; cursor:pointer; font-weight:700; }
-  .back-link { text-align:center; margin-top:12px; font-size:13px; color:#aaa; cursor:pointer; }
-  .status-msg { border-radius:15px; padding:15px 18px; margin-top:15px; font-size:14px; line-height:1.7; display:none; }
-  .msg-pending  { background:#fffbe6; border:1px solid #f0c040; color:#886600; }
-  .msg-rejected { background:#fff0f0; border:1px solid #e74c3c; color:#c0392b; }
-  .msg-banned   { background:#fff0f0; border:1px solid #e74c3c; color:#c0392b; }
-  .msg-notfound { background:#f5f4ef; border:1px solid #ccc8bc; color:#888; }
+
+  /* Status cards — shown after phone lookup */
+  .status-card { display:none; border-radius:20px; padding:30px 25px; margin-top:10px; text-align:center; }
+  .status-card.pending  { background-color:#fff8e6; border:2px solid #f0c040; }
+  .status-card.rejected { background-color:#fff0f0; border:2px solid #e74c3c; }
+  .status-card.approved { background-color:#e8f8f4; border:2px solid #00b894; }
+  .status-icon { font-size:48px; margin-bottom:12px; }
+  .status-card h3 { font-size:20px; font-weight:900; margin-bottom:8px; }
+  .status-card.pending  h3 { color:#e67e00; }
+  .status-card.rejected h3 { color:#e74c3c; }
+  .status-card.approved h3 { color:#00b894; }
+  .status-card p { font-size:14px; color:#888; line-height:1.6; margin-bottom:15px; }
+  .worker-id-box { background-color:#fffdf7; border-radius:15px; padding:15px 20px; margin-bottom:20px; border:1px solid #ede9df; }
+  .worker-id-box .label { font-size:12px; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .worker-id-box .wid { font-size:26px; font-weight:900; color:#00b894; letter-spacing:3px; }
+  .btn-go { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:17px; font-weight:900; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
+  .btn-go:hover { background-color:#009e7f; }
+  .btn-back { background:none; border:none; color:#888; font-size:14px; cursor:pointer; margin-top:12px; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <div class="login-box">
-  <div class="logo">ZIPFIX</div>
-  <div class="worker-badge">👷 Worker Portal</div>
-  <h2>Welcome back!</h2>
-  <p class="subtitle">Login to start accepting jobs</p>
-
-  <div class="input-group">
-    <label>Phone Number</label>
-    <div class="phone-input" id="phoneWrap">
-      <div class="country-code">+91</div>
-      <input type="number" id="phoneNumber" placeholder="98765 43210" oninput="clearField('phoneWrap','phoneErr')" />
+  <!-- Phone entry section -->
+  <div id="phoneSection">
+    <div class="logo">ZIPFIX</div>
+    <div class="tagline">Worker Portal — Earn Near You</div>
+    <h2>Enter your phone number</h2>
+    <p class="subtitle">We'll check your application status</p>
+    <div class="phone-wrap">
+      <div class="phone-input" id="phoneWrap">
+        <div class="country-code">+91</div>
+        <input type="number" id="phoneNumber" placeholder="98765 43210" maxlength="10" oninput="clearErr()" />
+      </div>
+      <div class="field-err" id="phoneErr">Please enter a valid 10-digit phone number</div>
     </div>
-    <div class="field-err" id="phoneErr">Please enter a valid 10-digit number</div>
+    <button class="btn-main" id="checkBtn" onclick="checkStatus()">Check Status</button>
+    <p class="register-link">New worker? <span onclick="window.location.href='register.html'">Apply Now</span></p>
   </div>
 
-  <div class="input-group">
-    <label>Worker ID</label>
-    <input type="text" id="workerId" placeholder="e.g. ZF-1234" oninput="clearField('workerId','workerIdErr')" />
-    <div class="field-err" id="workerIdErr">Format must be ZF-XXXX</div>
+  <!-- Pending status -->
+  <div class="status-card pending" id="cardPending">
+    <div class="status-icon">⏳</div>
+    <h3>Application Under Review</h3>
+    <p>Your application has been received and is being reviewed by the ZipFix team. You will receive an SMS once a decision is made.</p>
+    <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
 
-  <div class="status-msg msg-pending" id="msgPending">⏳ <strong>Application Under Review</strong><br/>Our team is still verifying your details. <a href="status.html" style="color:#886600;font-weight:700;">Check status →</a></div>
-  <div class="status-msg msg-rejected" id="msgRejected">❌ <strong>Application Rejected</strong><br/>Your application was not approved. Contact help@zipfix.com</div>
-  <div class="status-msg msg-banned" id="msgBanned">🚫 <strong>Account Suspended</strong><br/>Contact help@zipfix.com for support.</div>
-  <div class="status-msg msg-notfound" id="msgNotFound">🤔 No worker found. Check your phone number and Worker ID.</div>
+  <!-- Rejected status -->
+  <div class="status-card rejected" id="cardRejected">
+    <div class="status-icon">❌</div>
+    <h3>Application Not Approved</h3>
+    <p>Unfortunately your application was not approved at this time. Contact <strong>help@zipfix.com</strong> for more details.</p>
+    <button class="btn-back" onclick="resetForm()">← Try a different number</button>
+  </div>
 
-  <button class="btn-main" id="loginBtn" onclick="workerLogin()">Login & Go Online</button>
-
-  <div class="register-link">New worker? <span onclick="window.location.href='register.html'">Apply to join ZipFix</span></div>
-  <div class="back-link" onclick="window.location.href='index.html'">← Back to home</div>
+  <!-- Approved status -->
+  <div class="status-card approved" id="cardApproved">
+    <div class="status-icon">🎉</div>
+    <h3>Application Approved!</h3>
+    <p>Welcome to ZipFix! Here is your Worker ID:</p>
+    <div class="worker-id-box">
+      <div class="label">Your Worker ID</div>
+      <div class="wid" id="workerIdDisplay">ZF-XXXX</div>
+    </div>
+    <button class="btn-go" onclick="goToDashboard()">Go to Dashboard →</button>
+    <br/><button class="btn-back" onclick="resetForm()">← Try a different number</button>
+  </div>
 </div>
 
 <script>
@@ -76,41 +100,80 @@
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) { window.location.href = 'dashboard.html'; }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
-
-  function hideAllMsgs() { ['msgPending','msgRejected','msgBanned','msgNotFound'].forEach(id => document.getElementById(id).style.display = 'none'); }
-  function clearField(elId, errId) { document.getElementById(elId).classList.remove('err'); document.getElementById(errId).style.display = 'none'; hideAllMsgs(); }
-  function showErr(elId, errId) { document.getElementById(elId).classList.add('err'); document.getElementById(errId).style.display = 'block'; }
-
-  async function workerLogin() {
-    const phone    = document.getElementById('phoneNumber').value.trim();
-    const workerId = document.getElementById('workerId').value.trim().toUpperCase();
-    const btn      = document.getElementById('loginBtn');
-    hideAllMsgs();
-    let hasErr = false;
-    if (phone.length < 10) { showErr('phoneWrap','phoneErr'); hasErr = true; }
-    if (!workerId || !workerId.startsWith('ZF-')) { showErr('workerId','workerIdErr'); hasErr = true; }
-    if (hasErr) return;
-
-    btn.innerText = 'Verifying...'; btn.disabled = true;
-    try {
-      const { data, error } = await db.from('workers').select('*').eq('phone','+91'+phone).eq('worker_id',workerId).single();
-      btn.innerText = 'Login & Go Online'; btn.disabled = false;
-      if (error || !data) { document.getElementById('msgNotFound').style.display = 'block'; return; }
-      if (data.status === 'pending')  { document.getElementById('msgPending').style.display  = 'block'; return; }
-      if (data.status === 'rejected') { document.getElementById('msgRejected').style.display = 'block'; return; }
-      if (data.status === 'banned')   { document.getElementById('msgBanned').style.display   = 'block'; return; }
-      localStorage.setItem('workerPhone', phone);
-      localStorage.setItem('workerId',    workerId);
-      localStorage.setItem('workerName',  data.name);
-      localStorage.setItem('workerSkill', data.skill);
-      localStorage.setItem('workerArea',  data.area);
-      localStorage.setItem('workerStatus',data.status);
-      localStorage.setItem('workerDbId',  data.id);
-      window.location.href = 'dashboard.html';
-    } catch(e) { btn.innerText = 'Login & Go Online'; btn.disabled = false; alert('Error: '+e.message); }
+  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
+    window.location.href = 'dashboard.html';
   }
+  if (localStorage.getItem('adminLoggedIn')) {
+    window.location.href = '../admin/index.html';
+  }
+
+  let approvedWorker = null;
+
+  function clearErr() {
+    document.getElementById('phoneWrap').classList.remove('err');
+    document.getElementById('phoneErr').style.display = 'none';
+  }
+
+  async function checkStatus() {
+    const phone = document.getElementById('phoneNumber').value.trim();
+    if (phone.length < 10) {
+      document.getElementById('phoneWrap').classList.add('err');
+      document.getElementById('phoneErr').style.display = 'block';
+      return;
+    }
+    const btn = document.getElementById('checkBtn');
+    btn.innerText = 'Checking...'; btn.disabled = true;
+    try {
+      const { data, error } = await db.from('workers').select('*').eq('phone', '+91'+phone).single();
+      btn.innerText = 'Check Status'; btn.disabled = false;
+      if (error || !data) {
+        document.getElementById('phoneWrap').classList.add('err');
+        document.getElementById('phoneErr').innerText = 'No application found for this number';
+        document.getElementById('phoneErr').style.display = 'block';
+        return;
+      }
+      document.getElementById('phoneSection').style.display = 'none';
+      if (data.status === 'pending') {
+        document.getElementById('cardPending').style.display = 'block';
+      } else if (data.status === 'rejected') {
+        document.getElementById('cardRejected').style.display = 'block';
+      } else if (data.status === 'approved') {
+        approvedWorker = data;
+        document.getElementById('workerIdDisplay').innerText = data.worker_id || 'ZF-0000';
+        document.getElementById('cardApproved').style.display = 'block';
+      }
+    } catch(e) {
+      btn.innerText = 'Check Status'; btn.disabled = false;
+      alert('Error: ' + e.message);
+    }
+  }
+
+  function goToDashboard() {
+    if (!approvedWorker) return;
+    localStorage.setItem('workerName',   approvedWorker.name);
+    localStorage.setItem('workerSkill',  approvedWorker.skill);
+    localStorage.setItem('workerArea',   approvedWorker.area);
+    localStorage.setItem('workerStatus', approvedWorker.status);
+    localStorage.setItem('workerId',     approvedWorker.worker_id);
+    localStorage.setItem('workerPhone',  approvedWorker.phone);
+    localStorage.setItem('workerDbId',   approvedWorker.id);
+    window.location.href = 'dashboard.html';
+  }
+
+  function resetForm() {
+    approvedWorker = null;
+    document.getElementById('phoneSection').style.display = 'block';
+    document.getElementById('cardPending').style.display  = 'none';
+    document.getElementById('cardRejected').style.display = 'none';
+    document.getElementById('cardApproved').style.display = 'none';
+    document.getElementById('phoneNumber').value = '';
+    clearErr();
+    document.getElementById('phoneErr').innerText = 'Please enter a valid 10-digit phone number';
+  }
+
+  document.getElementById('phoneNumber').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkStatus();
+  });
 </script>
 </body>
 </html>

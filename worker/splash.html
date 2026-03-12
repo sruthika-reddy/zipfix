@@ -8,29 +8,29 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#111; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-  .splash-logo { font-size:48px; font-weight:900; letter-spacing:6px; color:#00b894; opacity:0; transform:scale(0.8); animation:popIn 0.7s ease forwards; }
-  .splash-tag { font-size:14px; color:#888; letter-spacing:2px; margin-top:12px; opacity:0; animation:fadeUp 0.6s ease 0.5s forwards; }
-  .splash-sub { font-size:12px; color:#555; letter-spacing:1px; margin-top:8px; opacity:0; animation:fadeUp 0.6s ease 0.7s forwards; }
-  .splash-dot { width:8px; height:8px; background:#00b894; border-radius:50%; margin-top:50px; opacity:0.2; animation:blink 0.9s ease 0.9s infinite; }
-  @keyframes popIn { 0%{opacity:0;transform:scale(0.7)} 60%{opacity:1;transform:scale(1.06)} 100%{opacity:1;transform:scale(1)} }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  @keyframes blink { 0%,100%{opacity:0.2} 50%{opacity:1} }
+  body { background-color:#111; color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+  .logo { font-size:52px; font-weight:900; color:#00b894; letter-spacing:6px; animation:fadeIn 0.8s ease; }
+  .portal-badge { display:inline-flex; align-items:center; gap:8px; background-color:#1a1a1a; border:1px solid #00b89444; border-radius:50px; padding:8px 18px; margin-top:14px; font-size:13px; font-weight:700; color:#00b894; animation:fadeIn 1.2s ease; }
+  .tagline { font-size:15px; color:#aaa; margin-top:10px; letter-spacing:1px; animation:fadeIn 1.4s ease; }
+  .loader { margin-top:50px; width:40px; height:4px; background:#333; border-radius:10px; overflow:hidden; animation:fadeIn 1.5s ease; }
+  .loader-fill { height:100%; background:#00b894; border-radius:10px; animation:load 2s ease forwards; }
+  @keyframes load { 0%{width:0%} 100%{width:100%} }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 </style>
-
-<div class="splash-logo">ZIPFIX</div>
-<div class="splash-tag">Worker Portal</div>
-<div class="splash-sub">Earn Money Near You</div>
-<div class="splash-dot"></div>
-
+<div class="logo">ZIPFIX</div>
+<div class="portal-badge">👷 Worker Portal</div>
+<div class="tagline">Earn Money Near You</div>
+<div class="loader"><div class="loader-fill"></div></div>
 <script>
-  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
-    window.location.href = 'dashboard.html';
-  } else {
-    setTimeout(function() {
-      window.location.href = 'index.html';
-    }, 2200);
-  }
+  setTimeout(function() {
+    if (localStorage.getItem('adminLoggedIn')) {
+      window.location.href = '../admin/index.html';
+    } else if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
+      window.location.href = 'dashboard.html';
+    } else {
+      window.location.href = 'landing.html';
+    }
+  }, 2200);
 </script>
 </body>
 </html>

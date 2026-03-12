@@ -9,33 +9,33 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
   body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
-  .back-btn { font-size:22px; cursor:pointer; color:#00b894; }
+  .navbar { display:flex; align-items:center; gap:15px; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; }
+  .back { font-size:22px; color:#00b894; cursor:pointer; }
   .navbar h3 { font-size:20px; font-weight:800; }
   .content { padding:25px; }
   .total-card { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border:1px solid #00b89433; border-radius:25px; padding:30px; text-align:center; margin-bottom:20px; }
-  .total-card h4 { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
-  .total-amount { font-size:52px; font-weight:900; color:#00b894; margin-bottom:5px; }
+  .total-card .lbl { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+  .total-amt { font-size:52px; font-weight:900; color:#00b894; margin-bottom:5px; }
   .total-note { font-size:13px; color:#888; }
   .period-tabs { display:flex; gap:10px; margin-bottom:20px; }
   .tab { flex:1; padding:12px; background-color:#fffdf7; border:2px solid #ede9df; border-radius:12px; text-align:center; cursor:pointer; font-size:14px; font-weight:700; color:#888; transition:all 0.2s; }
   .tab.active { border-color:#00b894; color:#00b894; background-color:#e8f8f4; }
-  .stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:20px; }
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
   .stat-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:20px; text-align:center; }
   .stat-card h3 { font-size:24px; font-weight:900; color:#00b894; }
-  .stat-card p { font-size:12px; color:#888; margin-top:5px; }
+  .stat-card p  { font-size:12px; color:#888; margin-top:5px; }
   .section-title { font-size:17px; font-weight:800; margin-bottom:15px; }
   .job-item { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
   .job-left h4 { font-size:16px; font-weight:800; }
-  .job-left p { font-size:13px; color:#888; margin-top:4px; }
+  .job-left p  { font-size:13px; color:#888; margin-top:4px; }
   .job-right h4 { font-size:18px; font-weight:900; color:#00b894; text-align:right; }
-  .job-right p { font-size:12px; color:#00b894; margin-top:4px; text-align:right; }
-  .btn-withdraw { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:10px; margin-bottom:40px; transition:background-color 0.2s; }
-  .btn-withdraw:hover { background-color:#009e7f; }
+  .job-right p  { font-size:12px; color:#00b894; margin-top:4px; text-align:right; }
   .empty-state { text-align:center; padding:40px 20px; color:#aaa; font-size:14px; }
   .loading { text-align:center; padding:30px; color:#aaa; font-size:14px; }
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #ede9df; }
-  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:4px; }
+  .btn-withdraw { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin:10px 0 40px; transition:background-color 0.2s; }
+  .btn-withdraw:hover { background-color:#009e7f; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0 20px; border-top:1px solid #ede9df; }
+  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:3px; }
   .nav-item.active { color:#00b894; }
   .nav-icon { font-size:22px; }
   .spacer { height:80px; }
@@ -43,40 +43,40 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <nav class="navbar">
-  <div class="back-btn" onclick="window.location.href='dashboard.html'">←</div>
+  <div class="back" onclick="window.location.href='dashboard.html'">←</div>
   <h3>My Earnings 💰</h3>
 </nav>
 
 <div class="content">
   <div class="total-card">
-    <h4>Total Earnings This Month</h4>
-    <div class="total-amount" id="monthTotal">₹—</div>
+    <div class="lbl">Total Earnings — This Month</div>
+    <div class="total-amt" id="monthTotal">₹—</div>
     <div class="total-note" id="monthNote">Loading...</div>
   </div>
 
   <div class="period-tabs">
-    <div class="tab active" onclick="selectPeriod('today',this)">Today</div>
-    <div class="tab"        onclick="selectPeriod('week',this)">This Week</div>
-    <div class="tab"        onclick="selectPeriod('month',this)">This Month</div>
+    <div class="tab active" onclick="setPeriod('today',this)">Today</div>
+    <div class="tab"        onclick="setPeriod('week',this)">This Week</div>
+    <div class="tab"        onclick="setPeriod('month',this)">This Month</div>
   </div>
 
   <div class="stats-grid">
-    <div class="stat-card"><h3 id="periodEarnings">₹—</h3><p>Earnings</p></div>
-    <div class="stat-card"><h3 id="periodJobs">—</h3><p>Jobs Done</p></div>
+    <div class="stat-card"><h3 id="pEarnings">₹—</h3><p>Earnings</p></div>
+    <div class="stat-card"><h3 id="pJobs">—</h3><p>Jobs Done</p></div>
     <div class="stat-card"><h3>4.9⭐</h3><p>Avg Rating</p></div>
-    <div class="stat-card"><h3 id="completionRate">—%</h3><p>Completion Rate</p></div>
+    <div class="stat-card"><h3>98%</h3><p>Completion</p></div>
   </div>
 
   <div class="section-title">Recent Jobs</div>
-  <div id="jobsList"><div class="loading">⏳ Loading job history...</div></div>
-  <button class="btn-withdraw" onclick="withdrawEarnings()">💸 Withdraw Earnings</button>
+  <div id="jobList"><div class="loading">⏳ Loading...</div></div>
+  <button class="btn-withdraw" onclick="withdraw()">💸 Withdraw Earnings</button>
+  <div class="spacer"></div>
 </div>
 
-<div class="spacer"></div>
 <nav class="bottom-nav">
   <div class="nav-item" onclick="window.location.href='dashboard.html'"><div class="nav-icon">🏠</div><div>Home</div></div>
   <div class="nav-item active"><div class="nav-icon">💰</div><div>Earnings</div></div>
-  <div class="nav-item" onclick="window.location.href='profile.html'"><div class="nav-icon">👤</div><div>Profile</div></div>
+  <div class="nav-item" onclick="logout()"><div class="nav-icon">🚪</div><div>Logout</div></div>
 </nav>
 
 <script>
@@ -85,67 +85,67 @@
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const workerId = localStorage.getItem('workerId');
-  if (!workerId||!localStorage.getItem('workerName')) { window.location.href='login.html'; }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href='../admin/index.html'; }
+  if (!workerId || !localStorage.getItem('workerName')) { window.location.href = 'login.html'; }
+  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-  const skillIcons = {'Plumber':'🔧','Electrician':'⚡','Locksmith':'🔑','AC Repair':'❄️','Carpenter':'🪛','Painter':'🖌️'};
-  let allJobs=[], currentPeriod='today';
+  const skillIcons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️' };
+  let allJobs = [];
 
-  function getDateBounds(period) {
-    const now=new Date(); let from;
-    if(period==='today') from=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    else if(period==='week'){ from=new Date(now); from.setDate(now.getDate()-7); }
-    else from=new Date(now.getFullYear(),now.getMonth(),1);
-    return from.toISOString();
+  function dateBound(period) {
+    const n = new Date();
+    if (period==='today') return new Date(n.getFullYear(),n.getMonth(),n.getDate()).toISOString();
+    if (period==='week')  { const d=new Date(n); d.setDate(n.getDate()-7); return d.toISOString(); }
+    return new Date(n.getFullYear(),n.getMonth(),1).toISOString();
   }
 
-  async function loadAllJobs() {
+  async function loadJobs() {
     try {
-      const { data, error } = await db.from('jobs').select('*').eq('worker_id',workerId).eq('status','completed').order('created_at',{ascending:false}).limit(50);
-      if(error) throw error;
-      allJobs=data||[];
+      const { data } = await db.from('jobs').select('*').eq('worker_id',workerId).eq('status','completed').order('created_at',{ascending:false}).limit(50);
+      allJobs = data || [];
       renderPeriod('today');
-      loadMonthTotal();
-    } catch(e) { document.getElementById('jobsList').innerHTML='<div class="empty-state">⚠️ Error: '+e.message+'</div>'; }
+      // month total
+      const from = dateBound('month');
+      const mJobs = allJobs.filter(j=>j.created_at>=from);
+      document.getElementById('monthTotal').innerText = '₹' + mJobs.reduce((s,j)=>s+(j.amount||0),0).toLocaleString('en-IN');
+      document.getElementById('monthNote').innerText  = mJobs.length + ' jobs this month';
+    } catch(e) { document.getElementById('jobList').innerHTML = '<div class="empty-state">⚠️ Could not load jobs</div>'; }
   }
 
-  function loadMonthTotal() {
-    const from=new Date(new Date().getFullYear(),new Date().getMonth(),1).toISOString();
-    const jobs=allJobs.filter(j=>j.created_at>=from);
-    const total=jobs.reduce((s,j)=>s+(j.amount||0),0);
-    document.getElementById('monthTotal').innerText='₹'+total.toLocaleString('en-IN');
-    document.getElementById('monthNote').innerText=jobs.length+' jobs this month';
-  }
-
-  function selectPeriod(period, tab) {
+  function setPeriod(period, tab) {
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     tab.classList.add('active');
-    currentPeriod=period; renderPeriod(period);
+    renderPeriod(period);
   }
 
   function renderPeriod(period) {
-    const from=getDateBounds(period);
-    const jobs=allJobs.filter(j=>j.created_at>=from);
-    const total=jobs.reduce((s,j)=>s+(j.amount||0),0);
-    document.getElementById('periodEarnings').innerText='₹'+total.toLocaleString('en-IN');
-    document.getElementById('periodJobs').innerText=jobs.length;
-    document.getElementById('completionRate').innerText=jobs.length>0?'98%':'—%';
-    const container=document.getElementById('jobsList');
-    if(jobs.length===0){ container.innerHTML='<div class="empty-state">No jobs in this period yet</div>'; return; }
-    container.innerHTML=jobs.slice(0,20).map(j=>{
-      const icon=skillIcons[j.service]||'🔧';
-      const date=j.created_at?new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
-      return `<div class="job-item"><div class="job-left"><h4>${icon} ${j.service||'—'}</h4><p>${date} • ${j.customer_address||'—'}</p></div><div class="job-right"><h4>₹${j.amount||0}</h4><p>✅ Paid</p></div></div>`;
+    const from = dateBound(period);
+    const jobs = allJobs.filter(j => j.created_at >= from);
+    const total = jobs.reduce((s,j)=>s+(j.amount||0),0);
+    document.getElementById('pEarnings').innerText = '₹' + total.toLocaleString('en-IN');
+    document.getElementById('pJobs').innerText     = jobs.length;
+    const list = document.getElementById('jobList');
+    if (!jobs.length) { list.innerHTML = '<div class="empty-state">No jobs in this period yet</div>'; return; }
+    list.innerHTML = jobs.slice(0,20).map(j => {
+      const icon = skillIcons[j.service] || '🔧';
+      const date = j.created_at ? new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+      return `<div class="job-item"><div class="job-left"><h4>${icon} ${j.service||'—'}</h4><p>${date}</p></div><div class="job-right"><h4>₹${j.amount||0}</h4><p>✅ Paid</p></div></div>`;
     }).join('');
   }
 
-  function withdrawEarnings() {
-    const from=getDateBounds('today');
-    const total=allJobs.filter(j=>j.created_at>=from).reduce((s,j)=>s+(j.amount||0),0);
-    alert('💸 Withdrawal Submitted!\n₹'+total+' will be credited within 24 hours.\n\n(Real bank transfer coming soon)');
+  function withdraw() {
+    const from = dateBound('today');
+    const total = allJobs.filter(j=>j.created_at>=from).reduce((s,j)=>s+(j.amount||0),0);
+    alert('💸 Withdrawal Submitted!\n₹'+total+' will be credited within 24 hours.\n\n(Bank transfer coming soon)');
   }
 
-  loadAllJobs();
+  function logout() {
+    if (confirm('Logout?')) {
+      ['workerName','workerSkill','workerArea','workerStatus','workerId','workerPhone','workerDbId'].forEach(k=>localStorage.removeItem(k));
+      window.location.href = 'landing.html';
+    }
+  }
+
+  loadJobs();
 </script>
 </body>
 </html>

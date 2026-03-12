@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZipFix Admin — Customers</title>
+</head>
+<body>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; position:sticky; top:0; z-index:100; }
+  .nav-left { display:flex; align-items:center; gap:14px; }
+  .back-btn { font-size:22px; color:#00b894; cursor:pointer; font-weight:700; text-decoration:none; }
+  .nav-brand .logo { font-size:20px; font-weight:900; color:#00b894; letter-spacing:2px; }
+  .nav-brand .tag  { font-size:11px; color:#aaa; margin-top:1px; }
+  .logout-btn { padding:10px 20px; background-color:#f2efe8; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
+  .logout-btn:hover { background-color:#e74c3c; color:#fff; }
+
+  .content { padding:25px; }
+
+  /* Search */
+  .search-bar { display:flex; align-items:center; gap:12px; background-color:#fffdf7; border:2px solid #ede9df; border-radius:15px; padding:12px 18px; margin-bottom:20px; transition:border-color 0.2s; }
+  .search-bar:focus-within { border-color:#00b894; }
+  .search-bar span { font-size:18px; }
+  .search-bar input { background:none; border:none; outline:none; color:#1a1a1a; font-size:15px; width:100%; }
+
+  /* Stats row */
+  .stats-row { display:flex; gap:12px; margin-bottom:20px; }
+  .stat-mini { flex:1; background-color:#fffdf7; border:1px solid #ede9df; border-radius:16px; padding:16px 14px; text-align:center; }
+  .stat-mini.green { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border-color:#00b89433; }
+  .stat-mini h3 { font-size:24px; font-weight:900; color:#00b894; }
+  .stat-mini p  { font-size:11px; color:#888; margin-top:4px; }
+
+  /* Customer card */
+  .customer-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; align-items:center; gap:15px; }
+  .cc-avatar { width:48px; height:48px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; color:#fff; flex-shrink:0; }
+  .cc-info { flex:1; }
+  .cc-info h4 { font-size:16px; font-weight:800; }
+  .cc-info .cc-phone { font-size:13px; color:#00b894; font-weight:700; margin-top:3px; }
+  .cc-info .cc-area  { font-size:12px; color:#888; margin-top:2px; }
+  .cc-info .cc-email { font-size:12px; color:#aaa; margin-top:2px; }
+  .cc-right { text-align:right; }
+  .cc-date  { font-size:11px; color:#aaa; }
+  .cc-call  { display:inline-flex; align-items:center; gap:5px; background-color:#e8f8f4; color:#00b894; padding:6px 12px; border-radius:50px; font-size:12px; font-weight:800; cursor:pointer; margin-top:6px; border:none; }
+
+  .empty-state { text-align:center; padding:50px 20px; color:#aaa; }
+  .empty-state .icon { font-size:48px; margin-bottom:12px; }
+  .loading-note { text-align:center; padding:40px; color:#aaa; font-size:14px; }
+  .spacer { height:30px; }
+
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background-color:#00b894; color:#fff; padding:14px 24px; border-radius:50px; font-size:14px; font-weight:700; z-index:9999; display:none; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="toast" id="toast"></div>
+
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="back-btn" href="index.html">←</a>
+    <div class="nav-brand">
+      <div class="logo">ZIPFIX</div>
+      <div class="tag">Customers</div>
+    </div>
+  </div>
+  <button class="logout-btn" onclick="adminLogout()">Logout</button>
+</nav>
+
+<div class="content">
+
+  <div class="stats-row">
+    <div class="stat-mini green">
+      <h3 id="totalUsers">—</h3>
+      <p>Total Users</p>
+    </div>
+    <div class="stat-mini">
+      <h3 id="todayUsers">—</h3>
+      <p>Joined Today</p>
+    </div>
+    <div class="stat-mini">
+      <h3 id="weekUsers">—</h3>
+      <p>This Week</p>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <span>🔍</span>
+    <input type="text" id="searchInput" placeholder="Search by name, phone or area..." oninput="filterCustomers()" />
+  </div>
+
+  <div id="customerList"><div class="loading-note">⏳ Loading customers...</div></div>
+  <div class="spacer"></div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const SESSION_MS = 8 * 60 * 60 * 1000;
+  if (!localStorage.getItem('adminLoggedIn')) { window.location.href = 'login.html'; }
+  if (Date.now() - parseInt(localStorage.getItem('adminLoginTime')||0) > SESSION_MS) {
+    localStorage.removeItem('adminLoggedIn'); window.location.href = 'login.html';
+  }
+
+  let allCustomers = [];
+
+  async function loadCustomers() {
+    try {
+      const { data, error } = await db.from('users').select('*').order('created_at', { ascending:false });
+      if (error) throw error;
+      allCustomers = data || [];
+
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+      const weekStart  = todayStart - 6 * 86400000;
+      const today = allCustomers.filter(u => new Date(u.created_at).getTime() >= todayStart).length;
+      const week  = allCustomers.filter(u => new Date(u.created_at).getTime() >= weekStart).length;
+      document.getElementById('totalUsers').innerText = allCustomers.length;
+      document.getElementById('todayUsers').innerText = today;
+      document.getElementById('weekUsers').innerText  = week;
+
+      renderAll(allCustomers);
+    } catch (e) {
+      document.getElementById('customerList').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>' + e.message + '</p></div>';
+    }
+  }
+
+  function renderAll(list) {
+    const el = document.getElementById('customerList');
+    if (!list.length) {
+      el.innerHTML = '<div class="empty-state"><div class="icon">👤</div><p>No customers found</p></div>';
+      return;
+    }
+    el.innerHTML = list.map(u => buildCard(u)).join('');
+  }
+
+  function buildCard(u) {
+    const init  = (u.name||'?').charAt(0).toUpperCase();
+    const date  = u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '—';
+    const phone = (u.phone||'').replace('+91','');
+    return `<div class="customer-card">
+      <div class="cc-avatar">${init}</div>
+      <div class="cc-info">
+        <h4>${u.name||'—'}</h4>
+        <div class="cc-phone">📞 ${u.phone||'—'}</div>
+        <div class="cc-area">📍 ${u.area||'—'}</div>
+        <div class="cc-email">✉️ ${u.email||'—'}</div>
+      </div>
+      <div class="cc-right">
+        <div class="cc-date">Joined ${date}</div>
+        ${phone ? `<button class="cc-call" onclick="window.location.href='tel:${u.phone}'">📞 Call</button>` : ''}
+      </div>
+    </div>`;
+  }
+
+  function filterCustomers() {
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (!q) { renderAll(allCustomers); return; }
+    const filtered = allCustomers.filter(u =>
+      (u.name||'').toLowerCase().includes(q) ||
+      (u.phone||'').includes(q) ||
+      (u.area||'').toLowerCase().includes(q) ||
+      (u.email||'').toLowerCase().includes(q)
+    );
+    renderAll(filtered);
+  }
+
+  function adminLogout() {
+    if (confirm('Logout?')) {
+      localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('adminLoginTime');
+      window.location.href = 'login.html';
+    }
+  }
+
+  loadCustomers();
+</script>
+</body>
+</html>

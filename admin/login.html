@@ -3,135 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix Admin</title>
+  <title>ZipFix Admin — Login</title>
 </head>
 <body>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-  body { background-color: #050505; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-  .login-box { background-color: #111111; border-radius: 30px; padding: 50px 40px; width: 100%; max-width: 420px; }
-  .logo { font-size: 28px; font-weight: 900; color: #ff3b3b; letter-spacing: 3px; margin-bottom: 5px; text-align: center; }
-  .admin-badge { display: flex; align-items: center; justify-content: center; gap: 8px; background-color: #2a0000; color: #ff3b3b; padding: 6px 15px; border-radius: 50px; font-size: 13px; font-weight: 700; margin: 0 auto 35px auto; width: fit-content; }
-  h2 { font-size: 22px; font-weight: 800; margin-bottom: 5px; }
-  .subtitle { font-size: 14px; color: #aaaaaa; margin-bottom: 30px; }
-  .input-group { margin-bottom: 20px; }
-  .input-group label { display: block; font-size: 13px; font-weight: 700; color: #aaaaaa; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-  .input-group input { width: 100%; padding: 15px 20px; background-color: #1a1a1a; border: 2px solid #222; border-radius: 15px; color: white; font-size: 16px; outline: none; }
-  .input-group input:focus { border-color: #ff3b3b; }
-  .btn-main { width: 100%; padding: 18px; background-color: #ff3b3b; color: white; font-size: 18px; font-weight: 800; border: none; border-radius: 15px; cursor: pointer; margin-top: 10px; }
-  .btn-main:hover { background-color: #cc2222; }
-  .error-msg { text-align: center; margin-top: 15px; font-size: 13px; color: #ff3b3b; display: none; }
-  .lockout-msg { text-align: center; margin-top: 15px; font-size: 13px; color: #ffcc00; display: none; }
-  .warning { background-color: #1a0a00; border: 1px solid #ff8c00; border-radius: 12px; padding: 12px 15px; margin-bottom: 25px; font-size: 13px; color: #ff8c00; text-align: center; }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .login-box { background-color:#fffdf7; border:1px solid #ede9df; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
+  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:8px; }
+  .admin-badge { display:inline-flex; align-items:center; gap:8px; background-color:#e8f8f4; border:1px solid #00b89444; border-radius:50px; padding:8px 18px; margin-bottom:35px; font-size:13px; font-weight:700; color:#00b894; }
+  h2 { font-size:24px; font-weight:800; margin-bottom:8px; color:#1a1a1a; }
+  .subtitle { font-size:14px; color:#888; margin-bottom:30px; }
+  .input-group { margin-bottom:16px; text-align:left; }
+  .input-group label { display:block; font-size:12px; font-weight:700; color:#888; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
+  .input-group input { width:100%; padding:15px 20px; background-color:#f2efe8; border:2px solid #ede9df; border-radius:15px; color:#1a1a1a; font-size:16px; outline:none; transition:border-color 0.2s; }
+  .input-group input:focus { border-color:#00b894; }
+  .input-group input.err { border-color:#e74c3c; }
+  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-top:10px; transition:background-color 0.2s; }
+  .btn-main:hover { background-color:#009e7f; }
+  .btn-main:disabled { background-color:#ccc8bc; color:#aaa; cursor:not-allowed; }
+  .error-msg { background-color:#fff0ee; border:1px solid #e74c3c55; color:#e74c3c; border-radius:12px; padding:14px 16px; font-size:14px; margin-top:15px; display:none; }
+  .lockout-msg { background-color:#fff8e6; border:1px solid #f39c1255; color:#e67e00; border-radius:12px; padding:14px 16px; font-size:14px; margin-top:15px; display:none; }
+  .attempts-note { font-size:12px; color:#aaa; margin-top:12px; }
+  .security-note { font-size:12px; color:#ccc8bc; margin-top:20px; }
 </style>
 
 <div class="login-box">
   <div class="logo">ZIPFIX</div>
-  <div class="admin-badge">⚡ Admin Portal</div>
-
+  <div class="admin-badge">🔐 Admin Portal</div>
   <h2>Admin Login</h2>
-  <p class="subtitle">Restricted access — authorized personnel only</p>
-
-  <div class="warning">⚠️ All login attempts are monitored and logged</div>
+  <p class="subtitle">Restricted access — authorised personnel only</p>
 
   <div class="input-group">
-    <label>Admin Username</label>
-    <input type="text" id="username" placeholder="Enter username" autocomplete="off" />
+    <label>Username</label>
+    <input type="text" id="username" placeholder="Enter admin username" oninput="clearErr()" autocomplete="off" />
   </div>
-
   <div class="input-group">
     <label>Password</label>
-    <input type="password" id="password" placeholder="Enter password" />
+    <input type="password" id="password" placeholder="Enter password" oninput="clearErr()" />
   </div>
 
-  <button class="btn-main" id="loginBtn" onclick="adminLogin()">Login to Admin Panel</button>
-
-  <div class="error-msg" id="errorMsg">❌ Invalid credentials. Access denied.</div>
-  <div class="lockout-msg" id="lockoutMsg">🔒 Too many failed attempts. Try again in 5 minutes.</div>
+  <button class="btn-main" id="loginBtn" onclick="doLogin()">🔐 Login to Admin Panel</button>
+  <div class="error-msg"   id="errorMsg"></div>
+  <div class="lockout-msg" id="lockoutMsg"></div>
+  <div class="attempts-note" id="attemptsNote"></div>
+  <div class="security-note">🔒 Not linked or indexed publicly</div>
 </div>
 
 <script>
-  // If already logged in as admin → go directly to dashboard
-  if (localStorage.getItem('adminLoggedIn') === 'true') {
+  const ADMIN_USER   = 'zipfix_admin';
+  const ADMIN_PASS   = 'ZipFix@2026#Admin';
+  const MAX_ATTEMPTS = 5;
+  const LOCKOUT_MS   = 5 * 60 * 1000;
+  const SESSION_MS   = 8 * 60 * 60 * 1000;
+
+  if (localStorage.getItem('adminLoggedIn') && (Date.now() - parseInt(localStorage.getItem('adminLoginTime')||0) < SESSION_MS)) {
     window.location.href = 'index.html';
   }
 
-  // If logged in as customer → send them back
-  if (localStorage.getItem('phoneNumber') && !localStorage.getItem('adminLoggedIn')) {
-    window.location.href = '../customer/dashboard.html';
-  }
-
-  // If logged in as worker → send them back
-  if (localStorage.getItem('workerId') && !localStorage.getItem('adminLoggedIn')) {
-    window.location.href = '../worker/dashboard.html';
-  }
-
-  // Lockout check on page load
   checkLockout();
 
   function checkLockout() {
-    const lockoutUntil = parseInt(localStorage.getItem('adminLockoutUntil') || '0');
-    if (Date.now() < lockoutUntil) {
-      const mins = Math.ceil((lockoutUntil - Date.now()) / 60000);
+    const until = parseInt(localStorage.getItem('adminLockoutUntil') || '0');
+    if (Date.now() < until) {
+      const mins = Math.ceil((until - Date.now()) / 60000);
+      document.getElementById('lockoutMsg').innerText = '🔒 Too many failed attempts. Try again in ' + mins + ' min.';
       document.getElementById('lockoutMsg').style.display = 'block';
-      document.getElementById('lockoutMsg').innerText = `🔒 Too many failed attempts. Try again in ${mins} minute(s).`;
       document.getElementById('loginBtn').disabled = true;
-      document.getElementById('loginBtn').style.opacity = '0.5';
-      return true;
+      setTimeout(checkLockout, 10000);
+    } else {
+      document.getElementById('lockoutMsg').style.display = 'none';
+      document.getElementById('loginBtn').disabled = false;
     }
-    return false;
   }
 
-  function adminLogin() {
-    if (checkLockout()) return;
+  function clearErr() {
+    document.getElementById('errorMsg').style.display = 'none';
+    document.getElementById('attemptsNote').innerText = '';
+    document.getElementById('username').classList.remove('err');
+    document.getElementById('password').classList.remove('err');
+  }
 
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if (!username || !password) {
-      document.getElementById('errorMsg').innerText = '⚠️ Please enter username and password.';
-      document.getElementById('errorMsg').style.display = 'block';
-      return;
-    }
-
-    // Admin credentials — change these to your own!
-    const ADMIN_USERNAME = 'zipfix_admin';
-    const ADMIN_PASSWORD = 'ZipFix@2026#Admin';
-
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-      // Success — clear failed attempts
+  function doLogin() {
+    const until = parseInt(localStorage.getItem('adminLockoutUntil') || '0');
+    if (Date.now() < until) { checkLockout(); return; }
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
+    if (!u) { document.getElementById('username').classList.add('err'); return; }
+    if (!p) { document.getElementById('password').classList.add('err'); return; }
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+      localStorage.setItem('adminLoggedIn', 'true');
+      localStorage.setItem('adminLoginTime', Date.now());
       localStorage.removeItem('adminFailedAttempts');
       localStorage.removeItem('adminLockoutUntil');
-      localStorage.setItem('adminLoggedIn', 'true');
-      localStorage.setItem('adminLoginTime', Date.now().toString());
       window.location.href = 'index.html';
     } else {
-      // Failed attempt
-      let attempts = parseInt(localStorage.getItem('adminFailedAttempts') || '0') + 1;
-      localStorage.setItem('adminFailedAttempts', attempts.toString());
-
-      if (attempts >= 5) {
-        // Lock for 5 minutes
-        localStorage.setItem('adminLockoutUntil', (Date.now() + 5 * 60 * 1000).toString());
+      let fails = parseInt(localStorage.getItem('adminFailedAttempts') || '0') + 1;
+      localStorage.setItem('adminFailedAttempts', fails);
+      if (fails >= MAX_ATTEMPTS) {
+        localStorage.setItem('adminLockoutUntil', Date.now() + LOCKOUT_MS);
         localStorage.setItem('adminFailedAttempts', '0');
-        document.getElementById('lockoutMsg').style.display = 'block';
-        document.getElementById('errorMsg').style.display = 'none';
-        document.getElementById('loginBtn').disabled = true;
-        document.getElementById('loginBtn').style.opacity = '0.5';
+        checkLockout();
       } else {
-        const remaining = 5 - attempts;
-        document.getElementById('errorMsg').innerText = `❌ Invalid credentials. ${remaining} attempt(s) remaining before lockout.`;
+        document.getElementById('errorMsg').innerText = '❌ Invalid username or password.';
         document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('attemptsNote').innerText = (MAX_ATTEMPTS - fails) + ' attempt(s) left before 5-min lockout.';
+        document.getElementById('username').classList.add('err');
+        document.getElementById('password').classList.add('err');
+        document.getElementById('password').value = '';
       }
-
-      document.getElementById('password').value = '';
     }
   }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') adminLogin();
-  });
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 </script>
-
 </body>
 </html>

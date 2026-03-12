@@ -7,379 +7,297 @@
 </head>
 <body>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
 
-  body {
-    background-color: #050505;
-    color: white;
-    min-height: 100vh;
-  }
+  /* Navbar */
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; position:sticky; top:0; z-index:100; }
+  .nav-left { display:flex; align-items:center; gap:14px; }
+  .back-btn { font-size:22px; color:#00b894; cursor:pointer; text-decoration:none; font-weight:700; }
+  .nav-brand .logo { font-size:20px; font-weight:900; color:#00b894; letter-spacing:2px; }
+  .nav-brand .tag  { font-size:11px; color:#aaa; margin-top:1px; }
+  .logout-btn { padding:10px 20px; background-color:#f2efe8; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
+  .logout-btn:hover { background-color:#e74c3c; color:#fff; }
 
-  .navbar {
-    display: flex;
-    align-items: center;
-    padding: 20px 25px;
-    background-color: #111111;
-    border-bottom: 2px solid #ff3b3b;
-    gap: 15px;
-  }
+  .content { padding:25px; }
 
-  .back-btn {
-    font-size: 22px;
-    cursor: pointer;
-    color: #ff3b3b;
-  }
+  /* Tabs */
+  .tabs { display:flex; gap:10px; margin-bottom:20px; overflow-x:auto; }
+  .tab { flex:1; min-width:90px; padding:13px 8px; background-color:#fffdf7; border:2px solid #ede9df; border-radius:15px; text-align:center; cursor:pointer; font-size:13px; font-weight:800; color:#888; transition:all 0.2s; white-space:nowrap; }
+  .tab.active { border-color:#00b894; color:#00b894; background-color:#e8f8f4; }
+  .tab-count { display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; border-radius:50px; padding:0 5px; font-size:11px; font-weight:900; margin-left:5px; background-color:#00b894; color:#fff; }
+  .tab-count.orange { background-color:#e67e00; }
+  .tab-count.red    { background-color:#e74c3c; }
 
-  .navbar h3 {
-    font-size: 20px;
-    font-weight: 800;
-  }
+  /* Worker cards */
+  .worker-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px; margin-bottom:14px; }
+  .wc-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+  .wc-avatar { width:50px; height:50px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; color:#fff; flex-shrink:0; }
+  .wc-info { flex:1; margin-left:12px; }
+  .wc-info h4 { font-size:17px; font-weight:800; }
+  .wc-info .skill { font-size:13px; color:#00b894; font-weight:700; margin-top:3px; }
+  .wc-info .area  { font-size:12px; color:#888; margin-top:2px; }
+  .wc-status { padding:6px 14px; border-radius:50px; font-size:12px; font-weight:800; flex-shrink:0; }
+  .ws-pending  { background:#fff8e6; color:#e67e00; }
+  .ws-approved { background:#e8f8f4; color:#00b894; }
+  .ws-rejected { background:#fff0ee; color:#e74c3c; }
 
-  .content {
-    padding: 25px;
-  }
+  .wc-details { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .detail-item { font-size:12px; color:#888; }
+  .detail-item strong { display:block; font-size:14px; color:#1a1a1a; font-weight:700; margin-top:2px; }
 
-  .filter-tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    overflow-x: auto;
-    padding-bottom: 5px;
-  }
+  /* Worker ID row */
+  .wid-row { display:flex; align-items:center; gap:10px; background-color:#f2efe8; border-radius:14px; padding:12px 15px; margin-bottom:14px; }
+  .wid-label { font-size:12px; color:#888; font-weight:700; white-space:nowrap; }
+  .wid-input { flex:1; background:none; border:none; outline:none; font-size:16px; font-weight:900; color:#00b894; font-family:'Segoe UI',sans-serif; }
+  .wid-refresh { background:none; border:none; font-size:18px; cursor:pointer; padding:0 4px; }
 
-  .tab {
-    padding: 10px 20px;
-    background-color: #111111;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #aaaaaa;
-    cursor: pointer;
-    white-space: nowrap;
-    border: 2px solid transparent;
-  }
+  /* Action buttons */
+  .wc-actions { display:flex; gap:10px; }
+  .btn-approve { flex:2; padding:14px; background-color:#00b894; color:#fff; font-size:15px; font-weight:800; border:none; border-radius:12px; cursor:pointer; transition:background-color 0.2s; }
+  .btn-approve:hover { background-color:#009e7f; }
+  .btn-approve:disabled { background-color:#ccc8bc; cursor:not-allowed; }
+  .btn-reject  { flex:1; padding:14px; background-color:#fff0ee; color:#e74c3c; font-size:14px; font-weight:800; border:2px solid #e74c3c33; border-radius:12px; cursor:pointer; transition:all 0.2s; }
+  .btn-reject:hover { background-color:#e74c3c; color:#fff; }
+  .btn-revoke  { flex:1; padding:14px; background-color:#f2efe8; color:#888; font-size:13px; font-weight:700; border:none; border-radius:12px; cursor:pointer; }
 
-  .tab.active {
-    border-color: #ff3b3b;
-    color: #ff3b3b;
-    background-color: #2a0000;
-  }
+  /* Approved worker ID badge */
+  .wid-badge { display:inline-flex; align-items:center; gap:6px; background-color:#e8f8f4; border:1px solid #00b89444; border-radius:50px; padding:6px 14px; font-size:13px; font-weight:800; color:#00b894; margin-bottom:12px; }
 
-  .search-box {
-    display: flex;
-    align-items: center;
-    background-color: #111111;
-    border-radius: 15px;
-    padding: 5px 15px;
-    margin-bottom: 20px;
-    border: 2px solid #222;
-  }
+  .wc-date { font-size:11px; color:#aaa; margin-top:10px; }
 
-  .search-box input {
-    background: none;
-    border: none;
-    outline: none;
-    color: white;
-    font-size: 15px;
-    width: 100%;
-    padding: 12px 0;
-  }
+  .empty-state { text-align:center; padding:50px 20px; color:#aaa; }
+  .empty-state .icon { font-size:48px; margin-bottom:12px; }
+  .loading-note { text-align:center; padding:40px; color:#aaa; font-size:14px; }
+  .spacer { height:30px; }
 
-  .search-icon {
-    font-size: 18px;
-    margin-right: 10px;
-  }
-
-  .worker-card {
-    background-color: #111111;
-    border-radius: 18px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    border: 1px solid #222;
-  }
-
-  .worker-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .worker-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .worker-avatar {
-    width: 45px;
-    height: 45px;
-    background-color: #ff3b3b;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 900;
-    color: white;
-  }
-
-  .worker-name {
-    font-size: 16px;
-    font-weight: 800;
-  }
-
-  .worker-skill {
-    font-size: 13px;
-    color: #aaaaaa;
-    margin-top: 2px;
-  }
-
-  .status-badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 800;
-  }
-
-  .status-pending {
-    background-color: #2a2000;
-    color: #ffcc00;
-  }
-
-  .status-approved {
-    background-color: #1a3a1a;
-    color: #00ff88;
-  }
-
-  .status-banned {
-    background-color: #2a0000;
-    color: #ff3b3b;
-  }
-
-  .worker-stats {
-    display: flex;
-    gap: 20px;
-    margin: 10px 0;
-    font-size: 13px;
-    color: #aaaaaa;
-  }
-
-  .worker-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-  }
-
-  .btn-approve {
-    flex: 1;
-    padding: 10px;
-    background-color: #1a3a1a;
-    color: #00ff88;
-    border: none;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-  }
-
-  .btn-ban {
-    flex: 1;
-    padding: 10px;
-    background-color: #2a0000;
-    color: #ff3b3b;
-    border: none;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-  }
-
-  .btn-view {
-    flex: 1;
-    padding: 10px;
-    background-color: #1a1a2a;
-    color: #00d4ff;
-    border: none;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-  }
+  /* Toast */
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background-color:#00b894; color:#fff; padding:14px 24px; border-radius:50px; font-size:14px; font-weight:700; z-index:9999; display:none; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="toast" id="toast"></div>
 
-  <nav class="navbar">
-    <div class="back-btn" onclick="window.location.href='index.html'">←</div>
-    <h3>Manage Workers 👷</h3>
-  </nav>
-
-  <div class="content">
-
-    <div class="search-box">
-      <div class="search-icon">🔍</div>
-      <input
-        type="text"
-        placeholder="Search workers by name or skill..."
-        oninput="searchWorkers(this.value)"
-      />
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="back-btn" href="index.html">←</a>
+    <div class="nav-brand">
+      <div class="logo">ZIPFIX</div>
+      <div class="tag">Worker Management</div>
     </div>
+  </div>
+  <button class="logout-btn" onclick="adminLogout()">Logout</button>
+</nav>
 
-    <div class="filter-tabs">
-      <div class="tab active" onclick="filterWorkers(this, 'all')">
-        All Workers
-      </div>
-      <div class="tab" onclick="filterWorkers(this, 'pending')">
-        ⏳ Pending
-      </div>
-      <div class="tab" onclick="filterWorkers(this, 'approved')">
-        ✅ Approved
-      </div>
-      <div class="tab" onclick="filterWorkers(this, 'banned')">
-        ❌ Banned
-      </div>
+<div class="content">
+
+  <div class="tabs">
+    <div class="tab active" id="tab-pending"  onclick="switchTab('pending',this)">
+      Pending <span class="tab-count orange" id="cnt-pending">0</span>
     </div>
-
-    <div id="workersList">
-
-      <div class="worker-card" data-status="pending">
-        <div class="worker-header">
-          <div class="worker-left">
-            <div class="worker-avatar">R</div>
-            <div>
-              <div class="worker-name">Rajesh Kumar</div>
-              <div class="worker-skill">🔧 Plumber • Madhapur</div>
-            </div>
-          </div>
-          <div class="status-badge status-pending">⏳ Pending</div>
-        </div>
-        <div class="worker-stats">
-          <span>📅 Applied today</span>
-          <span>🪪 Aadhar verified</span>
-          <span>⭐ New</span>
-        </div>
-        <div class="worker-actions">
-          <button class="btn-approve">✅ Approve</button>
-          <button class="btn-ban">🚫 Ban</button>
-          <button class="btn-view">👁️ View</button>
-        </div>
-      </div>
-
-      <div class="worker-card" data-status="approved">
-        <div class="worker-header">
-          <div class="worker-left">
-            <div class="worker-avatar">S</div>
-            <div>
-              <div class="worker-name">Suresh Babu</div>
-              <div class="worker-skill">⚡ Electrician • Gachibowli</div>
-            </div>
-          </div>
-          <div class="status-badge status-approved">✅ Approved</div>
-        </div>
-        <div class="worker-stats">
-          <span>📋 147 jobs</span>
-          <span>⭐ 4.9 rating</span>
-          <span>💰 ₹52,000 earned</span>
-        </div>
-        <div class="worker-actions">
-          <button class="btn-approve">✅ Active</button>
-          <button class="btn-ban">🚫 Ban</button>
-          <button class="btn-view">👁️ View</button>
-        </div>
-      </div>
-
-      <div class="worker-card" data-status="approved">
-        <div class="worker-header">
-          <div class="worker-left">
-            <div class="worker-avatar">V</div>
-            <div>
-              <div class="worker-name">Venkat Rao</div>
-              <div class="worker-skill">❄️ AC Repair • Hitech City</div>
-            </div>
-          </div>
-          <div class="status-badge status-approved">✅ Approved</div>
-        </div>
-        <div class="worker-stats">
-          <span>📋 89 jobs</span>
-          <span>⭐ 4.7 rating</span>
-          <span>💰 ₹38,000 earned</span>
-        </div>
-        <div class="worker-actions">
-          <button class="btn-approve">✅ Active</button>
-          <button class="btn-ban">🚫 Ban</button>
-          <button class="btn-view">👁️ View</button>
-        </div>
-      </div>
-
-      <div class="worker-card" data-status="banned">
-        <div class="worker-header">
-          <div class="worker-left">
-            <div class="worker-avatar">X</div>
-            <div>
-              <div class="worker-name">Unknown Worker</div>
-              <div class="worker-skill">🔧 Plumber • Kukatpally</div>
-            </div>
-          </div>
-          <div class="status-badge status-banned">❌ Banned</div>
-        </div>
-        <div class="worker-stats">
-          <span>⚠️ Fraud reported</span>
-          <span>📋 3 complaints</span>
-        </div>
-        <div class="worker-actions">
-          <button class="btn-approve">♻️ Reinstate</button>
-          <button class="btn-ban">🚫 Banned</button>
-          <button class="btn-view">👁️ View</button>
-        </div>
-      </div>
-
+    <div class="tab" id="tab-approved" onclick="switchTab('approved',this)">
+      Approved <span class="tab-count" id="cnt-approved">0</span>
     </div>
-
+    <div class="tab" id="tab-rejected" onclick="switchTab('rejected',this)">
+      Rejected <span class="tab-count red" id="cnt-rejected">0</span>
+    </div>
   </div>
 
-  <script>
-    // Auth guard with session expiry (8 hours)
-    const adminLoggedIn = localStorage.getItem('adminLoggedIn');
-    const loginTime = parseInt(localStorage.getItem('adminLoginTime') || '0');
-    const EIGHT_HOURS = 8 * 60 * 60 * 1000;
-    if (!adminLoggedIn || (Date.now() - loginTime > EIGHT_HOURS)) {
+  <div id="workerList"><div class="loading-note">⏳ Loading workers...</div></div>
+  <div class="spacer"></div>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const SESSION_MS = 8 * 60 * 60 * 1000;
+  if (!localStorage.getItem('adminLoggedIn')) { window.location.href = 'login.html'; }
+  if (Date.now() - parseInt(localStorage.getItem('adminLoginTime')||0) > SESSION_MS) {
+    localStorage.removeItem('adminLoggedIn'); window.location.href = 'login.html';
+  }
+
+  const FAST2SMS_KEY = 'YOUR_FAST2SMS_API_KEY'; // 🔑 Replace with real key from fast2sms.com
+
+  let allWorkers = [], currentTab = 'pending';
+
+  async function loadWorkers() {
+    try {
+      const { data, error } = await db.from('workers').select('*').order('created_at', { ascending:false });
+      if (error) throw error;
+      allWorkers = data || [];
+      document.getElementById('cnt-pending').innerText  = allWorkers.filter(w => w.status==='pending').length;
+      document.getElementById('cnt-approved').innerText = allWorkers.filter(w => w.status==='approved').length;
+      document.getElementById('cnt-rejected').innerText = allWorkers.filter(w => w.status==='rejected').length;
+      renderTab(currentTab);
+    } catch (e) {
+      document.getElementById('workerList').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>' + e.message + '</p></div>';
+    }
+  }
+
+  function switchTab(tab, el) {
+    currentTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    renderTab(tab);
+  }
+
+  function genWorkerId() {
+    const num = Math.floor(1000 + Math.random() * 9000);
+    return 'ZF-' + num;
+  }
+
+  function renderTab(tab) {
+    const workers = allWorkers.filter(w => w.status === tab);
+    const el = document.getElementById('workerList');
+
+    if (!workers.length) {
+      const msgs = { pending:'No pending applications', approved:'No approved workers yet', rejected:'No rejected applications' };
+      const icons = { pending:'⏳', approved:'✅', rejected:'❌' };
+      el.innerHTML = `<div class="empty-state"><div class="icon">${icons[tab]||'👷'}</div><p>${msgs[tab]||'Nothing here'}</p></div>`;
+      return;
+    }
+
+    el.innerHTML = workers.map(w => buildCard(w, tab)).join('');
+  }
+
+  function buildCard(w, tab) {
+    const initials = (w.name||'?').charAt(0).toUpperCase();
+    const statusLabel = { pending:'⏳ Pending', approved:'✅ Approved', rejected:'❌ Rejected' }[tab] || tab;
+    const statusClass = { pending:'ws-pending', approved:'ws-approved', rejected:'ws-rejected' }[tab] || '';
+    const date = w.created_at ? new Date(w.created_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '—';
+    const cleanPhone = (w.phone||'').replace('+91','');
+
+    const widSection = tab === 'pending' ? `
+      <div class="wid-row">
+        <span class="wid-label">Worker ID:</span>
+        <input class="wid-input" id="wid-${w.id}" value="${w.worker_id || genWorkerId()}" maxlength="10" />
+        <button class="wid-refresh" onclick="refreshId('${w.id}')" title="Generate new ID">🔄</button>
+      </div>
+      <div class="wc-actions">
+        <button class="btn-approve" onclick="approveWorker('${w.id}', '${cleanPhone}', '${(w.name||'').replace(/'/g,"\\'")}')">✅ Approve & Send ID</button>
+        <button class="btn-reject"  onclick="rejectWorker('${w.id}',  '${cleanPhone}', '${(w.name||'').replace(/'/g,"\\'")}')">❌ Reject</button>
+      </div>` :
+    tab === 'approved' ? `
+      <div class="wid-badge">🪪 Worker ID: ${w.worker_id || '—'}</div>
+      <div class="wc-actions">
+        <button class="btn-revoke" onclick="rejectWorker('${w.id}', '${cleanPhone}', '${(w.name||'').replace(/'/g,"\\'")}')">Revoke Approval</button>
+      </div>` :
+    `<div class="wc-actions">
+        <button class="btn-approve" onclick="approveWorkerRedo('${w.id}', '${cleanPhone}', '${(w.name||'').replace(/'/g,"\\'")}')">♻️ Re-Approve</button>
+      </div>`;
+
+    return `<div class="worker-card" id="wcard-${w.id}">
+      <div class="wc-header">
+        <div class="wc-avatar">${initials}</div>
+        <div class="wc-info">
+          <h4>${w.name || '—'}</h4>
+          <div class="skill">🔧 ${w.skill || '—'}</div>
+          <div class="area">📍 ${w.area || '—'}</div>
+        </div>
+        <div class="wc-status ${statusClass}">${statusLabel}</div>
+      </div>
+      <div class="wc-details">
+        <div class="detail-item">📞 Phone<strong>${cleanPhone || '—'}</strong></div>
+        <div class="detail-item">💼 Experience<strong>${w.experience || '—'}</strong></div>
+        <div class="detail-item">🪪 ID Type<strong>${w.id_type || '—'}</strong></div>
+        <div class="detail-item">🔢 ID Number<strong>${w.id_number || '—'}</strong></div>
+      </div>
+      ${widSection}
+      <div class="wc-date">Applied: ${date}</div>
+    </div>`;
+  }
+
+  function refreshId(workerId) {
+    const el = document.getElementById('wid-' + workerId);
+    if (el) el.value = genWorkerId();
+  }
+
+  async function approveWorker(dbId, phone, name) {
+    const widEl = document.getElementById('wid-' + dbId);
+    const workerId = widEl ? widEl.value.trim() : genWorkerId();
+    if (!workerId) { showToast('⚠️ Enter a Worker ID first'); return; }
+
+    const btn = document.querySelector(`#wcard-${dbId} .btn-approve`);
+    if (btn) { btn.disabled = true; btn.innerText = 'Approving...'; }
+
+    try {
+      const { error } = await db.from('workers').update({ status:'approved', worker_id:workerId }).eq('id', dbId);
+      if (error) throw error;
+
+      // Send SMS via Fast2SMS
+      const msg = `Hi ${name}! Your ZipFix Worker application is APPROVED. Your Worker ID: ${workerId}. Login: zipfix.vercel.app/worker/splash.html`;
+      await sendSMS(phone, msg);
+
+      allWorkers = allWorkers.map(w => w.id.toString() === dbId.toString() ? {...w, status:'approved', worker_id:workerId} : w);
+      document.getElementById('cnt-pending').innerText  = allWorkers.filter(w => w.status==='pending').length;
+      document.getElementById('cnt-approved').innerText = allWorkers.filter(w => w.status==='approved').length;
+      showToast('✅ ' + name + ' approved! Worker ID: ' + workerId);
+      renderTab(currentTab);
+    } catch (e) {
+      showToast('⚠️ Error: ' + e.message);
+      if (btn) { btn.disabled = false; btn.innerText = '✅ Approve & Send ID'; }
+    }
+  }
+
+  async function approveWorkerRedo(dbId, phone, name) {
+    const newId = genWorkerId();
+    try {
+      await db.from('workers').update({ status:'approved', worker_id:newId }).eq('id', dbId);
+      const msg = `Hi ${name}! Your ZipFix Worker application has been RE-APPROVED. Worker ID: ${newId}. Login: zipfix.vercel.app/worker/splash.html`;
+      await sendSMS(phone, msg);
+      allWorkers = allWorkers.map(w => w.id.toString() === dbId.toString() ? {...w, status:'approved', worker_id:newId} : w);
+      document.getElementById('cnt-approved').innerText = allWorkers.filter(w => w.status==='approved').length;
+      document.getElementById('cnt-rejected').innerText = allWorkers.filter(w => w.status==='rejected').length;
+      showToast('✅ ' + name + ' re-approved!');
+      renderTab(currentTab);
+    } catch (e) { showToast('⚠️ ' + e.message); }
+  }
+
+  async function rejectWorker(dbId, phone, name) {
+    if (!confirm('Reject application for ' + name + '?')) return;
+    try {
+      await db.from('workers').update({ status:'rejected' }).eq('id', dbId);
+      const msg = `Hi ${name}, unfortunately your ZipFix Worker application was not approved at this time. Contact help@zipfix.com for more info.`;
+      await sendSMS(phone, msg);
+      allWorkers = allWorkers.map(w => w.id.toString() === dbId.toString() ? {...w, status:'rejected'} : w);
+      document.getElementById('cnt-pending').innerText  = allWorkers.filter(w => w.status==='pending').length;
+      document.getElementById('cnt-approved').innerText = allWorkers.filter(w => w.status==='approved').length;
+      document.getElementById('cnt-rejected').innerText = allWorkers.filter(w => w.status==='rejected').length;
+      showToast('❌ ' + name + ' rejected. SMS sent.');
+      renderTab(currentTab);
+    } catch (e) { showToast('⚠️ ' + e.message); }
+  }
+
+  async function sendSMS(phone, message) {
+    if (FAST2SMS_KEY === 'YOUR_FAST2SMS_API_KEY') {
+      console.log('📱 SMS (not sent — add API key):', phone, message);
+      return;
+    }
+    try {
+      await fetch('https://www.fast2sms.com/dev/bulkV2', {
+        method: 'POST',
+        headers: { 'authorization': FAST2SMS_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ route:'q', message, language:'english', flash:0, numbers:phone })
+      });
+    } catch (e) { console.error('SMS error:', e); }
+  }
+
+  function adminLogout() {
+    if (confirm('Logout?')) {
       localStorage.removeItem('adminLoggedIn');
+      localStorage.removeItem('adminLoginTime');
       window.location.href = 'login.html';
     }
+  }
 
-    function filterWorkers(tab, status) {
-      document.querySelectorAll('.tab').forEach(t =>
-        t.classList.remove('active'));
-      tab.classList.add('active');
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg; t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
 
-      const cards = document.querySelectorAll('.worker-card');
-      cards.forEach(card => {
-        if (status === 'all' || card.dataset.status === status) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    function searchWorkers(query) {
-      const cards = document.querySelectorAll('.worker-card');
-      cards.forEach(card => {
-        const name = card.querySelector('.worker-name').innerText.toLowerCase();
-        const skill = card.querySelector('.worker-skill').innerText.toLowerCase();
-        if (name.includes(query.toLowerCase()) ||
-            skill.includes(query.toLowerCase())) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-  </script>
-
+  loadWorkers();
+</script>
 </body>
 </html>

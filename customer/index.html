@@ -3,79 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix — Emergency Help In Minutes</title>
+  <title>ZipFix</title>
 </head>
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0f0f0f; color:white; min-height:100vh; }
-
-  .navbar {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:20px 30px; background-color:#1a1a1a;
+  body {
+    background-color:#111;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
   }
-  .logo { font-size:26px; font-weight:900; color:#00d4ff; letter-spacing:3px; }
-  .btn-login {
-    padding:12px 28px; background-color:transparent; color:#00d4ff;
-    font-size:15px; font-weight:800; border:2px solid #00d4ff;
-    border-radius:50px; cursor:pointer; transition:all 0.2s;
+  .splash-logo {
+    font-size:48px;
+    font-weight:900;
+    letter-spacing:6px;
+    color:#00b894;
+    opacity:0;
+    transform:scale(0.8);
+    animation:popIn 0.7s ease forwards;
   }
-  .btn-login:hover { background-color:#00d4ff; color:#0f0f0f; }
-
-  .hero {
-    display:flex; flex-direction:column; align-items:center;
-    justify-content:center; text-align:center;
-    padding:80px 25px;
-    min-height:calc(100vh - 72px);
+  .splash-tag {
+    font-size:14px;
+    color:#888;
+    letter-spacing:2px;
+    margin-top:12px;
+    opacity:0;
+    animation:fadeUp 0.6s ease 0.5s forwards;
   }
-  .badge {
-    display:inline-flex; align-items:center; gap:8px;
-    background-color:#001a2a; border:1px solid #00d4ff44;
-    border-radius:50px; padding:8px 18px; margin-bottom:28px;
-    font-size:13px; font-weight:700; color:#00d4ff;
+  .splash-dot {
+    width:8px; height:8px;
+    background:#00b894;
+    border-radius:50%;
+    margin-top:50px;
+    opacity:0.2;
+    animation:blink 0.9s ease 0.9s infinite;
   }
-  .hero h1 {
-    font-size:clamp(38px, 9vw, 62px); font-weight:900;
-    line-height:1.15; margin-bottom:20px;
+  @keyframes popIn {
+    0%   { opacity:0; transform:scale(0.7); }
+    60%  { opacity:1; transform:scale(1.06); }
+    100% { opacity:1; transform:scale(1); }
   }
-  .hero h1 span { color:#00d4ff; }
-  .hero p {
-    font-size:16px; color:#aaaaaa; max-width:360px;
-    line-height:1.7; margin-bottom:40px;
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(8px); }
+    to   { opacity:1; transform:translateY(0); }
   }
-  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
-  .btn-primary {
-    padding:17px 38px; background-color:#00d4ff; color:#0f0f0f;
-    font-size:17px; font-weight:900; border:none; border-radius:50px;
-    cursor:pointer; transition:background-color 0.2s;
+  @keyframes blink {
+    0%,100% { opacity:0.2; } 50% { opacity:1; }
   }
-  .btn-primary:hover { background-color:#00b8d9; }
-  .btn-secondary {
-    padding:17px 38px; background-color:transparent; color:white;
-    font-size:17px; font-weight:800; border:2px solid #333;
-    border-radius:50px; cursor:pointer; transition:border-color 0.2s;
-  }
-  .btn-secondary:hover { border-color:#00d4ff; color:#00d4ff; }
 </style>
 
-<nav class="navbar">
-  <div class="logo">ZIPFIX</div>
-  <button class="btn-login" onclick="window.location.href='customer/login.html'">Login</button>
-</nav>
-
-<section class="hero">
-  <div class="badge">⚡ Available 24/7 in Hyderabad</div>
-  <h1>Emergency Help<br/><span>In Minutes.</span></h1>
-  <p>Plumber, Electrician, Locksmith — verified workers at your doorstep. Any time. Any emergency.</p>
-  <div class="hero-btns">
-    <button class="btn-primary" onclick="window.location.href='customer/login.html'">🚀 Book a Service Now</button>
-    <button class="btn-secondary" onclick="window.location.href='customer/register.html'">Create Account</button>
-  </div>
-</section>
+<div class="splash-logo">ZIPFIX</div>
+<div class="splash-tag">Emergency Help In Minutes</div>
+<div class="splash-dot"></div>
 
 <script>
+  // If already logged in → skip splash and go to dashboard
   if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
     window.location.href = 'customer/dashboard.html';
+  } else {
+    // Show splash for 2.2s then go to landing page
+    setTimeout(function() {
+      window.location.href = 'landing.html';
+    }, 2200);
   }
 </script>
 </body>

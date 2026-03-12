@@ -7,380 +7,123 @@
 </head>
 <body>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-  }
-
-  body {
-    background-color: #0f0f0f;
-    color: white;
-    min-height: 100vh;
-  }
-
-  .navbar {
-    display: flex;
-    align-items: center;
-    padding: 20px 30px;
-    background-color: #1a1a1a;
-    gap: 15px;
-  }
-
-  .navbar h3 {
-    font-size: 20px;
-    font-weight: 800;
-  }
-
-  .content {
-    padding: 25px;
-  }
-
-  .success-banner {
-    background: linear-gradient(135deg, #003a1a, #001a0a);
-    border: 2px solid #00ff88;
-    border-radius: 25px;
-    padding: 30px;
-    text-align: center;
-    margin-bottom: 25px;
-  }
-
-  .success-icon {
-    font-size: 60px;
-    margin-bottom: 15px;
-  }
-
-  .success-banner h2 {
-    font-size: 24px;
-    font-weight: 900;
-    color: #00ff88;
-    margin-bottom: 8px;
-  }
-
-  .success-banner p {
-    font-size: 14px;
-    color: #aaaaaa;
-  }
-
-  .receipt-card {
-    background-color: #1a1a1a;
-    border-radius: 20px;
-    padding: 20px 25px;
-    margin-bottom: 25px;
-  }
-
-  .receipt-card h4 {
-    font-size: 13px;
-    color: #aaaaaa;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
-  }
-
-  .receipt-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    font-size: 14px;
-    border-bottom: 1px solid #2a2a2a;
-  }
-
-  .receipt-row:last-child {
-    border-bottom: none;
-    font-weight: 800;
-    font-size: 16px;
-  }
-
-  .receipt-row .label {
-    color: #aaaaaa;
-  }
-
-  .receipt-row .value {
-    font-weight: 600;
-    color: white;
-  }
-
-  .receipt-row:last-child .value {
-    color: #00d4ff;
-  }
-
-  .rating-card {
-    background-color: #1a1a1a;
-    border-radius: 20px;
-    padding: 25px;
-    margin-bottom: 25px;
-    text-align: center;
-  }
-
-  .worker-avatar {
-    width: 80px;
-    height: 80px;
-    background-color: #00d4ff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    font-weight: 900;
-    color: #0f0f0f;
-    margin: 0 auto 15px auto;
-  }
-
-  .rating-card h3 {
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 5px;
-  }
-
-  .rating-card p {
-    font-size: 14px;
-    color: #aaaaaa;
-    margin-bottom: 25px;
-  }
-
-  .stars-selector {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .star {
-    font-size: 40px;
-    cursor: pointer;
-    opacity: 0.3;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-
-  .star.active {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-
-  .rating-label {
-    font-size: 16px;
-    font-weight: 800;
-    color: #00d4ff;
-    margin-bottom: 20px;
-    min-height: 24px;
-  }
-
-  .feedback-input {
-    width: 100%;
-    padding: 15px 20px;
-    background-color: #2a2a2a;
-    border: 2px solid #333;
-    border-radius: 15px;
-    color: white;
-    font-size: 15px;
-    outline: none;
-    resize: none;
-  }
-
-  .feedback-input:focus {
-    border-color: #00d4ff;
-  }
-
-  .quick-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-  }
-
-  .tag {
-    padding: 8px 16px;
-    background-color: #2a2a2a;
-    border-radius: 50px;
-    font-size: 13px;
-    cursor: pointer;
-    border: 2px solid transparent;
-  }
-
-  .tag.selected {
-    border-color: #00d4ff;
-    color: #00d4ff;
-    background-color: #001a2a;
-  }
-
-  .btn-main {
-    width: 100%;
-    padding: 20px;
-    background-color: #00d4ff;
-    color: #0f0f0f;
-    font-size: 20px;
-    font-weight: 900;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  .btn-main:hover {
-    background-color: #00b8d9;
-  }
-
-  .skip-text {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 14px;
-    color: #555;
-    cursor: pointer;
-  }
-
-  .skip-text:hover {
-    color: #aaaaaa;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+  .navbar { display:flex; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
+  .navbar h3 { font-size:20px; font-weight:800; color:#1a1a1a; }
+  .content { padding:25px; }
+  .success-banner { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border:2px solid #00b894; border-radius:25px; padding:30px; text-align:center; margin-bottom:25px; }
+  .success-icon { font-size:60px; margin-bottom:15px; }
+  .success-banner h2 { font-size:24px; font-weight:900; color:#00b894; margin-bottom:8px; }
+  .success-banner p { font-size:14px; color:#666; }
+  .receipt-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px 25px; margin-bottom:25px; }
+  .receipt-card h4 { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
+  .receipt-row { display:flex; justify-content:space-between; padding:8px 0; font-size:14px; border-bottom:1px solid #f0ede6; }
+  .receipt-row:last-child { border-bottom:none; font-weight:800; font-size:16px; }
+  .receipt-row .label { color:#888; }
+  .receipt-row .value { font-weight:600; color:#1a1a1a; }
+  .receipt-row:last-child .value { color:#00b894; }
+  .rating-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:25px; margin-bottom:25px; text-align:center; }
+  .worker-avatar { width:80px; height:80px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:900; color:#fff; margin:0 auto 15px auto; }
+  .rating-card h3 { font-size:20px; font-weight:800; margin-bottom:5px; color:#1a1a1a; }
+  .rating-card p { font-size:14px; color:#888; margin-bottom:25px; }
+  .stars-selector { display:flex; justify-content:center; gap:12px; margin-bottom:20px; }
+  .star { font-size:40px; cursor:pointer; opacity:0.3; transition:opacity 0.2s,transform 0.2s; }
+  .star.active { opacity:1; transform:scale(1.2); }
+  .rating-label { font-size:16px; font-weight:800; color:#00b894; margin-bottom:20px; min-height:24px; }
+  .feedback-input { width:100%; padding:15px 20px; background-color:#f2efe8; border:2px solid #ede9df; border-radius:15px; color:#1a1a1a; font-size:15px; outline:none; resize:none; transition:border-color 0.2s; }
+  .feedback-input:focus { border-color:#00b894; }
+  .quick-tags { display:flex; flex-wrap:wrap; gap:10px; margin-top:15px; }
+  .tag { padding:8px 16px; background-color:#f2efe8; border-radius:50px; font-size:13px; cursor:pointer; border:2px solid transparent; color:#555; transition:all 0.2s; }
+  .tag.selected { border-color:#00b894; color:#00b894; background-color:#e8f8f4; }
+  .btn-main { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:20px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:10px; transition:background-color 0.2s; }
+  .btn-main:hover { background-color:#009e7f; }
+  .skip-text { text-align:center; margin-top:15px; font-size:14px; color:#aaa; cursor:pointer; transition:color 0.2s; }
+  .skip-text:hover { color:#555; }
 </style>
+
 <nav class="navbar">
-    <h3>Rate Your Experience ⭐</h3>
-  </nav>
+  <h3>Rate Your Experience ⭐</h3>
+</nav>
 
-  <div class="content">
-
-    <div class="success-banner">
-      <div class="success-icon">✅</div>
-      <h2>Job Completed!</h2>
-      <p>Your problem has been fixed successfully</p>
-    </div>
-
-    <div class="receipt-card">
-      <h4>Receipt</h4>
-      <div class="receipt-row">
-        <span class="label">Service</span>
-        <span class="value" id="receiptService">Plumber</span>
-      </div>
-      <div class="receipt-row">
-        <span class="label">Worker</span>
-        <span class="value" id="receiptWorker">Ravi Kumar</span>
-      </div>
-      <div class="receipt-row">
-        <span class="label">Payment</span>
-        <span class="value" id="receiptMethod">UPI</span>
-      </div>
-      <div class="receipt-row">
-        <span class="label">Total Paid</span>
-        <span class="value" id="receiptTotal">₹348</span>
-      </div>
-    </div>
-
-    <div class="rating-card">
-
-      <div class="worker-avatar" id="workerAvatar">R</div>
-      <h3 id="workerName">Ravi Kumar</h3>
-      <p>How was your experience?</p>
-
-      <div class="stars-selector">
-        <div class="star" onclick="selectStar(1)">⭐</div>
-        <div class="star" onclick="selectStar(2)">⭐</div>
-        <div class="star" onclick="selectStar(3)">⭐</div>
-        <div class="star" onclick="selectStar(4)">⭐</div>
-        <div class="star" onclick="selectStar(5)">⭐</div>
-      </div>
-
-      <div class="rating-label" id="ratingLabel"></div>
-
-      <textarea
-        class="feedback-input"
-        id="feedback"
-        rows="3"
-        placeholder="Tell us about your experience (optional)"
-      ></textarea>
-
-      <div class="quick-tags">
-        <div class="tag" onclick="toggleTag(this)">👍 Professional</div>
-        <div class="tag" onclick="toggleTag(this)">⚡ Fast</div>
-        <div class="tag" onclick="toggleTag(this)">💰 Good Price</div>
-        <div class="tag" onclick="toggleTag(this)">🔧 Skilled</div>
-        <div class="tag" onclick="toggleTag(this)">😊 Friendly</div>
-        <div class="tag" onclick="toggleTag(this)">🧹 Clean Work</div>
-      </div>
-
-    </div>
-
-    <button class="btn-main" onclick="submitRating()">
-      Submit Rating
-    </button>
-
-    <div class="skip-text" onclick="window.location.href='dashboard.html'">
-      Skip for now
-    </div>
-
+<div class="content">
+  <div class="success-banner">
+    <div class="success-icon">✅</div>
+    <h2>Job Completed!</h2>
+    <p>Your problem has been fixed successfully</p>
   </div>
 
-  <script>
-    // Route protection — must be logged in as customer
-    if (!localStorage.getItem('phoneNumber')) {
-      window.location.href = 'login.html';
-    }
-    // Block admin/worker from accessing customer pages
-    if (localStorage.getItem('adminLoggedIn')) {
-      window.location.href = '../admin/index.html';
-    }
+  <div class="receipt-card">
+    <h4>Receipt</h4>
+    <div class="receipt-row"><span class="label">Service</span><span class="value" id="receiptService">Plumber</span></div>
+    <div class="receipt-row"><span class="label">Worker</span><span class="value" id="receiptWorker">Ravi Kumar</span></div>
+    <div class="receipt-row"><span class="label">Payment</span><span class="value" id="receiptMethod">UPI</span></div>
+    <div class="receipt-row"><span class="label">Total Paid</span><span class="value" id="receiptTotal">₹348</span></div>
+  </div>
 
-    const service = localStorage.getItem('bookingService') || 'Plumber';
-    const workerName = localStorage.getItem('workerName') || 'Ravi Kumar';
-    const workerInitial = localStorage.getItem('workerInitial') || 'R';
-    const paymentMethod = localStorage.getItem('paymentMethod') || 'UPI';
-    const amountPaid = localStorage.getItem('amountPaid') || '348';
+  <div class="rating-card">
+    <div class="worker-avatar" id="workerAvatar">R</div>
+    <h3 id="workerName">Ravi Kumar</h3>
+    <p>How was your experience?</p>
+    <div class="stars-selector">
+      <div class="star" onclick="selectStar(1)">⭐</div>
+      <div class="star" onclick="selectStar(2)">⭐</div>
+      <div class="star" onclick="selectStar(3)">⭐</div>
+      <div class="star" onclick="selectStar(4)">⭐</div>
+      <div class="star" onclick="selectStar(5)">⭐</div>
+    </div>
+    <div class="rating-label" id="ratingLabel"></div>
+    <textarea class="feedback-input" id="feedback" rows="3" placeholder="Tell us about your experience (optional)"></textarea>
+    <div class="quick-tags">
+      <div class="tag" onclick="toggleTag(this)">👍 Professional</div>
+      <div class="tag" onclick="toggleTag(this)">⚡ Fast</div>
+      <div class="tag" onclick="toggleTag(this)">💰 Good Price</div>
+      <div class="tag" onclick="toggleTag(this)">🔧 Skilled</div>
+      <div class="tag" onclick="toggleTag(this)">😊 Friendly</div>
+      <div class="tag" onclick="toggleTag(this)">🧹 Clean Work</div>
+    </div>
+  </div>
 
-    document.getElementById('receiptService').innerText = service;
-    document.getElementById('receiptWorker').innerText = workerName;
-    document.getElementById('receiptMethod').innerText = paymentMethod;
-    document.getElementById('receiptTotal').innerText = '₹' + amountPaid;
-    document.getElementById('workerName').innerText = workerName;
-    document.getElementById('workerAvatar').innerText = workerInitial;
+  <button class="btn-main" onclick="submitRating()">Submit Rating</button>
+  <div class="skip-text" onclick="window.location.href='dashboard.html'">Skip for now</div>
+</div>
 
-    const ratingLabels = {
-      1: '😞 Poor',
-      2: '😐 Fair',
-      3: '🙂 Good',
-      4: '😊 Great',
-      5: '🤩 Excellent!'
-    };
+<script>
+  if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
+  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-    let selectedRating = 0;
-    const stars = document.querySelectorAll('.star');
+  const service       = localStorage.getItem('bookingService') || 'Plumber';
+  const workerName    = localStorage.getItem('workerName')     || 'Ravi Kumar';
+  const workerInitial = localStorage.getItem('workerInitial')  || 'R';
+  const paymentMethod = localStorage.getItem('paymentMethod')  || 'UPI';
+  const amountPaid    = localStorage.getItem('amountPaid')     || '348';
 
-    function selectStar(rating) {
-      selectedRating = rating;
-      stars.forEach((star, index) => {
-        if (index < rating) {
-          star.classList.add('active');
-        } else {
-          star.classList.remove('active');
-        }
-      });
-      document.getElementById('ratingLabel').innerText =
-        ratingLabels[rating];
-    }
+  document.getElementById('receiptService').innerText = service;
+  document.getElementById('receiptWorker').innerText  = workerName;
+  document.getElementById('receiptMethod').innerText  = paymentMethod;
+  document.getElementById('receiptTotal').innerText   = '₹' + amountPaid;
+  document.getElementById('workerName').innerText     = workerName;
+  document.getElementById('workerAvatar').innerText   = workerInitial;
 
-    function toggleTag(tag) {
-      tag.classList.toggle('selected');
-    }
+  const ratingLabels = { 1:'😞 Poor', 2:'😐 Fair', 3:'🙂 Good', 4:'😊 Great', 5:'🤩 Excellent!' };
+  let selectedRating = 0;
+  const stars = document.querySelectorAll('.star');
 
-    function submitRating() {
-      if (selectedRating === 0) {
-        alert('Please select a star rating');
-        return;
-      }
-
-      const selectedTags = [];
-      document.querySelectorAll('.tag.selected').forEach(tag => {
-        selectedTags.push(tag.innerText);
-      });
-
-      localStorage.setItem('lastRating', selectedRating);
-      localStorage.setItem('lastFeedback', selectedTags.join(', '));
-
-      alert('Thank you for rating ' + workerName + '! 🎉\n' +
-        'Rating: ' + ratingLabels[selectedRating] + '\n' +
-        'Your feedback helps improve ZipFix!');
-
-      window.location.href = 'dashboard.html';
-    }
-  </script>
-
+  function selectStar(rating) {
+    selectedRating = rating;
+    stars.forEach((star, index) => { index < rating ? star.classList.add('active') : star.classList.remove('active'); });
+    document.getElementById('ratingLabel').innerText = ratingLabels[rating];
+  }
+  function toggleTag(tag) { tag.classList.toggle('selected'); }
+  function submitRating() {
+    if (selectedRating === 0) { alert('Please select a star rating'); return; }
+    const selectedTags = [];
+    document.querySelectorAll('.tag.selected').forEach(tag => { selectedTags.push(tag.innerText); });
+    localStorage.setItem('lastRating', selectedRating);
+    localStorage.setItem('lastFeedback', selectedTags.join(', '));
+    alert('Thank you for rating ' + workerName + '! 🎉\nRating: ' + ratingLabels[selectedRating] + '\nYour feedback helps improve ZipFix!');
+    window.location.href = 'dashboard.html';
+  }
+</script>
 </body>
 </html>

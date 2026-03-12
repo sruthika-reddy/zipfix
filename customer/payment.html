@@ -7,311 +7,115 @@
 </head>
 <body>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-  }
-
-  body {
-    background-color: #0f0f0f;
-    color: white;
-    min-height: 100vh;
-  }
-
-  .navbar {
-    display: flex;
-    align-items: center;
-    padding: 20px 30px;
-    background-color: #1a1a1a;
-    gap: 15px;
-  }
-
-  .back-btn {
-    font-size: 22px;
-    cursor: pointer;
-    color: #00d4ff;
-  }
-
-  .navbar h3 {
-    font-size: 20px;
-    font-weight: 800;
-  }
-
-  .content {
-    padding: 25px;
-  }
-
-  .job-summary {
-    background-color: #1a1a1a;
-    border-radius: 20px;
-    padding: 25px;
-    margin-bottom: 20px;
-  }
-
-  .job-summary h4 {
-    font-size: 13px;
-    color: #aaaaaa;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
-  }
-
-  .job-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #2a2a2a;
-    font-size: 15px;
-  }
-
-  .job-row:last-child {
-    border-bottom: none;
-  }
-
-  .job-row .label {
-    color: #aaaaaa;
-  }
-
-  .job-row .value {
-    font-weight: 700;
-  }
-
-  .job-row.total {
-    margin-top: 5px;
-    font-size: 18px;
-  }
-
-  .job-row.total .value {
-    color: #00d4ff;
-    font-size: 22px;
-  }
-
-  .payment-methods h4 {
-    font-size: 13px;
-    color: #aaaaaa;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
-  }
-
-  .method-card {
-    background-color: #1a1a1a;
-    border-radius: 18px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    cursor: pointer;
-    border: 2px solid transparent;
-  }
-
-  .method-card.selected {
-    border-color: #00d4ff;
-    background-color: #001a2a;
-  }
-
-  .method-icon {
-    font-size: 28px;
-    width: 40px;
-    text-align: center;
-  }
-
-  .method-info h5 {
-    font-size: 16px;
-    font-weight: 800;
-  }
-
-  .method-info p {
-    font-size: 12px;
-    color: #aaaaaa;
-    margin-top: 3px;
-  }
-
-  .method-check {
-    margin-left: auto;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid #333;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-  }
-
-  .method-card.selected .method-check {
-    background-color: #00d4ff;
-    border-color: #00d4ff;
-    color: #0f0f0f;
-  }
-
-  .btn-main {
-    width: 100%;
-    padding: 20px;
-    background-color: #00d4ff;
-    color: #0f0f0f;
-    font-size: 20px;
-    font-weight: 900;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    margin-top: 25px;
-  }
-
-  .btn-main:hover {
-    background-color: #00b8d9;
-  }
-
-  .secure-text {
-    text-align: center;
-    font-size: 12px;
-    color: #555;
-    margin-top: 15px;
-  }
-
-  .secure-text span {
-    color: #00ff88;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+  .navbar { display:flex; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
+  .back-btn { font-size:22px; cursor:pointer; color:#00b894; }
+  .navbar h3 { font-size:20px; font-weight:800; color:#1a1a1a; }
+  .content { padding:25px; }
+  .job-summary { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:25px; margin-bottom:20px; }
+  .job-summary h4 { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
+  .job-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f0ede6; font-size:15px; }
+  .job-row:last-child { border-bottom:none; }
+  .job-row .label { color:#888; }
+  .job-row .value { font-weight:700; color:#1a1a1a; }
+  .job-row.total { margin-top:5px; font-size:18px; }
+  .job-row.total .value { color:#00b894; font-size:22px; }
+  .payment-methods h4 { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
+  .method-card { background-color:#fffdf7; border:2px solid #ede9df; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; align-items:center; gap:15px; cursor:pointer; transition:all 0.2s; }
+  .method-card.selected { border-color:#00b894; background-color:#e8f8f4; }
+  .method-icon { font-size:28px; width:40px; text-align:center; }
+  .method-info h5 { font-size:16px; font-weight:800; color:#1a1a1a; }
+  .method-info p { font-size:12px; color:#888; margin-top:3px; }
+  .method-check { margin-left:auto; width:24px; height:24px; border-radius:50%; border:2px solid #ede9df; display:flex; align-items:center; justify-content:center; font-size:12px; }
+  .method-card.selected .method-check { background-color:#00b894; border-color:#00b894; color:#fff; }
+  .btn-main { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:20px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:25px; transition:background-color 0.2s; }
+  .btn-main:hover { background-color:#009e7f; }
+  .secure-text { text-align:center; font-size:12px; color:#aaa; margin-top:15px; }
+  .secure-text span { color:#00b894; }
 </style>
+
 <nav class="navbar">
-    <div class="back-btn" onclick="window.location.href='track.html'">←</div>
-    <h3>Payment 💳</h3>
-  </nav>
+  <div class="back-btn" onclick="window.location.href='track.html'">←</div>
+  <h3>Payment 💳</h3>
+</nav>
 
-  <div class="content">
-
-    <div class="job-summary">
-      <h4>Job Summary</h4>
-      <div class="job-row">
-        <span class="label">Service</span>
-        <span class="value" id="summaryService">Plumber</span>
-      </div>
-      <div class="job-row">
-        <span class="label">Worker</span>
-        <span class="value" id="summaryWorker">Ravi Kumar</span>
-      </div>
-      <div class="job-row">
-        <span class="label">Service Fee</span>
-        <span class="value" id="summaryFee">₹299</span>
-      </div>
-      <div class="job-row">
-        <span class="label">Platform Fee</span>
-        <span class="value">₹49</span>
-      </div>
-      <div class="job-row total">
-        <span class="label">Total</span>
-        <span class="value" id="summaryTotal">₹348</span>
-      </div>
-    </div>
-
-    <div class="payment-methods">
-      <h4>Select Payment Method</h4>
-
-      <div class="method-card selected" onclick="selectMethod(this, 'upi')">
-        <div class="method-icon">📱</div>
-        <div class="method-info">
-          <h5>UPI</h5>
-          <p>GPay, PhonePe, Paytm</p>
-        </div>
-        <div class="method-check">✓</div>
-      </div>
-
-      <div class="method-card" onclick="selectMethod(this, 'card')">
-        <div class="method-icon">💳</div>
-        <div class="method-info">
-          <h5>Credit / Debit Card</h5>
-          <p>Visa, Mastercard, Rupay</p>
-        </div>
-        <div class="method-check"></div>
-      </div>
-
-      <div class="method-card" onclick="selectMethod(this, 'cash')">
-        <div class="method-icon">💵</div>
-        <div class="method-info">
-          <h5>Cash on Completion</h5>
-          <p>Pay worker directly after job</p>
-        </div>
-        <div class="method-check"></div>
-      </div>
-
-    </div>
-
-    <button class="btn-main" onclick="makePayment()">
-      Pay Now
-    </button>
-
-    <div class="secure-text">
-      <span>🔒 100% Secure Payment</span> • Powered by Razorpay
-    </div>
-
+<div class="content">
+  <div class="job-summary">
+    <h4>Job Summary</h4>
+    <div class="job-row"><span class="label">Service</span><span class="value" id="summaryService">Plumber</span></div>
+    <div class="job-row"><span class="label">Worker</span><span class="value" id="summaryWorker">Ravi Kumar</span></div>
+    <div class="job-row"><span class="label">Service Fee</span><span class="value" id="summaryFee">₹299</span></div>
+    <div class="job-row"><span class="label">Platform Fee</span><span class="value">₹49</span></div>
+    <div class="job-row total"><span class="label">Total</span><span class="value" id="summaryTotal">₹348</span></div>
   </div>
 
-  <script>
-    // Route protection — must be logged in as customer
-    if (!localStorage.getItem('phoneNumber')) {
-      window.location.href = 'login.html';
-    }
-    // Block admin/worker from accessing customer pages
-    if (localStorage.getItem('adminLoggedIn')) {
-      window.location.href = '../admin/index.html';
-    }
+  <div class="payment-methods">
+    <h4>Select Payment Method</h4>
+    <div class="method-card selected" onclick="selectMethod(this, 'upi')">
+      <div class="method-icon">📱</div>
+      <div class="method-info"><h5>UPI</h5><p>GPay, PhonePe, Paytm</p></div>
+      <div class="method-check">✓</div>
+    </div>
+    <div class="method-card" onclick="selectMethod(this, 'card')">
+      <div class="method-icon">💳</div>
+      <div class="method-info"><h5>Credit / Debit Card</h5><p>Visa, Mastercard, Rupay</p></div>
+      <div class="method-check"></div>
+    </div>
+    <div class="method-card" onclick="selectMethod(this, 'cash')">
+      <div class="method-icon">💵</div>
+      <div class="method-info"><h5>Cash on Completion</h5><p>Pay worker directly after job</p></div>
+      <div class="method-check"></div>
+    </div>
+  </div>
 
-    const service = localStorage.getItem('bookingService') || 'Plumber';
-    const workerName = localStorage.getItem('workerName') || 'Ravi Kumar';
+  <button class="btn-main" onclick="makePayment()">Pay Now</button>
+  <div class="secure-text"><span>🔒 100% Secure Payment</span> • Powered by Razorpay</div>
+</div>
 
-    const prices = {
-      'Plumber': 299, 'Electrician': 349,
-      'Locksmith': 249, 'AC Repair': 499,
-      'Carpenter': 299, 'Painter': 399,
-      'Pest Control': 499, 'Home Cleaning': 399,
-      'TV / Electronics Repair': 349, 'Water Purifier Service': 299,
-      'Appliance Repair': 349, 'Bathroom Renovation': 799,
-      'Packers & Movers': 999, 'CCTV Installation': 599
-    };
+<script>
+  if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
+  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-    // Use saved amount from booking if available (already includes urgency multiplier)
-    const savedAmount = localStorage.getItem('bookingAmount');
-    const basePrice = savedAmount ? (parseInt(savedAmount) - 49) : (prices[service] || 299);
-    const total = basePrice + 49;
+  const service    = localStorage.getItem('bookingService') || 'Plumber';
+  const workerName = localStorage.getItem('workerName')     || 'Ravi Kumar';
+  const prices = {
+    'Plumber':299,'Electrician':349,'Locksmith':249,'AC Repair':499,'Carpenter':299,'Painter':399,
+    'Pest Control':499,'Home Cleaning':399,'TV / Electronics Repair':349,'Water Purifier Service':299,
+    'Appliance Repair':349,'Bathroom Renovation':799,'Packers & Movers':999,'CCTV Installation':599
+  };
+  const savedAmount = localStorage.getItem('bookingAmount');
+  const basePrice = savedAmount ? (parseInt(savedAmount) - 49) : (prices[service] || 299);
+  const total = basePrice + 49;
 
-    document.getElementById('summaryService').innerText = service;
-    document.getElementById('summaryWorker').innerText = workerName;
-    document.getElementById('summaryFee').innerText = '₹' + basePrice;
-    document.getElementById('summaryTotal').innerText = '₹' + total;
+  document.getElementById('summaryService').innerText = service;
+  document.getElementById('summaryWorker').innerText  = workerName;
+  document.getElementById('summaryFee').innerText     = '₹' + basePrice;
+  document.getElementById('summaryTotal').innerText   = '₹' + total;
 
-    let selectedMethod = 'upi';
+  let selectedMethod = 'upi';
 
-    function selectMethod(card, method) {
-      document.querySelectorAll('.method-card').forEach(c => {
-        c.classList.remove('selected');
-        c.querySelector('.method-check').innerText = '';
-      });
-      card.classList.add('selected');
-      card.querySelector('.method-check').innerText = '✓';
-      selectedMethod = method;
-    }
+  function selectMethod(card, method) {
+    document.querySelectorAll('.method-card').forEach(c => { c.classList.remove('selected'); c.querySelector('.method-check').innerText = ''; });
+    card.classList.add('selected');
+    card.querySelector('.method-check').innerText = '✓';
+    selectedMethod = method;
+  }
 
-    function makePayment() {
-      if (selectedMethod === 'cash') {
-        localStorage.setItem('paymentMethod', 'Cash');
-        localStorage.setItem('paymentStatus', 'pending');
-        alert('💵 Cash payment selected!\nPay ₹' + total + ' to worker after job completion.');
-        window.location.href = 'rate.html';
-        return;
-      }
-
-      localStorage.setItem('paymentMethod', selectedMethod.toUpperCase());
-      localStorage.setItem('paymentStatus', 'paid');
-      localStorage.setItem('amountPaid', total);
-
-      alert('✅ Payment of ₹' + total + ' successful!\nThank you for using ZipFix 🎉');
+  function makePayment() {
+    if (selectedMethod === 'cash') {
+      localStorage.setItem('paymentMethod', 'Cash');
+      localStorage.setItem('paymentStatus', 'pending');
+      alert('💵 Cash payment selected!\nPay ₹' + total + ' to worker after job completion.');
       window.location.href = 'rate.html';
+      return;
     }
-  </script>
-
+    localStorage.setItem('paymentMethod', selectedMethod.toUpperCase());
+    localStorage.setItem('paymentStatus', 'paid');
+    localStorage.setItem('amountPaid', total);
+    alert('✅ Payment of ₹' + total + ' successful!\nThank you for using ZipFix 🎉');
+    window.location.href = 'rate.html';
+  }
+</script>
 </body>
 </html>

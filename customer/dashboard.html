@@ -8,59 +8,52 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0f0f0f; color:white; min-height:100vh; }
+  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
 
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#1a1a1a; }
-  .logo { font-size:22px; font-weight:900; color:#00d4ff; letter-spacing:2px; }
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; }
+  .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
   .navbar-right { display:flex; align-items:center; gap:12px; }
-  .sos-icon { width:40px; height:40px; background-color:#ff3b3b; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; border:none; animation:pulse 1.5s infinite; }
-  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(255,59,59,0.5)} 70%{box-shadow:0 0 0 10px rgba(255,59,59,0)} 100%{box-shadow:0 0 0 0 rgba(255,59,59,0)} }
-  .profile-icon { width:40px; height:40px; background-color:#00d4ff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; color:#0f0f0f; cursor:pointer; font-size:16px; }
+  .sos-icon { width:40px; height:40px; background-color:#e74c3c; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; border:none; animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(231,76,60,0.5)} 70%{box-shadow:0 0 0 10px rgba(231,76,60,0)} 100%{box-shadow:0 0 0 0 rgba(231,76,60,0)} }
+  .profile-icon { width:40px; height:40px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; cursor:pointer; font-size:16px; }
 
   .welcome-section { padding:25px 25px 15px; }
-  .welcome-section h2 { font-size:24px; font-weight:900; }
-  .welcome-section h2 span { color:#00d4ff; }
-  .welcome-section p { color:#aaaaaa; margin-top:5px; font-size:14px; }
+  .welcome-section h2 { font-size:24px; font-weight:900; color:#1a1a1a; }
+  .welcome-section h2 span { color:#00b894; }
+  .welcome-section p { color:#888; margin-top:5px; font-size:14px; }
 
-  /* Search bar */
   .search-wrap { padding:0 25px 20px; }
-  .search-bar { display:flex; align-items:center; gap:12px; background-color:#1a1a1a; border:2px solid #2a2a2a; border-radius:15px; padding:12px 18px; transition:border-color 0.2s; }
-  .search-bar:focus-within { border-color:#00d4ff; }
+  .search-bar { display:flex; align-items:center; gap:12px; background-color:#fffdf7; border:2px solid #ede9df; border-radius:15px; padding:12px 18px; transition:border-color 0.2s; }
+  .search-bar:focus-within { border-color:#00b894; }
   .search-bar span { font-size:18px; }
-  .search-bar input { background:none; border:none; outline:none; color:white; font-size:15px; width:100%; }
-  .search-bar input::placeholder { color:#555; }
+  .search-bar input { background:none; border:none; outline:none; color:#1a1a1a; font-size:15px; width:100%; }
+  .search-bar input::placeholder { color:#bbb; }
 
-  /* Promo banner */
-  .promo-banner { margin:0 25px 20px; background:linear-gradient(135deg,#001a2a,#003a4a); border:1px solid #00d4ff33; border-radius:20px; padding:18px 22px; display:flex; justify-content:space-between; align-items:center; }
-  .promo-banner .promo-text h4 { font-size:15px; font-weight:800; color:#00d4ff; margin-bottom:4px; }
-  .promo-banner .promo-text p { font-size:12px; color:#aaaaaa; }
+  .promo-banner { margin:0 25px 20px; background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border:1px solid #00b89422; border-radius:20px; padding:18px 22px; display:flex; justify-content:space-between; align-items:center; }
+  .promo-banner .promo-text h4 { font-size:15px; font-weight:800; color:#00b894; margin-bottom:4px; }
+  .promo-banner .promo-text p { font-size:12px; color:#666; }
   .promo-banner .promo-icon { font-size:38px; }
 
-  /* Category sections */
   .category { margin-bottom:10px; }
-  .category-title { padding:5px 25px 12px; font-size:13px; font-weight:800; color:#aaaaaa; text-transform:uppercase; letter-spacing:1px; }
+  .category-title { padding:5px 25px 12px; font-size:13px; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:1px; }
 
   .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; padding:0 25px 5px; }
 
-  .service-card { background-color:#1a1a1a; border-radius:18px; padding:20px 10px; text-align:center; cursor:pointer; transition:background-color 0.2s,transform 0.15s; border:2px solid transparent; }
+  .service-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:20px 10px; text-align:center; cursor:pointer; transition:all 0.2s; }
   .service-card:active { transform:scale(0.96); }
-  .service-card:hover { background-color:#00d4ff; color:#0f0f0f; border-color:#00d4ff; }
-  .service-card:hover .service-label { color:#0f0f0f; }
+  .service-card:hover { background-color:#00b894; border-color:#00b894; }
+  .service-card:hover .service-label { color:#fff; }
   .service-card .icon { font-size:32px; }
-  .service-label { margin-top:8px; font-weight:700; font-size:12px; color:#dddddd; line-height:1.3; }
+  .service-label { margin-top:8px; font-weight:700; font-size:12px; color:#555; line-height:1.3; }
 
-  /* Emergency badge on card — same blue hover as all others */
-  .service-card.emergency-tag { border-color:transparent; }
-
-  /* No results */
-  .no-results { text-align:center; padding:40px 25px; color:#555; display:none; }
+  .no-results { text-align:center; padding:40px 25px; color:#bbb; display:none; }
   .no-results .icon { font-size:40px; margin-bottom:10px; }
 
   .spacer { height:90px; }
 
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#1a1a1a; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #333; z-index:100; }
-  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaaaaa; gap:4px; }
-  .nav-item.active { color:#00d4ff; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #ede9df; z-index:100; }
+  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:4px; }
+  .nav-item.active { color:#00b894; }
   .nav-item .nav-icon { font-size:22px; }
 </style>
 
@@ -77,7 +70,6 @@
   <p>What do you need fixed today?</p>
 </div>
 
-<!-- Search -->
 <div class="search-wrap">
   <div class="search-bar">
     <span>🔍</span>
@@ -85,7 +77,6 @@
   </div>
 </div>
 
-<!-- Promo Banner -->
 <div class="promo-banner">
   <div class="promo-text">
     <h4>⚡ 24/7 Emergency Service</h4>
@@ -94,97 +85,54 @@
   <div class="promo-icon">🚀</div>
 </div>
 
-<!-- Services by Category -->
 <div id="allCategories">
-
   <div class="category" data-cat="emergency">
     <div class="category-title">⚡ Emergency Repairs</div>
     <div class="services-grid">
-      <div class="service-card emergency-tag" onclick="bookService('Plumber')" data-name="Plumber">
-        <div class="icon">🔧</div><div class="service-label">Plumber</div>
-      </div>
-      <div class="service-card emergency-tag" onclick="bookService('Electrician')" data-name="Electrician">
-        <div class="icon">⚡</div><div class="service-label">Electrician</div>
-      </div>
-      <div class="service-card emergency-tag" onclick="bookService('Locksmith')" data-name="Locksmith">
-        <div class="icon">🔑</div><div class="service-label">Locksmith</div>
-      </div>
-      <div class="service-card emergency-tag" onclick="bookService('AC Repair')" data-name="AC Repair">
-        <div class="icon">❄️</div><div class="service-label">AC Repair</div>
-      </div>
-      <div class="service-card emergency-tag" onclick="bookService('Appliance Repair')" data-name="Appliance Repair">
-        <div class="icon">🔩</div><div class="service-label">Appliance Repair</div>
-      </div>
-      <div class="service-card emergency-tag" onclick="bookService('TV / Electronics Repair')" data-name="TV / Electronics Repair">
-        <div class="icon">📺</div><div class="service-label">TV Repair</div>
-      </div>
+      <div class="service-card" onclick="bookService('Plumber')" data-name="Plumber"><div class="icon">🔧</div><div class="service-label">Plumber</div></div>
+      <div class="service-card" onclick="bookService('Electrician')" data-name="Electrician"><div class="icon">⚡</div><div class="service-label">Electrician</div></div>
+      <div class="service-card" onclick="bookService('Locksmith')" data-name="Locksmith"><div class="icon">🔑</div><div class="service-label">Locksmith</div></div>
+      <div class="service-card" onclick="bookService('AC Repair')" data-name="AC Repair"><div class="icon">❄️</div><div class="service-label">AC Repair</div></div>
+      <div class="service-card" onclick="bookService('Appliance Repair')" data-name="Appliance Repair"><div class="icon">🔩</div><div class="service-label">Appliance Repair</div></div>
+      <div class="service-card" onclick="bookService('TV / Electronics Repair')" data-name="TV / Electronics Repair"><div class="icon">📺</div><div class="service-label">TV Repair</div></div>
     </div>
   </div>
-
   <div class="category" data-cat="home" style="margin-top:15px;">
     <div class="category-title">🏠 Home Services</div>
     <div class="services-grid">
-      <div class="service-card" onclick="bookService('Home Cleaning')" data-name="Home Cleaning">
-        <div class="icon">🧹</div><div class="service-label">Home Cleaning</div>
-      </div>
-      <div class="service-card" onclick="bookService('Pest Control')" data-name="Pest Control">
-        <div class="icon">🐛</div><div class="service-label">Pest Control</div>
-      </div>
-      <div class="service-card" onclick="bookService('Carpenter')" data-name="Carpenter">
-        <div class="icon">🪛</div><div class="service-label">Carpenter</div>
-      </div>
-      <div class="service-card" onclick="bookService('Painter')" data-name="Painter">
-        <div class="icon">🖌️</div><div class="service-label">Painter</div>
-      </div>
-      <div class="service-card" onclick="bookService('Bathroom Renovation')" data-name="Bathroom Renovation">
-        <div class="icon">🚿</div><div class="service-label">Bathroom Reno</div>
-      </div>
-      <div class="service-card" onclick="bookService('Water Purifier Service')" data-name="Water Purifier Service">
-        <div class="icon">🫧</div><div class="service-label">Water Purifier</div>
-      </div>
+      <div class="service-card" onclick="bookService('Home Cleaning')" data-name="Home Cleaning"><div class="icon">🧹</div><div class="service-label">Home Cleaning</div></div>
+      <div class="service-card" onclick="bookService('Pest Control')" data-name="Pest Control"><div class="icon">🐛</div><div class="service-label">Pest Control</div></div>
+      <div class="service-card" onclick="bookService('Carpenter')" data-name="Carpenter"><div class="icon">🪛</div><div class="service-label">Carpenter</div></div>
+      <div class="service-card" onclick="bookService('Painter')" data-name="Painter"><div class="icon">🖌️</div><div class="service-label">Painter</div></div>
+      <div class="service-card" onclick="bookService('Bathroom Renovation')" data-name="Bathroom Renovation"><div class="icon">🚿</div><div class="service-label">Bathroom Reno</div></div>
+      <div class="service-card" onclick="bookService('Water Purifier Service')" data-name="Water Purifier Service"><div class="icon">🫧</div><div class="service-label">Water Purifier</div></div>
     </div>
   </div>
-
   <div class="category" data-cat="tech" style="margin-top:15px;">
     <div class="category-title">🔒 Tech & Security</div>
     <div class="services-grid">
-      <div class="service-card" onclick="bookService('CCTV Installation')" data-name="CCTV Installation">
-        <div class="icon">🔒</div><div class="service-label">CCTV Install</div>
-      </div>
-      <div class="service-card" onclick="bookService('Packers & Movers')" data-name="Packers & Movers">
-        <div class="icon">📦</div><div class="service-label">Packers & Movers</div>
-      </div>
+      <div class="service-card" onclick="bookService('CCTV Installation')" data-name="CCTV Installation"><div class="icon">🔒</div><div class="service-label">CCTV Install</div></div>
+      <div class="service-card" onclick="bookService('Packers & Movers')" data-name="Packers & Movers"><div class="icon">📦</div><div class="service-label">Packers & Movers</div></div>
     </div>
   </div>
-
 </div>
 
-<!-- No results state -->
 <div class="no-results" id="noResults">
   <div class="icon">🔍</div>
-  <p style="font-size:15px;font-weight:700;">No services found</p>
-  <p style="font-size:13px;margin-top:5px;color:#444;">Try a different search term</p>
+  <p style="font-size:15px;font-weight:700;color:#888;">No services found</p>
+  <p style="font-size:13px;margin-top:5px;color:#bbb;">Try a different search term</p>
 </div>
 
 <div class="spacer"></div>
 
 <nav class="bottom-nav">
-  <div class="nav-item active">
-    <div class="nav-icon">🏠</div><div>Home</div>
-  </div>
-  <div class="nav-item" onclick="window.location.href='bookings.html'">
-    <div class="nav-icon">📋</div><div>Bookings</div>
-  </div>
-  <div class="nav-item" onclick="window.location.href='track.html'">
-    <div class="nav-icon">📍</div><div>Track</div>
-  </div>
-  <div class="nav-item" onclick="window.location.href='profile.html'">
-    <div class="nav-icon">👤</div><div>Profile</div>
-  </div>
+  <div class="nav-item active"><div class="nav-icon">🏠</div><div>Home</div></div>
+  <div class="nav-item" onclick="window.location.href='bookings.html'"><div class="nav-icon">📋</div><div>Bookings</div></div>
+  <div class="nav-item" onclick="window.location.href='track.html'"><div class="nav-icon">📍</div><div>Track</div></div>
+  <div class="nav-item" onclick="window.location.href='profile.html'"><div class="nav-icon">👤</div><div>Profile</div></div>
 </nav>
 
 <script>
-  // Route protection — must be logged in as customer with full data
   if (!localStorage.getItem('phoneNumber') || !localStorage.getItem('userName')) {
     localStorage.removeItem('phoneNumber');
     localStorage.removeItem('userName');
@@ -192,7 +140,6 @@
     localStorage.removeItem('userArea');
     window.location.href = 'login.html';
   }
-  // Block admin from accessing customer pages
   if (localStorage.getItem('adminLoggedIn')) {
     window.location.href = '../admin/index.html';
   }
@@ -209,35 +156,24 @@
 
   function filterServices() {
     const q = document.getElementById('searchInput').value.trim().toLowerCase();
-    const cards = document.querySelectorAll('.service-card');
     const categories = document.querySelectorAll('.category');
     let totalVisible = 0;
-
     if (!q) {
-      // Show everything
       categories.forEach(c => c.style.display = '');
-      cards.forEach(c => c.style.display = '');
+      document.querySelectorAll('.service-card').forEach(c => c.style.display = '');
       document.getElementById('noResults').style.display = 'none';
       return;
     }
-
-    // Hide all categories, then show matching cards
     categories.forEach(cat => {
       const catCards = cat.querySelectorAll('.service-card');
       let catVisible = 0;
       catCards.forEach(card => {
-        const name = card.dataset.name.toLowerCase();
-        if (name.includes(q)) {
-          card.style.display = '';
-          catVisible++;
-          totalVisible++;
-        } else {
-          card.style.display = 'none';
-        }
+        const n = card.dataset.name.toLowerCase();
+        if (n.includes(q)) { card.style.display = ''; catVisible++; totalVisible++; }
+        else card.style.display = 'none';
       });
       cat.style.display = catVisible > 0 ? '' : 'none';
     });
-
     document.getElementById('noResults').style.display = totalVisible === 0 ? 'block' : 'none';
   }
 

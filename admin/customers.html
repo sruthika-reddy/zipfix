@@ -8,33 +8,33 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
 
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; position:sticky; top:0; z-index:100; }
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#111; border-bottom:1px solid #222; position:sticky; top:0; z-index:100; }
   .nav-left { display:flex; align-items:center; gap:14px; }
   .back-btn { font-size:22px; color:#00b894; cursor:pointer; font-weight:700; text-decoration:none; }
   .nav-brand .logo { font-size:20px; font-weight:900; color:#00b894; letter-spacing:2px; }
   .nav-brand .tag  { font-size:11px; color:#aaa; margin-top:1px; }
-  .logout-btn { padding:10px 20px; background-color:#f2efe8; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
+  .logout-btn { padding:10px 20px; background-color:#1a1a1a; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
   .logout-btn:hover { background-color:#e74c3c; color:#fff; }
 
   .content { padding:25px; }
 
   /* Search */
-  .search-bar { display:flex; align-items:center; gap:12px; background-color:#fffdf7; border:2px solid #ede9df; border-radius:15px; padding:12px 18px; margin-bottom:20px; transition:border-color 0.2s; }
+  .search-bar { display:flex; align-items:center; gap:12px; background-color:#111; border:2px solid #222; border-radius:15px; padding:12px 18px; margin-bottom:20px; transition:border-color 0.2s; }
   .search-bar:focus-within { border-color:#00b894; }
   .search-bar span { font-size:18px; }
-  .search-bar input { background:none; border:none; outline:none; color:#1a1a1a; font-size:15px; width:100%; }
+  .search-bar input { background:none; border:none; outline:none; color:#f0f0f0; font-size:15px; width:100%; }
 
   /* Stats row */
   .stats-row { display:flex; gap:12px; margin-bottom:20px; }
-  .stat-mini { flex:1; background-color:#fffdf7; border:1px solid #ede9df; border-radius:16px; padding:16px 14px; text-align:center; }
+  .stat-mini { flex:1; background-color:#111; border:1px solid #222; border-radius:16px; padding:16px 14px; text-align:center; }
   .stat-mini.green { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border-color:#00b89433; }
   .stat-mini h3 { font-size:24px; font-weight:900; color:#00b894; }
   .stat-mini p  { font-size:11px; color:#888; margin-top:4px; }
 
   /* Customer card */
-  .customer-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; align-items:center; gap:15px; }
+  .customer-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; align-items:center; gap:15px; }
   .cc-avatar { width:48px; height:48px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; color:#fff; flex-shrink:0; }
   .cc-info { flex:1; }
   .cc-info h4 { font-size:16px; font-weight:800; }

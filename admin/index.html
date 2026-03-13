@@ -8,13 +8,13 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
 
   /* Navbar */
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; position:sticky; top:0; z-index:100; }
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#111; border-bottom:1px solid #222; position:sticky; top:0; z-index:100; }
   .nav-brand .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
   .nav-brand .tag  { font-size:11px; color:#aaa; margin-top:2px; }
-  .logout-btn { padding:10px 20px; background-color:#f2efe8; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
+  .logout-btn { padding:10px 20px; background-color:#1a1a1a; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
   .logout-btn:hover { background-color:#e74c3c; color:#fff; }
 
   .content { padding:25px; }
@@ -27,7 +27,7 @@
 
   /* Stats */
   .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
-  .stat-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px 16px; }
+  .stat-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px 16px; }
   .stat-card.green  { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border-color:#00b89433; }
   .stat-card.orange { background:linear-gradient(135deg,#fff8e6,#ffecc2); border-color:#e67e0033; }
   .stat-card.blue   { background:linear-gradient(135deg,#eef4ff,#dce8ff); border-color:#3b82f633; }
@@ -40,14 +40,14 @@
   .stat-sub { font-size:12px; color:#888; margin-top:4px; }
 
   /* Section title */
-  .section-title { font-size:16px; font-weight:800; color:#1a1a1a; margin-bottom:12px; }
+  .section-title { font-size:16px; font-weight:800; color:#f0f0f0; margin-bottom:12px; }
 
   /* Quick action nav cards */
   .nav-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
-  .nav-card { background-color:#fffdf7; border:2px solid #ede9df; border-radius:20px; padding:20px 16px; cursor:pointer; transition:all 0.2s; }
+  .nav-card { background-color:#111; border:2px solid #222; border-radius:20px; padding:20px 16px; cursor:pointer; transition:all 0.2s; }
   .nav-card:hover { border-color:#00b894; background-color:#e8f8f4; transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,184,148,0.12); }
   .nav-card .nc-icon { font-size:30px; margin-bottom:8px; }
-  .nav-card h4 { font-size:15px; font-weight:800; color:#1a1a1a; margin-bottom:4px; }
+  .nav-card h4 { font-size:15px; font-weight:800; color:#f0f0f0; margin-bottom:4px; }
   .nav-card p  { font-size:12px; color:#888; }
   .nc-badge { display:inline-flex; align-items:center; margin-top:8px; background-color:#00b894; color:#fff; border-radius:50px; padding:3px 10px; font-size:11px; font-weight:900; }
   .nc-badge.orange { background-color:#e67e00; }
@@ -55,7 +55,7 @@
   .nc-badge.blue   { background-color:#3b82f6; }
 
   /* Recent jobs */
-  .job-item { background-color:#fffdf7; border:1px solid #ede9df; border-radius:16px; padding:16px 18px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
+  .job-item { background-color:#111; border:1px solid #222; border-radius:16px; padding:16px 18px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
   .ji-left h4 { font-size:15px; font-weight:800; }
   .ji-left p  { font-size:12px; color:#888; margin-top:3px; }
   .ji-right { text-align:right; }

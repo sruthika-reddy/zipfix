@@ -3,158 +3,219 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix — Book a Worker</title>
+  <title>ZipFix — Book Service</title>
 </head>
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
-  .back-btn { font-size:22px; cursor:pointer; color:#00b894; }
-  .navbar h3 { font-size:20px; font-weight:800; color:#1a1a1a; }
-  .content { padding:25px; }
-  .service-badge { display:inline-flex; align-items:center; gap:10px; background-color:#e8f8f4; border:2px solid #00b894; border-radius:50px; padding:10px 20px; margin-bottom:25px; }
-  .service-badge .icon { font-size:24px; }
-  .service-badge p { font-size:16px; font-weight:800; color:#00b894; }
-  .service-note { background-color:#f0faf6; border:1px solid #00b89433; border-radius:12px; padding:12px 16px; margin-bottom:20px; font-size:13px; color:#00b894; display:none; }
-  .input-group { margin-bottom:22px; }
-  .input-group label { display:block; font-size:13px; font-weight:700; color:#888; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
-  .input-group input, .input-group textarea {
-    width:100%; padding:15px 20px; background-color:#fffdf7; border:2px solid #ede9df;
-    border-radius:15px; color:#1a1a1a; font-size:16px; outline:none; resize:none; transition:border-color 0.2s;
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
+
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
+  .back-btn { font-size:22px; color:#00b894; cursor:pointer; background:none; border:none; }
+  .logo { font-size:20px; font-weight:900; color:#00b894; letter-spacing:2px; }
+
+  .service-hero { text-align:center; padding:30px 25px 20px; }
+  .service-icon-big { font-size:60px; margin-bottom:10px; }
+  .service-name { font-size:26px; font-weight:900; color:#f0f0f0; }
+  .service-tag { display:inline-block; background-color:#0d2b24; color:#00b894; border:1px solid #00b89444; border-radius:50px; padding:6px 16px; font-size:13px; font-weight:700; margin-top:10px; }
+
+  .form-section { padding:0 25px 30px; }
+  .field-label { font-size:12px; font-weight:800; color:#555; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; margin-top:20px; display:block; }
+  textarea, input[type="text"] {
+    width:100%; padding:16px 18px; background-color:#1a1a1a; border:2px solid #222;
+    border-radius:16px; color:#f0f0f0; font-size:15px; outline:none;
+    transition:border-color 0.2s; font-family:'Segoe UI',sans-serif; resize:none;
   }
-  .input-group input:focus, .input-group textarea:focus { border-color:#00b894; }
-  .input-group input.err, .input-group textarea.err { border-color:#e74c3c; }
+  textarea:focus, input[type="text"]:focus { border-color:#00b894; }
+  textarea.err, input.err { border-color:#e74c3c; }
   .field-err { color:#e74c3c; font-size:12px; margin-top:6px; display:none; }
-  .urgency-options { display:flex; gap:10px; flex-wrap:wrap; }
-  .urgency-btn { padding:12px 20px; border-radius:50px; border:2px solid #ede9df; background:#fffdf7; color:#555; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; }
-  .urgency-btn.active { border-color:#00b894; color:#00b894; background-color:#e8f8f4; }
-  .urgency-btn.emergency.active { border-color:#e74c3c; color:#e74c3c; background-color:#fff0ee; }
-  .price-estimate { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px; margin-bottom:22px; }
-  .price-estimate h4 { font-size:13px; color:#888; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
-  .price-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-size:15px; color:#555; }
-  .price-row.total { border-top:1px solid #ede9df; padding-top:10px; margin-top:8px; font-weight:800; font-size:17px; color:#1a1a1a; }
-  .price-row .amount { color:#00b894; font-weight:800; }
-  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
-  .btn-main:hover { background-color:#009e7f; }
+
+  /* Location row */
+  .location-row { display:flex; gap:10px; align-items:flex-start; }
+  .location-row input { flex:1; }
+  .gps-btn { flex-shrink:0; padding:16px 14px; background-color:#0d2b24; color:#00b894; border:2px solid #00b89444; border-radius:16px; font-size:18px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .gps-btn:hover { background-color:#00b894; color:#fff; }
+  .gps-btn.loading { background-color:#1a3a30; color:#555; cursor:not-allowed; }
+  .gps-status { font-size:12px; color:#00b894; margin-top:6px; min-height:16px; }
+
+  /* Urgency */
+  .urgency-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .urgency-card { border:2px solid #222; border-radius:16px; padding:16px 10px; text-align:center; cursor:pointer; transition:all 0.2s; }
+  .urgency-card:hover { border-color:#555; }
+  .urgency-card.selected.normal    { border-color:#00b894; background-color:#0d2b24; }
+  .urgency-card.selected.urgent    { border-color:#e67e00; background-color:#2b1a00; }
+  .urgency-card.selected.emergency { border-color:#e74c3c; background-color:#2b0d0d; }
+  .urgency-icon { font-size:28px; margin-bottom:8px; }
+  .urgency-name { font-size:13px; font-weight:800; }
+  .urgency-price { font-size:11px; color:#555; margin-top:4px; }
+
+  /* Price card */
+  .price-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px 22px; margin-top:20px; }
+  .price-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:14px; color:#555; }
+  .price-row:last-child { margin-bottom:0; padding-top:12px; border-top:1px solid #222; font-size:18px; font-weight:900; color:#f0f0f0; }
+  .price-row span { color:#f0f0f0; }
+  .price-row:last-child span { color:#00b894; }
+
+  .btn-find { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:18px; font-weight:900; border:none; border-radius:18px; cursor:pointer; margin-top:22px; transition:background-color 0.2s; letter-spacing:1px; }
+  .btn-find:hover { background-color:#009e7f; }
+  .spacer { height:30px; }
 </style>
 
 <nav class="navbar">
-  <div class="back-btn" onclick="window.location.href='dashboard.html'">←</div>
-  <h3 id="navTitle">Book a Worker</h3>
+  <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
+  <div class="logo">ZIPFIX</div>
+  <div style="width:30px"></div>
 </nav>
 
-<div class="content">
-  <div class="service-badge">
-    <div class="icon" id="serviceIcon">🔧</div>
-    <p id="serviceName">Plumber</p>
+<div class="service-hero">
+  <div class="service-icon-big" id="serviceIcon">🔧</div>
+  <div class="service-name" id="serviceName">Service</div>
+  <div class="service-tag">⚡ Available 24/7</div>
+</div>
+
+<div class="form-section">
+  <span class="field-label">Describe the problem</span>
+  <textarea id="problem" rows="3" placeholder="e.g. Pipe burst near kitchen sink, water leaking..." oninput="clearField('problem','errProblem')"></textarea>
+  <div class="field-err" id="errProblem">Please describe the problem</div>
+
+  <span class="field-label">Your location</span>
+  <div class="location-row">
+    <input type="text" id="address" placeholder="Enter address or use GPS 📍" oninput="clearField('address','errAddress')" />
+    <button class="gps-btn" id="gpsBtn" onclick="getGPS()" title="Detect my location">📍</button>
   </div>
+  <div class="gps-status" id="gpsStatus"></div>
+  <div class="field-err" id="errAddress">Please enter your address</div>
 
-  <div class="service-note" id="serviceNote"></div>
-
-  <div class="input-group">
-    <label>Describe Your Problem</label>
-    <textarea id="problem" rows="4" placeholder="Describe what you need help with..." oninput="clearField('problem','errProblem')"></textarea>
-    <div class="field-err" id="errProblem">Please describe your problem</div>
-  </div>
-
-  <div class="input-group">
-    <label>Your Address</label>
-    <input type="text" id="address" placeholder="Enter your full address" oninput="clearField('address','errAddress')" />
-    <div class="field-err" id="errAddress">Please enter your address</div>
-  </div>
-
-  <div class="input-group">
-    <label>How Urgent Is This?</label>
-    <div class="urgency-options">
-      <button class="urgency-btn active" onclick="selectUrgency(this,'normal')">🕐 Normal</button>
-      <button class="urgency-btn" onclick="selectUrgency(this,'urgent')">⚡ Urgent</button>
-      <button class="urgency-btn emergency" onclick="selectUrgency(this,'emergency')">🚨 Emergency</button>
+  <span class="field-label">Urgency</span>
+  <div class="urgency-grid">
+    <div class="urgency-card selected normal" id="urg-normal" onclick="selectUrgency('normal')">
+      <div class="urgency-icon">🟢</div>
+      <div class="urgency-name">Normal</div>
+      <div class="urgency-price" id="price-normal">₹—</div>
+    </div>
+    <div class="urgency-card urgent" id="urg-urgent" onclick="selectUrgency('urgent')">
+      <div class="urgency-icon">🟡</div>
+      <div class="urgency-name">Urgent</div>
+      <div class="urgency-price" id="price-urgent">₹—</div>
+    </div>
+    <div class="urgency-card emergency" id="urg-emergency" onclick="selectUrgency('emergency')">
+      <div class="urgency-icon">🔴</div>
+      <div class="urgency-name">Emergency</div>
+      <div class="urgency-price" id="price-emergency">₹—</div>
     </div>
   </div>
 
-  <div class="price-estimate">
-    <h4>Price Estimate</h4>
-    <div class="price-row"><span>Service Fee</span><span class="amount" id="serviceFee">₹299</span></div>
-    <div class="price-row"><span>Platform Fee</span><span class="amount">₹49</span></div>
-    <div class="price-row total"><span>Total Estimate</span><span class="amount" id="totalFee">₹348</span></div>
+  <div class="price-card">
+    <div class="price-row">Service base fee <span id="displayBase">₹—</span></div>
+    <div class="price-row">Urgency charges <span id="displayExtra">₹0</span></div>
+    <div class="price-row">Total Estimate <span id="displayTotal">₹—</span></div>
   </div>
 
-  <button class="btn-main" onclick="findWorker()">🔍 Find Worker Now</button>
+  <button class="btn-find" onclick="findWorker()">🔍 Find Worker Now</button>
+  <div class="spacer"></div>
 </div>
 
 <script>
   if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
   if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-  const SERVICE_CONFIG = {
-    'Plumber':                { icon:'🔧', price:299, placeholder:'e.g. Water pipe leaking, tap not working...', note:null },
-    'Electrician':            { icon:'⚡', price:349, placeholder:'e.g. Power outage, short circuit, wiring issue...', note:null },
-    'Locksmith':              { icon:'🔑', price:249, placeholder:'e.g. Locked out, broken lock, key duplication...', note:null },
-    'AC Repair':              { icon:'❄️', price:499, placeholder:'e.g. AC not cooling, strange noise, water leaking...', note:null },
-    'Carpenter':              { icon:'🪛', price:299, placeholder:'e.g. Door not closing, furniture assembly, shelf fixing...', note:null },
-    'Painter':                { icon:'🖌️', price:399, placeholder:'e.g. Room painting, wall touch-up, waterproofing...', note:null },
-    'Pest Control':           { icon:'🐛', price:499, placeholder:'e.g. Cockroaches, rats, mosquitoes, bed bugs...', note:'🌿 Eco-friendly chemicals used. Keep pets away for 2 hours after service.' },
-    'Home Cleaning':          { icon:'🧹', price:399, placeholder:'e.g. Deep clean, kitchen cleaning, bathroom scrub...', note:'✨ Bring your own cleaning products or our team can supply them (+₹50).' },
-    'TV / Electronics Repair':{ icon:'📺', price:349, placeholder:'e.g. TV no display, laptop not charging, speaker issue...', note:null },
-    'Water Purifier Service': { icon:'🫧', price:299, placeholder:'e.g. Filter change, low water flow, purifier not working...', note:null },
-    'Appliance Repair':       { icon:'🔩', price:349, placeholder:'e.g. Washing machine, fridge, microwave, dishwasher...', note:null },
-    'Bathroom Renovation':    { icon:'🚿', price:799, placeholder:'e.g. Tile replacement, shower fitting, sink installation...', note:'🏗️ This is a major service. Worker will assess and provide final quote on-site.' },
-    'Packers & Movers':       { icon:'📦', price:999, placeholder:'e.g. Moving to new flat, packing fragile items, furniture shifting...', note:'🚛 Final price depends on number of items and distance. Quote given on-site.' },
-    'CCTV Installation':      { icon:'🔒', price:599, placeholder:'e.g. 2-camera setup, DVR connection, night vision cameras...', note:'📹 Price covers installation only. Camera hardware sold separately if needed.' },
-  };
+  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
+  const prices = { Plumber:{base:349,urgent:150,emergency:300}, Electrician:{base:299,urgent:150,emergency:300}, Locksmith:{base:249,urgent:100,emergency:200}, 'AC Repair':{base:499,urgent:200,emergency:400}, Carpenter:{base:399,urgent:150,emergency:300}, Painter:{base:549,urgent:200,emergency:400}, 'Pest Control':{base:799,urgent:300,emergency:600}, 'Home Cleaning':{base:499,urgent:200,emergency:400}, 'TV / Electronics Repair':{base:349,urgent:150,emergency:300}, 'Water Purifier Service':{base:299,urgent:100,emergency:200}, 'Appliance Repair':{base:399,urgent:150,emergency:300}, 'Bathroom Renovation':{base:999,urgent:400,emergency:800}, 'Packers & Movers':{base:1499,urgent:500,emergency:1000}, 'CCTV Installation':{base:699,urgent:300,emergency:600} };
 
   const urlParams = new URLSearchParams(window.location.search);
-  const service = decodeURIComponent(urlParams.get('service') || 'Plumber');
-  const config  = SERVICE_CONFIG[service] || SERVICE_CONFIG['Plumber'];
-
-  document.getElementById('serviceName').innerText  = service;
-  document.getElementById('serviceIcon').innerText  = config.icon;
-  document.getElementById('navTitle').innerText     = service;
-  document.getElementById('problem').placeholder    = config.placeholder;
-
-  if (config.note) {
-    const noteEl = document.getElementById('serviceNote');
-    noteEl.innerText = config.note;
-    noteEl.style.display = 'block';
-  }
-
-  let basePrice = config.price;
-  document.getElementById('serviceFee').innerText = '₹' + basePrice;
-  document.getElementById('totalFee').innerText   = '₹' + (basePrice + 49);
+  const service   = urlParams.get('service') || localStorage.getItem('bookingService') || 'Plumber';
+  const serviceData = prices[service] || { base:349, urgent:150, emergency:300 };
   let selectedUrgency = 'normal';
 
-  function selectUrgency(btn, urgency) {
-    document.querySelectorAll('.urgency-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedUrgency = urgency;
-    let fee = basePrice;
-    if (urgency === 'emergency') fee = basePrice * 2;
-    else if (urgency === 'urgent') fee = Math.round(basePrice * 1.5);
-    document.getElementById('serviceFee').innerText = '₹' + fee;
-    document.getElementById('totalFee').innerText   = '₹' + (fee + 49);
+  document.getElementById('serviceIcon').innerText = icons[service] || '🔧';
+  document.getElementById('serviceName').innerText = service;
+  document.getElementById('price-normal').innerText    = '₹' + serviceData.base;
+  document.getElementById('price-urgent').innerText    = '₹' + (serviceData.base + serviceData.urgent);
+  document.getElementById('price-emergency').innerText = '₹' + (serviceData.base + serviceData.emergency);
+  updatePriceDisplay();
+
+  function selectUrgency(u) {
+    selectedUrgency = u;
+    document.querySelectorAll('.urgency-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('urg-' + u).classList.add('selected');
+    updatePriceDisplay();
   }
 
-  function clearField(inputId, errId) {
-    document.getElementById(inputId).classList.remove('err');
+  function updatePriceDisplay() {
+    const base  = serviceData.base;
+    const extra = selectedUrgency === 'normal' ? 0 : selectedUrgency === 'urgent' ? serviceData.urgent : serviceData.emergency;
+    document.getElementById('displayBase').innerText  = '₹' + base;
+    document.getElementById('displayExtra').innerText = extra ? '+₹' + extra : '₹0';
+    document.getElementById('displayTotal').innerText = '₹' + (base + extra);
+  }
+
+  // GPS location detection
+  function getGPS() {
+    const btn = document.getElementById('gpsBtn');
+    const status = document.getElementById('gpsStatus');
+    if (!navigator.geolocation) {
+      status.style.color = '#e74c3c';
+      status.innerText = '❌ GPS not supported on this browser';
+      return;
+    }
+    btn.classList.add('loading');
+    btn.innerText = '⏳';
+    status.style.color = '#00b894';
+    status.innerText = '📡 Detecting your location...';
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        // Reverse geocode using free API
+        try {
+          const res  = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+          const data = await res.json();
+          const addr = data.display_name || (lat.toFixed(4) + ', ' + lng.toFixed(4));
+          document.getElementById('address').value = addr;
+          localStorage.setItem('bookingLat', lat);
+          localStorage.setItem('bookingLng', lng);
+          status.innerText = '✅ Location detected!';
+          clearField('address','errAddress');
+        } catch(e) {
+          document.getElementById('address').value = lat.toFixed(5) + ', ' + lng.toFixed(5);
+          status.innerText = '✅ Coordinates saved';
+        }
+        btn.classList.remove('loading');
+        btn.innerText = '📍';
+      },
+      (err) => {
+        btn.classList.remove('loading');
+        btn.innerText = '📍';
+        status.style.color = '#e74c3c';
+        const msgs = { 1:'❌ Location permission denied. Enable in browser settings.', 2:'❌ Location unavailable.', 3:'❌ Location request timed out.' };
+        status.innerText = msgs[err.code] || '❌ Could not get location';
+      },
+      { timeout:10000, enableHighAccuracy:true }
+    );
+  }
+
+  function clearField(id, errId) {
+    document.getElementById(id).classList.remove('err');
     document.getElementById(errId).style.display = 'none';
   }
 
   function findWorker() {
     const problem = document.getElementById('problem').value.trim();
     const address = document.getElementById('address').value.trim();
-    let hasErr = false;
-    if (!problem) { document.getElementById('problem').classList.add('err'); document.getElementById('errProblem').style.display = 'block'; hasErr = true; }
-    if (!address) { document.getElementById('address').classList.add('err'); document.getElementById('errAddress').style.display = 'block'; hasErr = true; }
-    if (hasErr) return;
-    const urgencyMultiplier = selectedUrgency === 'emergency' ? 2 : selectedUrgency === 'urgent' ? 1.5 : 1;
-    const finalAmount = Math.round(basePrice * urgencyMultiplier) + 49;
-    localStorage.setItem('bookingService', service);
-    localStorage.setItem('bookingProblem', problem);
-    localStorage.setItem('bookingAddress', address);
-    localStorage.setItem('bookingUrgency', selectedUrgency);
-    localStorage.setItem('bookingAmount',  finalAmount);
-    localStorage.setItem('bookingIcon',    config.icon);
+    let ok = true;
+    if (!problem) { document.getElementById('problem').classList.add('err'); document.getElementById('errProblem').style.display='block'; ok=false; }
+    if (!address) { document.getElementById('address').classList.add('err'); document.getElementById('errAddress').style.display='block'; ok=false; }
+    if (!ok) return;
+
+    const base  = serviceData.base;
+    const extra = selectedUrgency === 'normal' ? 0 : selectedUrgency === 'urgent' ? serviceData.urgent : serviceData.emergency;
+    localStorage.setItem('bookingService',  service);
+    localStorage.setItem('bookingProblem',  problem);
+    localStorage.setItem('bookingAddress',  address);
+    localStorage.setItem('bookingUrgency',  selectedUrgency);
+    localStorage.setItem('bookingAmount',   base + extra);
+    localStorage.setItem('bookingIcon',     icons[service] || '🔧');
     window.location.href = 'finding.html';
   }
 </script>

@@ -8,25 +8,26 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .login-box { background-color:#fffdf7; border:1px solid #ede9df; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .login-box { background-color:#111; border:1px solid #222; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 40px rgba(0,0,0,0.6); }
   .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:10px; }
-  .tagline { font-size:14px; color:#aaa; margin-bottom:40px; }
-  h2 { font-size:24px; font-weight:800; margin-bottom:10px; color:#1a1a1a; }
-  .subtitle { font-size:14px; color:#888; margin-bottom:20px; }
+  .tagline { font-size:14px; color:#555; margin-bottom:40px; }
+  h2 { font-size:24px; font-weight:800; margin-bottom:10px; color:#f0f0f0; }
+  .subtitle { font-size:14px; color:#555; margin-bottom:20px; }
   .phone-wrap { margin-bottom:6px; }
-  .phone-input { display:flex; align-items:center; background-color:#f2efe8; border-radius:15px; padding:5px 15px; border:2px solid #ede9df; transition:border-color 0.2s; }
+  .phone-input { display:flex; align-items:center; background-color:#1a1a1a; border-radius:15px; padding:5px 15px; border:2px solid #222; transition:border-color 0.2s; }
   .phone-input:focus-within { border-color:#00b894; }
   .phone-input.err { border-color:#e74c3c !important; }
-  .country-code { font-size:16px; font-weight:700; color:#00b894; padding-right:10px; border-right:1px solid #ccc8bc; margin-right:10px; }
-  .phone-input input { background:none; border:none; outline:none; color:#1a1a1a; font-size:18px; width:100%; padding:12px 0; }
-  .field-err { color:#e74c3c; font-size:12px; margin-bottom:14px; display:none; text-align:left; }
+  .country-code { font-size:16px; font-weight:700; color:#00b894; padding-right:10px; border-right:1px solid #333; margin-right:10px; }
+  .phone-input input { background:none; border:none; outline:none; color:#f0f0f0; font-size:18px; width:100%; padding:12px 0; }
+  .field-err { color:#e74c3c; font-size:12px; margin-bottom:14px; display:none; text-align:left; padding-left:4px; }
   .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; margin-top:10px; transition:background-color 0.2s; }
   .btn-main:hover { background-color:#009e7f; }
-  .btn-main:disabled { background-color:#ccc; cursor:not-allowed; }
-  .register-link { font-size:14px; color:#888; margin-bottom:20px; }
+  .btn-main:disabled { background-color:#1a3a30; color:#444; cursor:not-allowed; }
+  .status-msg { font-size:14px; color:#00b894; margin-bottom:12px; min-height:20px; }
+  .register-link { font-size:14px; color:#555; margin-bottom:20px; }
   .register-link span { color:#00b894; cursor:pointer; font-weight:700; }
-  .terms { font-size:12px; color:#aaa; }
+  .terms { font-size:12px; color:#333; }
   .terms span { color:#00b894; cursor:pointer; }
 </style>
 
@@ -38,34 +39,75 @@
   <div class="phone-wrap">
     <div class="phone-input" id="phoneWrap">
       <div class="country-code">+91</div>
-      <input type="number" id="phoneNumber" placeholder="98765 43210" maxlength="10" oninput="clearErr()" />
+      <input type="tel" id="phoneNumber" placeholder="98765 43210" maxlength="10" oninput="clearErr()" />
     </div>
-    <div class="field-err" id="phoneErr">Please enter a valid 10-digit phone number</div>
+    <div class="field-err" id="phoneErr">Please enter a valid 10-digit number</div>
   </div>
+  <div class="status-msg" id="statusMsg"></div>
   <button class="btn-main" id="sendBtn" onclick="sendOTP()">Send OTP</button>
   <p class="register-link">New to ZipFix? <span onclick="window.location.href='register.html'">Create Account</span></p>
-  <p class="terms">By continuing you agree to our <span>Terms of Service</span> and <span>Privacy Policy</span></p>
+  <p class="terms">By continuing you agree to our <span>Terms of Service</span></p>
 </div>
 
 <script>
+  const FAST2SMS_KEY = 'bkTWOPw5g2Yl8c9NazSyEoZ3jim4eMB70rfRxnQDhKUFtG6I1uBm6TCK8d1VMt3PIrwous7D0LWqcgQ5'; // 🔑 replace with real key
+
   if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
     window.location.href = 'dashboard.html';
   }
+
   function clearErr() {
     document.getElementById('phoneWrap').classList.remove('err');
     document.getElementById('phoneErr').style.display = 'none';
+    document.getElementById('statusMsg').innerText = '';
   }
-  function sendOTP() {
+
+  async function sendOTP() {
     const phone = document.getElementById('phoneNumber').value.trim();
-    if (phone.length < 10) {
+    if (phone.length < 10 || !/^\d{10}$/.test(phone)) {
       document.getElementById('phoneWrap').classList.add('err');
       document.getElementById('phoneErr').style.display = 'block';
       return;
     }
+
+    const btn = document.getElementById('sendBtn');
+    btn.disabled = true;
+    btn.innerText = 'Sending OTP...';
+    document.getElementById('statusMsg').innerText = '';
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
     localStorage.setItem('phoneNumber', phone);
-    alert('OTP sent to +91 ' + phone);
-    window.location.href = 'otp.html';
+    localStorage.setItem('pendingOTP', otp);
+    localStorage.setItem('otpExpiry', Date.now() + 5 * 60 * 1000); // 5 min expiry
+
+    const sent = await sendSMS(phone, otp);
+
+    if (sent) {
+      document.getElementById('statusMsg').innerText = '✅ OTP sent to +91 ' + phone;
+      setTimeout(() => { window.location.href = 'otp.html'; }, 800);
+    } else {
+      // Fallback: still go to OTP page (dev mode shows OTP in console)
+      console.log('📱 OTP (dev fallback):', otp);
+      document.getElementById('statusMsg').innerText = '📱 OTP: ' + otp + ' (dev mode)';
+      setTimeout(() => { window.location.href = 'otp.html'; }, 1200);
+    }
   }
+
+  async function sendSMS(phone, otp) {
+    if (FAST2SMS_KEY === 'YOUR_FAST2SMS_API_KEY') return false;
+    try {
+      const msg = 'Your ZipFix OTP is ' + otp + '. Valid for 5 minutes. Do not share with anyone.';
+      const res = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+        method: 'POST',
+        headers: { 'authorization': FAST2SMS_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ route: 'q', message: msg, language: 'english', flash: 0, numbers: phone })
+      });
+      const data = await res.json();
+      return data.return === true;
+    } catch (e) { return false; }
+  }
+
   document.getElementById('phoneNumber').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') sendOTP();
   });

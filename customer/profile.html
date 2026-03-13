@@ -8,26 +8,26 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
 
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; }
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 30px; background-color:#111; border-bottom:1px solid #222; }
   .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
   .back-btn { background:none; border:none; color:#00b894; font-size:22px; cursor:pointer; }
 
   .avatar-section { display:flex; flex-direction:column; align-items:center; padding:40px 30px 30px; gap:12px; }
   .avatar-circle { width:90px; height:90px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:38px; font-weight:900; color:#fff; }
-  .avatar-name { font-size:22px; font-weight:900; color:#1a1a1a; }
+  .avatar-name { font-size:22px; font-weight:900; color:#f0f0f0; }
   .avatar-area { font-size:14px; color:#888; }
 
   .info-section { padding:0 25px; display:flex; flex-direction:column; gap:12px; }
-  .info-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; display:flex; align-items:center; gap:15px; }
+  .info-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 20px; display:flex; align-items:center; gap:15px; }
   .info-icon { font-size:22px; width:36px; text-align:center; }
   .info-label { font-size:12px; color:#888; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
-  .info-value { font-size:16px; font-weight:700; color:#1a1a1a; }
+  .info-value { font-size:16px; font-weight:700; color:#f0f0f0; }
 
   .section-title { padding:22px 25px 10px; font-size:13px; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:1px; }
 
-  .support-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; display:flex; align-items:center; gap:15px; margin:0 25px 12px; text-decoration:none; color:#1a1a1a; cursor:pointer; }
+  .support-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 20px; display:flex; align-items:center; gap:15px; margin:0 25px 12px; text-decoration:none; color:#f0f0f0; cursor:pointer; }
   .support-card:hover { border-color:#00b894; }
   .coming-soon { font-size:11px; color:#bbb; margin-top:3px; }
 
@@ -36,7 +36,7 @@
 
   .spacer { height:100px; }
 
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #ede9df; z-index:100; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#111; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #222; z-index:100; }
   .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:4px; }
   .nav-item.active { color:#00b894; }
   .nav-item .nav-icon { font-size:22px; }
@@ -75,9 +75,9 @@
 
 <div class="section-title">Customer Support</div>
 
-<a class="support-card" href="mailto:support@zipfix.com">
+<a class="support-card" href="/cdn-cgi/l/email-protection#9feceaefeff0edebdfe5f6eff9f6e7b1fcf0f2">
   <div class="info-icon">✉️</div>
-  <div><div class="info-label">Email Us</div><div class="info-value">support@zipfix.com</div></div>
+  <div><div class="info-label">Email Us</div><div class="info-value"><span class="__cf_email__" data-cfemail="d7a4a2a7a7b8a5a397adbea7b1beaff9b4b8ba">[email&#160;protected]</span></div></div>
 </a>
 <div class="support-card" onclick="alert('📞 Coming soon!')">
   <div class="info-icon">📞</div>
@@ -95,7 +95,7 @@
   <div class="nav-item active"><div class="nav-icon">👤</div><div>Profile</div></div>
 </nav>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Auth guard
   var p = localStorage.getItem('phoneNumber');
   var n = localStorage.getItem('userName');
@@ -136,13 +136,4 @@
       localStorage.removeItem('workerInitial');
       localStorage.removeItem('assignedWorkerId');
       localStorage.removeItem('paymentMethod');
-      localStorage.removeItem('paymentStatus');
-      localStorage.removeItem('amountPaid');
-      localStorage.removeItem('lastRating');
-      localStorage.removeItem('lastFeedback');
-      window.location.href = 'landing.html';
-    }
-  }
-</script>
-</body>
-</html>
+      localStorage.remove

@@ -9,25 +9,34 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
   body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
+
   .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; }
   .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
   .back-btn { background:none; border:none; color:#00b894; font-size:22px; cursor:pointer; }
+
   .avatar-section { display:flex; flex-direction:column; align-items:center; padding:40px 30px 30px; gap:12px; }
   .avatar-circle { width:90px; height:90px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:38px; font-weight:900; color:#fff; }
   .avatar-name { font-size:22px; font-weight:900; color:#1a1a1a; }
   .avatar-area { font-size:14px; color:#888; }
-  .info-section { padding:0 30px; display:flex; flex-direction:column; gap:15px; }
-  .info-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 22px; display:flex; align-items:center; gap:16px; }
-  .info-icon { font-size:24px; width:40px; text-align:center; }
+
+  .info-section { padding:0 25px; display:flex; flex-direction:column; gap:12px; }
+  .info-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; display:flex; align-items:center; gap:15px; }
+  .info-icon { font-size:22px; width:36px; text-align:center; }
   .info-label { font-size:12px; color:#888; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
   .info-value { font-size:16px; font-weight:700; color:#1a1a1a; }
-  .support-section-title { padding:25px 30px 12px; font-size:13px; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:1px; }
-  .support-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 22px; display:flex; align-items:center; gap:16px; text-decoration:none; color:#1a1a1a; }
-  .coming-soon { font-size:11px; color:#bbb; font-weight:700; margin-top:3px; }
-  .logout-btn { margin:25px 30px 0; width:calc(100% - 60px); padding:18px; background-color:#e74c3c; color:#fff; font-size:16px; font-weight:800; border:none; border-radius:15px; cursor:pointer; letter-spacing:1px; transition:background-color 0.2s; }
+
+  .section-title { padding:22px 25px 10px; font-size:13px; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:1px; }
+
+  .support-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; display:flex; align-items:center; gap:15px; margin:0 25px 12px; text-decoration:none; color:#1a1a1a; cursor:pointer; }
+  .support-card:hover { border-color:#00b894; }
+  .coming-soon { font-size:11px; color:#bbb; margin-top:3px; }
+
+  .logout-btn { margin:20px 25px 0; width:calc(100% - 50px); padding:18px; background-color:#e74c3c; color:#fff; font-size:16px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
   .logout-btn:hover { background-color:#c0392b; }
+
   .spacer { height:100px; }
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #ede9df; }
+
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #ede9df; z-index:100; }
   .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:4px; }
   .nav-item.active { color:#00b894; }
   .nav-item .nav-icon { font-size:22px; }
@@ -41,8 +50,8 @@
 
 <div class="avatar-section">
   <div class="avatar-circle" id="avatarInitial">?</div>
-  <div class="avatar-name" id="avatarName">—</div>
-  <div class="avatar-area" id="avatarArea">📍 —</div>
+  <div class="avatar-name"   id="avatarName">—</div>
+  <div class="avatar-area"   id="avatarArea">📍 —</div>
 </div>
 
 <div class="info-section">
@@ -64,17 +73,15 @@
   </div>
 </div>
 
-<div class="support-section-title">Customer Service</div>
+<div class="section-title">Customer Support</div>
 
-<div class="info-section">
-  <a class="support-card" href="mailto:support@zipfix.in">
-    <div class="info-icon">✉️</div>
-    <div><div class="info-label">Email Us</div><div class="info-value">support@zipfix.in</div></div>
-  </a>
-  <div class="info-card">
-    <div class="info-icon">📞</div>
-    <div><div class="info-label">Call Us</div><div class="info-value">—</div><div class="coming-soon">Phone number coming soon</div></div>
-  </div>
+<a class="support-card" href="mailto:support@zipfix.com">
+  <div class="info-icon">✉️</div>
+  <div><div class="info-label">Email Us</div><div class="info-value">support@zipfix.com</div></div>
+</a>
+<div class="support-card" onclick="alert('📞 Coming soon!')">
+  <div class="info-icon">📞</div>
+  <div><div class="info-label">Call Us</div><div class="info-value">—</div><div class="coming-soon">Helpline number coming soon</div></div>
 </div>
 
 <button class="logout-btn" onclick="logoutUser()">🚪 Logout</button>
@@ -89,10 +96,15 @@
 </nav>
 
 <script>
+  // Auth guard
   var p = localStorage.getItem('phoneNumber');
   var n = localStorage.getItem('userName');
-  if (!p || !n) { localStorage.clear(); window.location.href = 'login.html'; }
+  if (!p || !n) {
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }
 
+  // Fill profile data
   var name  = localStorage.getItem('userName')    || '';
   var phone = localStorage.getItem('phoneNumber') || '';
   var email = localStorage.getItem('userEmail')   || '';
@@ -106,10 +118,29 @@
   document.getElementById('infoEmail').innerText     = email || '—';
   document.getElementById('infoArea').innerText      = area  || '—';
 
+  // Logout — clears customer keys only, redirects to landing
   function logoutUser() {
     if (confirm('Are you sure you want to logout?')) {
-      localStorage.clear();
-      window.location.href = '../landing.html';
+      localStorage.removeItem('userName');
+      localStorage.removeItem('phoneNumber');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userArea');
+      localStorage.removeItem('bookingService');
+      localStorage.removeItem('bookingProblem');
+      localStorage.removeItem('bookingAddress');
+      localStorage.removeItem('bookingUrgency');
+      localStorage.removeItem('bookingAmount');
+      localStorage.removeItem('bookingIcon');
+      localStorage.removeItem('activeJobId');
+      localStorage.removeItem('workerName');
+      localStorage.removeItem('workerInitial');
+      localStorage.removeItem('assignedWorkerId');
+      localStorage.removeItem('paymentMethod');
+      localStorage.removeItem('paymentStatus');
+      localStorage.removeItem('amountPaid');
+      localStorage.removeItem('lastRating');
+      localStorage.removeItem('lastFeedback');
+      window.location.href = 'landing.html';
     }
   }
 </script>

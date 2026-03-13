@@ -8,32 +8,41 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
+
+  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; gap:15px; }
   .back-btn { font-size:22px; cursor:pointer; color:#00b894; }
-  .navbar h3 { font-size:20px; font-weight:800; color:#1a1a1a; }
-  .content { padding:25px; }
-  .job-summary { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:25px; margin-bottom:20px; }
-  .job-summary h4 { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
-  .job-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f0ede6; font-size:15px; }
-  .job-row:last-child { border-bottom:none; }
-  .job-row .label { color:#888; }
-  .job-row .value { font-weight:700; color:#1a1a1a; }
-  .job-row.total { margin-top:5px; font-size:18px; }
-  .job-row.total .value { color:#00b894; font-size:22px; }
-  .payment-methods h4 { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
-  .method-card { background-color:#fffdf7; border:2px solid #ede9df; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; align-items:center; gap:15px; cursor:pointer; transition:all 0.2s; }
-  .method-card.selected { border-color:#00b894; background-color:#e8f8f4; }
-  .method-icon { font-size:28px; width:40px; text-align:center; }
-  .method-info h5 { font-size:16px; font-weight:800; color:#1a1a1a; }
-  .method-info p { font-size:12px; color:#888; margin-top:3px; }
-  .method-check { margin-left:auto; width:24px; height:24px; border-radius:50%; border:2px solid #ede9df; display:flex; align-items:center; justify-content:center; font-size:12px; }
-  .method-card.selected .method-check { background-color:#00b894; border-color:#00b894; color:#fff; }
-  .btn-main { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:20px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:25px; transition:background-color 0.2s; }
-  .btn-main:hover { background-color:#009e7f; }
-  .secure-text { text-align:center; font-size:12px; color:#aaa; margin-top:15px; }
-  .secure-text span { color:#00b894; }
+  .navbar h3 { font-size:20px; font-weight:800; }
+
+  .content { padding:22px 25px 40px; }
+
+  /* Job summary */
+  .summary-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:22px; margin-bottom:20px; }
+  .summary-card h4 { font-size:12px; color:#555; text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; font-weight:800; }
+  .summary-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid #1a1a1a; font-size:14px; }
+  .summary-row:last-child { border-bottom:none; padding-top:14px; margin-top:4px; }
+  .summary-row .s-label { color:#555; }
+  .summary-row .s-value { font-weight:700; }
+  .summary-row.total { font-size:18px; }
+  .summary-row.total .s-value { color:#00b894; font-size:22px; font-weight:900; }
+
+  /* Payment methods */
+  .methods-title { font-size:12px; color:#555; text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; font-weight:800; }
+  .method-card { background-color:#111; border:2px solid #222; border-radius:16px; padding:16px 18px; margin-bottom:10px; display:flex; align-items:center; gap:14px; cursor:pointer; transition:all 0.2s; }
+  .method-card.selected { border-color:#00b894; background-color:#0d2b24; }
+  .method-icon { font-size:26px; width:36px; text-align:center; }
+  .method-info h5 { font-size:15px; font-weight:800; }
+  .method-info p  { font-size:12px; color:#555; margin-top:3px; }
+  .method-check { margin-left:auto; width:22px; height:22px; border-radius:50%; border:2px solid #333; display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff; transition:all 0.2s; }
+  .method-card.selected .method-check { background-color:#00b894; border-color:#00b894; }
+
+  .btn-pay { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:19px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:22px; transition:background-color 0.2s; }
+  .btn-pay:hover { background-color:#009e7f; }
+  .btn-pay:disabled { background-color:#1a3a30; color:#333; cursor:not-allowed; }
+  .secure-note { text-align:center; font-size:12px; color:#333; margin-top:14px; }
+  .secure-note span { color:#00b894; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <nav class="navbar">
   <div class="back-btn" onclick="window.location.href='track.html'">←</div>
@@ -41,81 +50,139 @@
 </nav>
 
 <div class="content">
-  <div class="job-summary">
+  <div class="summary-card">
     <h4>Job Summary</h4>
-    <div class="job-row"><span class="label">Service</span><span class="value" id="summaryService">Plumber</span></div>
-    <div class="job-row"><span class="label">Worker</span><span class="value" id="summaryWorker">Ravi Kumar</span></div>
-    <div class="job-row"><span class="label">Service Fee</span><span class="value" id="summaryFee">₹299</span></div>
-    <div class="job-row"><span class="label">Platform Fee</span><span class="value">₹49</span></div>
-    <div class="job-row total"><span class="label">Total</span><span class="value" id="summaryTotal">₹348</span></div>
+    <div class="summary-row"><span class="s-label">Service</span><span class="s-value" id="sumService">—</span></div>
+    <div class="summary-row"><span class="s-label">Worker</span><span class="s-value" id="sumWorker">—</span></div>
+    <div class="summary-row"><span class="s-label">Job ID</span><span class="s-value" id="sumJobId" style="color:#555">—</span></div>
+    <div class="summary-row"><span class="s-label">Service Fee</span><span class="s-value" id="sumFee">—</span></div>
+    <div class="summary-row total"><span class="s-label">Total</span><span class="s-value" id="sumTotal">—</span></div>
   </div>
 
-  <div class="payment-methods">
-    <h4>Select Payment Method</h4>
-    <div class="method-card selected" onclick="selectMethod(this, 'upi')">
-      <div class="method-icon">📱</div>
-      <div class="method-info"><h5>UPI</h5><p>GPay, PhonePe, Paytm</p></div>
-      <div class="method-check">✓</div>
-    </div>
-    <div class="method-card" onclick="selectMethod(this, 'card')">
-      <div class="method-icon">💳</div>
-      <div class="method-info"><h5>Credit / Debit Card</h5><p>Visa, Mastercard, Rupay</p></div>
-      <div class="method-check"></div>
-    </div>
-    <div class="method-card" onclick="selectMethod(this, 'cash')">
-      <div class="method-icon">💵</div>
-      <div class="method-info"><h5>Cash on Completion</h5><p>Pay worker directly after job</p></div>
-      <div class="method-check"></div>
-    </div>
+  <div class="methods-title">Select Payment Method</div>
+
+  <div class="method-card selected" id="m-upi" onclick="selectMethod('upi')">
+    <div class="method-icon">📱</div>
+    <div class="method-info"><h5>UPI</h5><p>GPay, PhonePe, Paytm</p></div>
+    <div class="method-check">✓</div>
+  </div>
+  <div class="method-card" id="m-card" onclick="selectMethod('card')">
+    <div class="method-icon">💳</div>
+    <div class="method-info"><h5>Credit / Debit Card</h5><p>Visa, Mastercard, RuPay</p></div>
+    <div class="method-check"></div>
+  </div>
+  <div class="method-card" id="m-cash" onclick="selectMethod('cash')">
+    <div class="method-icon">💵</div>
+    <div class="method-info"><h5>Cash on Completion</h5><p>Pay worker directly after job</p></div>
+    <div class="method-check"></div>
   </div>
 
-  <button class="btn-main" onclick="makePayment()">Pay Now</button>
-  <div class="secure-text"><span>🔒 100% Secure Payment</span> • Powered by Razorpay</div>
+  <button class="btn-pay" id="payBtn" onclick="makePayment()">Pay Now</button>
+  <div class="secure-note"><span>🔒 100% Secure</span> · Powered by Razorpay</div>
 </div>
 
 <script>
   if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
   if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-  const service    = localStorage.getItem('bookingService') || 'Plumber';
-  const workerName = localStorage.getItem('workerName')     || 'Ravi Kumar';
-  const prices = {
-    'Plumber':299,'Electrician':349,'Locksmith':249,'AC Repair':499,'Carpenter':299,'Painter':399,
-    'Pest Control':499,'Home Cleaning':399,'TV / Electronics Repair':349,'Water Purifier Service':299,
-    'Appliance Repair':349,'Bathroom Renovation':799,'Packers & Movers':999,'CCTV Installation':599
-  };
-  const savedAmount = localStorage.getItem('bookingAmount');
-  const basePrice = savedAmount ? (parseInt(savedAmount) - 49) : (prices[service] || 299);
-  const total = basePrice + 49;
+  const db = supabase.createClient(
+    'https://wenvdgvyuhqdiktetvfj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
+  );
 
-  document.getElementById('summaryService').innerText = service;
-  document.getElementById('summaryWorker').innerText  = workerName;
-  document.getElementById('summaryFee').innerText     = '₹' + basePrice;
-  document.getElementById('summaryTotal').innerText   = '₹' + total;
+  let selectedMethod = 'upi', currentJob = null;
 
-  let selectedMethod = 'upi';
+  async function loadJobData() {
+    const jobId    = localStorage.getItem('activeJobId');
+    const myPhone  = '+91' + localStorage.getItem('phoneNumber');
+    const icons    = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
 
-  function selectMethod(card, method) {
-    document.querySelectorAll('.method-card').forEach(c => { c.classList.remove('selected'); c.querySelector('.method-check').innerText = ''; });
-    card.classList.add('selected');
-    card.querySelector('.method-check').innerText = '✓';
-    selectedMethod = method;
+    try {
+      let job = null;
+      if (jobId) {
+        const { data } = await db.from('jobs').select('*').eq('id', jobId).single();
+        job = data;
+      }
+      if (!job) {
+        const { data } = await db.from('jobs').select('*').eq('customer_phone', myPhone).in('status',['completed','accepted','in_progress']).order('created_at',{ascending:false}).limit(1);
+        if (data && data.length) job = data[0];
+      }
+
+      if (job) {
+        currentJob = job;
+        const ico     = icons[job.service] || '🔧';
+        const amount  = job.amount || 0;
+        const workerN = localStorage.getItem('workerName') || 'Your Worker';
+
+        document.getElementById('sumService').innerText = ico + ' ' + (job.service||'—');
+        document.getElementById('sumWorker').innerText  = workerN;
+        document.getElementById('sumJobId').innerText   = '#' + job.id;
+        document.getElementById('sumFee').innerText     = '₹' + amount;
+        document.getElementById('sumTotal').innerText   = '₹' + amount;
+        localStorage.setItem('amountPaid', amount);
+      } else {
+        // Fallback to localStorage
+        const service = localStorage.getItem('bookingService') || '—';
+        const amount  = localStorage.getItem('bookingAmount')  || '—';
+        const worker  = localStorage.getItem('workerName')     || '—';
+        document.getElementById('sumService').innerText = service;
+        document.getElementById('sumWorker').innerText  = worker;
+        document.getElementById('sumFee').innerText     = '₹' + amount;
+        document.getElementById('sumTotal').innerText   = '₹' + amount;
+      }
+    } catch(e) {
+      // Fallback silently
+      const service = localStorage.getItem('bookingService') || '—';
+      const amount  = localStorage.getItem('bookingAmount')  || '—';
+      document.getElementById('sumService').innerText = service;
+      document.getElementById('sumFee').innerText     = '₹' + amount;
+      document.getElementById('sumTotal').innerText   = '₹' + amount;
+    }
   }
 
-  function makePayment() {
+  function selectMethod(method) {
+    selectedMethod = method;
+    document.querySelectorAll('.method-card').forEach(c => {
+      c.classList.remove('selected');
+      c.querySelector('.method-check').innerText = '';
+    });
+    const el = document.getElementById('m-' + method);
+    el.classList.add('selected');
+    el.querySelector('.method-check').innerText = '✓';
+  }
+
+  async function makePayment() {
+    const btn    = document.getElementById('payBtn');
+    const amount = document.getElementById('sumTotal').innerText;
+    btn.disabled = true;
+
     if (selectedMethod === 'cash') {
       localStorage.setItem('paymentMethod', 'Cash');
-      localStorage.setItem('paymentStatus', 'pending');
-      alert('💵 Cash payment selected!\nPay ₹' + total + ' to worker after job completion.');
+      localStorage.setItem('paymentStatus', 'pending_cash');
+      // Update job status in Supabase
+      if (currentJob) {
+        try { await db.from('jobs').update({ status:'completed', completed_at:new Date().toISOString() }).eq('id', currentJob.id); } catch(e) {}
+      }
+      alert('💵 Cash selected!\nPay ' + amount + ' directly to the worker.');
       window.location.href = 'rate.html';
       return;
     }
-    localStorage.setItem('paymentMethod', selectedMethod.toUpperCase());
+
+    // UPI / Card — mark as paid
+    localStorage.setItem('paymentMethod', selectedMethod === 'upi' ? 'UPI' : 'Card');
     localStorage.setItem('paymentStatus', 'paid');
-    localStorage.setItem('amountPaid', total);
-    alert('✅ Payment of ₹' + total + ' successful!\nThank you for using ZipFix 🎉');
+
+    if (currentJob) {
+      try { await db.from('jobs').update({ status:'completed', completed_at:new Date().toISOString() }).eq('id', currentJob.id); } catch(e) {}
+    }
+
+    // Simulate Razorpay (replace with real integration later)
+    alert('✅ Payment of ' + amount + ' successful!\nThank you for using ZipFix 🎉');
+    localStorage.removeItem('activeJobId');
     window.location.href = 'rate.html';
   }
+
+  loadJobData();
 </script>
 </body>
 </html>

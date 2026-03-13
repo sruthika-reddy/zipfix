@@ -8,26 +8,26 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:25px; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:25px; }
   .box { width:100%; max-width:420px; text-align:center; }
-  .success-circle { width:120px; height:120px; background:linear-gradient(135deg,#e8f8f4,#00b894); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:55px; margin:0 auto 25px; animation:pop 0.5s ease; }
+  .success-circle { width:120px; height:120px; background:linear-gradient(135deg,#0d2b24,#00b894); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:55px; margin:0 auto 25px; animation:pop 0.5s ease; }
   @keyframes pop { 0%{transform:scale(0);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
   h1 { font-size:32px; font-weight:900; color:#00b894; margin-bottom:10px; }
   .subtitle { font-size:15px; color:#888; margin-bottom:35px; line-height:1.6; }
-  .earned-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:25px; padding:30px; margin-bottom:20px; }
+  .earned-card { background-color:#111; border:1px solid #222; border-radius:25px; padding:30px; margin-bottom:20px; }
   .earned-card .lbl { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
   .earned-amt { font-size:52px; font-weight:900; color:#00b894; margin-bottom:5px; }
   .earned-note { font-size:13px; color:#aaa; }
-  .stats-row { display:flex; justify-content:space-around; background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px; margin-bottom:20px; }
+  .stats-row { display:flex; justify-content:space-around; background-color:#111; border:1px solid #222; border-radius:20px; padding:20px; margin-bottom:20px; }
   .stat h4 { font-size:22px; font-weight:900; color:#00b894; }
   .stat p  { font-size:12px; color:#888; margin-top:4px; }
-  .rating-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:18px 20px; margin-bottom:25px; display:flex; justify-content:space-between; align-items:center; }
+  .rating-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:18px 20px; margin-bottom:25px; display:flex; justify-content:space-between; align-items:center; }
   .rating-card h4 { font-size:15px; font-weight:800; }
   .rating-card p  { font-size:13px; color:#888; margin-top:4px; }
   .rating-stars   { font-size:24px; }
   .btn-main { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-bottom:12px; transition:background-color 0.2s; }
   .btn-main:hover { background-color:#009e7f; }
-  .btn-secondary { width:100%; padding:17px; background-color:#f2efe8; color:#888; font-size:16px; font-weight:700; border:none; border-radius:15px; cursor:pointer; }
+  .btn-secondary { width:100%; padding:17px; background-color:#1a1a1a; color:#555; font-size:16px; font-weight:700; border:2px solid #222; border-radius:15px; cursor:pointer; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -45,7 +45,7 @@
   <div class="stats-row">
     <div class="stat"><h4 id="todayJobs">—</h4><p>Jobs Today</p></div>
     <div class="stat"><h4 id="todayTotal">₹—</h4><p>Earned Today</p></div>
-    <div class="stat"><h4>4.9⭐</h4><p>Your Rating</p></div>
+    <div class="stat"><h4 id="finalRating">—</h4><p>Your Rating</p></div>
   </div>
 
   <div class="rating-card">
@@ -87,6 +87,11 @@
       if (data) {
         document.getElementById('todayJobs').innerText  = data.length;
         document.getElementById('todayTotal').innerText = '₹'+data.reduce((s,j)=>s+(j.amount||0),0);
+      }
+      // Real rating from workers table
+      const { data: w } = await db.from('workers').select('rating').eq('worker_id',workerId).single();
+      if (w && w.rating) {
+        document.getElementById('finalRating').innerText = w.rating + '⭐';
       }
     } catch(e) {}
   }

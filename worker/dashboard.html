@@ -8,8 +8,8 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
+  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
   .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
   .profile-circle { width:40px; height:40px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:16px; cursor:pointer; }
   .content { padding:25px; }
@@ -19,50 +19,50 @@
   .welcome p { color:#888; margin-top:5px; font-size:14px; }
 
   /* Worker ID badge */
-  .wid-badge { display:inline-flex; align-items:center; gap:8px; background-color:#e8f8f4; border:1px solid #00b89444; border-radius:50px; padding:6px 16px; margin-bottom:20px; font-size:13px; font-weight:700; color:#00b894; }
+  .wid-badge { display:inline-flex; align-items:center; gap:8px; background-color:#0d2b24; border:1px solid #00b89444; border-radius:50px; padding:6px 16px; margin-bottom:20px; font-size:13px; font-weight:700; color:#00b894; }
 
   /* Toggle */
-  .toggle-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px 25px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  .toggle-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px 25px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
   .toggle-info h4 { font-size:17px; font-weight:800; }
   .toggle-info p { font-size:13px; color:#888; margin-top:4px; }
-  .toggle-switch { width:60px; height:32px; background-color:#ccc8bc; border-radius:50px; cursor:pointer; position:relative; transition:background-color 0.3s; flex-shrink:0; }
+  .toggle-switch { width:60px; height:32px; background-color:#444; border-radius:50px; cursor:pointer; position:relative; transition:background-color 0.3s; flex-shrink:0; }
   .toggle-switch.on { background-color:#00b894; }
   .toggle-knob { width:26px; height:26px; background:#fff; border-radius:50%; position:absolute; top:3px; left:3px; transition:left 0.3s; box-shadow:0 1px 4px rgba(0,0,0,0.2); }
   .toggle-switch.on .toggle-knob { left:31px; }
 
   /* Stats */
   .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
-  .stat-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 10px; text-align:center; }
+  .stat-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 10px; text-align:center; }
   .stat-card h3 { font-size:20px; font-weight:900; color:#00b894; }
   .stat-card p { font-size:11px; color:#888; margin-top:4px; }
 
   /* Job request */
   .section-title { font-size:17px; font-weight:800; margin-bottom:12px; }
-  .job-card { background-color:#fffdf7; border:2px solid #00b894; border-radius:20px; padding:20px; margin-bottom:15px; animation:pulse 2s infinite; }
+  .job-card { background-color:#111; border:2px solid #00b894; border-radius:20px; padding:20px; margin-bottom:15px; animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{border-color:#00b894} 50%{border-color:#b2ece1} }
-  .timer-bar { height:4px; background-color:#ede9df; border-radius:10px; margin-bottom:15px; overflow:hidden; }
+  .timer-bar { height:4px; background-color:#1a1a1a; border-radius:10px; margin-bottom:15px; overflow:hidden; }
   .timer-fill { height:100%; background-color:#00b894; border-radius:10px; width:100%; transition:width 1s linear; }
   .job-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
   .job-service { font-size:18px; font-weight:900; }
   .urgency-tag { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:800; }
-  .urgency-tag.normal    { background-color:#e8f8f4; color:#00b894; }
-  .urgency-tag.urgent    { background-color:#fff8e6; color:#e67e00; }
-  .urgency-tag.emergency { background-color:#fff0f0; color:#e74c3c; }
+  .urgency-tag.normal    { background-color:#0d2b24; color:#00b894; }
+  .urgency-tag.urgent    { background-color:#2b1d00; color:#e67e00; }
+  .urgency-tag.emergency { background-color:#2b0d0d; color:#e74c3c; }
   .job-problem { font-size:14px; color:#888; line-height:1.6; margin-bottom:12px; }
   .job-meta { display:flex; gap:15px; font-size:13px; color:#888; margin-bottom:15px; flex-wrap:wrap; }
   .job-actions { display:flex; gap:12px; }
   .btn-accept { flex:2; padding:15px; background-color:#00b894; color:#fff; font-size:16px; font-weight:800; border:none; border-radius:12px; cursor:pointer; transition:background-color 0.2s; }
   .btn-accept:hover { background-color:#009e7f; }
-  .btn-decline { flex:1; padding:15px; background-color:#f2efe8; color:#888; font-size:15px; font-weight:800; border:none; border-radius:12px; cursor:pointer; }
+  .btn-decline { flex:1; padding:15px; background-color:#1a1a1a; color:#555; font-size:15px; font-weight:800; border:2px solid #222; border-radius:12px; cursor:pointer; }
 
-  .no-jobs { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:40px 20px; text-align:center; color:#aaa; }
+  .no-jobs { background-color:#111; border:1px solid #222; border-radius:20px; padding:40px 20px; text-align:center; color:#aaa; }
   .no-jobs .icon { font-size:48px; margin-bottom:12px; }
   .no-jobs p { font-size:14px; line-height:1.6; }
 
-  .offline-notice { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:30px 20px; text-align:center; color:#aaa; font-size:14px; }
+  .offline-notice { background-color:#111; border:1px solid #222; border-radius:20px; padding:30px 20px; text-align:center; color:#aaa; font-size:14px; }
 
   /* Bottom nav */
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0 20px; border-top:1px solid #ede9df; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#111; display:flex; justify-content:space-around; padding:15px 0 20px; border-top:1px solid #222; }
   .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:3px; }
   .nav-item.active { color:#00b894; }
   .nav-icon { font-size:22px; }

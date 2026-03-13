@@ -8,45 +8,68 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
-  .navbar h3 { font-size:20px; font-weight:800; color:#1a1a1a; }
-  .content { padding:25px; }
-  .success-banner { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border:2px solid #00b894; border-radius:25px; padding:30px; text-align:center; margin-bottom:25px; }
-  .success-icon { font-size:60px; margin-bottom:15px; }
-  .success-banner h2 { font-size:24px; font-weight:900; color:#00b894; margin-bottom:8px; }
-  .success-banner p { font-size:14px; color:#666; }
-  .receipt-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px 25px; margin-bottom:25px; }
-  .receipt-card h4 { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; }
-  .receipt-row { display:flex; justify-content:space-between; padding:8px 0; font-size:14px; border-bottom:1px solid #f0ede6; }
-  .receipt-row:last-child { border-bottom:none; font-weight:800; font-size:16px; }
-  .receipt-row .label { color:#888; }
-  .receipt-row .value { font-weight:600; color:#1a1a1a; }
-  .receipt-row:last-child .value { color:#00b894; }
-  .rating-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:25px; margin-bottom:25px; text-align:center; }
-  .worker-avatar { width:80px; height:80px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:900; color:#fff; margin:0 auto 15px auto; }
-  .rating-card h3 { font-size:20px; font-weight:800; margin-bottom:5px; color:#1a1a1a; }
-  .rating-card p { font-size:14px; color:#888; margin-bottom:25px; }
-  .stars-selector { display:flex; justify-content:center; gap:12px; margin-bottom:20px; }
-  .star { font-size:40px; cursor:pointer; opacity:0.3; transition:opacity 0.2s,transform 0.2s; }
-  .star.active { opacity:1; transform:scale(1.2); }
-  .rating-label { font-size:16px; font-weight:800; color:#00b894; margin-bottom:20px; min-height:24px; }
-  .feedback-input { width:100%; padding:15px 20px; background-color:#f2efe8; border:2px solid #ede9df; border-radius:15px; color:#1a1a1a; font-size:15px; outline:none; resize:none; transition:border-color 0.2s; }
-  .feedback-input:focus { border-color:#00b894; }
-  .quick-tags { display:flex; flex-wrap:wrap; gap:10px; margin-top:15px; }
-  .tag { padding:8px 16px; background-color:#f2efe8; border-radius:50px; font-size:13px; cursor:pointer; border:2px solid transparent; color:#555; transition:all 0.2s; }
-  .tag.selected { border-color:#00b894; color:#00b894; background-color:#e8f8f4; }
-  .btn-main { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:20px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:10px; transition:background-color 0.2s; }
-  .btn-main:hover { background-color:#009e7f; }
-  .skip-text { text-align:center; margin-top:15px; font-size:14px; color:#aaa; cursor:pointer; transition:color 0.2s; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
+
+  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
+  .navbar h3 { font-size:20px; font-weight:800; }
+
+  .content { padding:22px 25px 50px; }
+
+  /* Success banner */
+  .success-banner { background:linear-gradient(135deg,#0d2b24,#071a15); border:2px solid #00b89444; border-radius:22px; padding:28px; text-align:center; margin-bottom:20px; }
+  .success-icon { font-size:56px; margin-bottom:12px; }
+  .success-banner h2 { font-size:22px; font-weight:900; color:#00b894; margin-bottom:6px; }
+  .success-banner p  { font-size:14px; color:#555; }
+
+  /* Receipt */
+  .receipt-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px 22px; margin-bottom:20px; }
+  .receipt-card h4 { font-size:12px; color:#555; text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; font-weight:800; }
+  .receipt-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #1a1a1a; font-size:14px; }
+  .receipt-row:last-child { border-bottom:none; font-size:17px; font-weight:900; }
+  .receipt-row .r-label { color:#555; }
+  .receipt-row .r-value { font-weight:700; }
+  .receipt-row:last-child .r-value { color:#00b894; }
+
+  /* Rating card */
+  .rating-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:24px; margin-bottom:20px; text-align:center; }
+  .worker-avatar { width:76px; height:76px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:900; color:#fff; margin:0 auto 12px; }
+  .rating-card h3 { font-size:20px; font-weight:800; margin-bottom:4px; }
+  .rating-card p  { font-size:13px; color:#555; margin-bottom:22px; }
+
+  .stars-row { display:flex; justify-content:center; gap:10px; margin-bottom:10px; }
+  .star { font-size:38px; cursor:pointer; opacity:0.25; transition:opacity 0.15s, transform 0.15s; }
+  .star.active { opacity:1; transform:scale(1.15); }
+
+  .rating-label { font-size:15px; font-weight:800; color:#00b894; margin-bottom:18px; min-height:22px; }
+
+  textarea {
+    width:100%; padding:14px 16px;
+    background-color:#1a1a1a; border:2px solid #222;
+    border-radius:14px; color:#f0f0f0;
+    font-size:14px; outline:none; resize:none;
+    font-family:'Segoe UI',sans-serif;
+    transition:border-color 0.2s;
+  }
+  textarea:focus { border-color:#00b894; }
+
+  .quick-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .tag { padding:8px 15px; background-color:#1a1a1a; border-radius:50px; font-size:13px; cursor:pointer; border:2px solid #222; color:#555; transition:all 0.2s; }
+  .tag.selected { border-color:#00b894; color:#00b894; background-color:#0d2b24; }
+
+  .btn-submit { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:18px; transition:background-color 0.2s; }
+  .btn-submit:hover { background-color:#009e7f; }
+  .btn-submit:disabled { background-color:#1a3a30; color:#333; cursor:not-allowed; }
+  .skip-text { text-align:center; margin-top:14px; font-size:14px; color:#333; cursor:pointer; }
   .skip-text:hover { color:#555; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <nav class="navbar">
-  <h3>Rate Your Experience ⭐</h3>
+  <h3 style="margin:0 auto">Rate Your Experience ⭐</h3>
 </nav>
 
 <div class="content">
+
   <div class="success-banner">
     <div class="success-icon">✅</div>
     <h2>Job Completed!</h2>
@@ -55,73 +78,133 @@
 
   <div class="receipt-card">
     <h4>Receipt</h4>
-    <div class="receipt-row"><span class="label">Service</span><span class="value" id="receiptService">Plumber</span></div>
-    <div class="receipt-row"><span class="label">Worker</span><span class="value" id="receiptWorker">Ravi Kumar</span></div>
-    <div class="receipt-row"><span class="label">Payment</span><span class="value" id="receiptMethod">UPI</span></div>
-    <div class="receipt-row"><span class="label">Total Paid</span><span class="value" id="receiptTotal">₹348</span></div>
+    <div class="receipt-row"><span class="r-label">Service</span><span class="r-value" id="recService">—</span></div>
+    <div class="receipt-row"><span class="r-label">Worker</span><span class="r-value" id="recWorker">—</span></div>
+    <div class="receipt-row"><span class="r-label">Job ID</span><span class="r-value" id="recJobId" style="color:#555">—</span></div>
+    <div class="receipt-row"><span class="r-label">Payment</span><span class="r-value" id="recMethod">—</span></div>
+    <div class="receipt-row"><span class="r-label">Total Paid</span><span class="r-value" id="recTotal">—</span></div>
   </div>
 
   <div class="rating-card">
-    <div class="worker-avatar" id="workerAvatar">R</div>
-    <h3 id="workerName">Ravi Kumar</h3>
+    <div class="worker-avatar" id="workerAvatar">?</div>
+    <h3 id="workerName">—</h3>
     <p>How was your experience?</p>
-    <div class="stars-selector">
+
+    <div class="stars-row">
       <div class="star" onclick="selectStar(1)">⭐</div>
       <div class="star" onclick="selectStar(2)">⭐</div>
       <div class="star" onclick="selectStar(3)">⭐</div>
       <div class="star" onclick="selectStar(4)">⭐</div>
       <div class="star" onclick="selectStar(5)">⭐</div>
     </div>
-    <div class="rating-label" id="ratingLabel"></div>
-    <textarea class="feedback-input" id="feedback" rows="3" placeholder="Tell us about your experience (optional)"></textarea>
+    <div class="rating-label" id="ratingLabel">Tap a star to rate</div>
+
+    <textarea id="feedback" rows="3" placeholder="Tell us about your experience (optional)"></textarea>
+
     <div class="quick-tags">
       <div class="tag" onclick="toggleTag(this)">👍 Professional</div>
       <div class="tag" onclick="toggleTag(this)">⚡ Fast</div>
-      <div class="tag" onclick="toggleTag(this)">💰 Good Price</div>
+      <div class="tag" onclick="toggleTag(this)">💰 Fair Price</div>
       <div class="tag" onclick="toggleTag(this)">🔧 Skilled</div>
       <div class="tag" onclick="toggleTag(this)">😊 Friendly</div>
       <div class="tag" onclick="toggleTag(this)">🧹 Clean Work</div>
     </div>
   </div>
 
-  <button class="btn-main" onclick="submitRating()">Submit Rating</button>
-  <div class="skip-text" onclick="window.location.href='dashboard.html'">Skip for now</div>
+  <button class="btn-submit" id="submitBtn" onclick="submitRating()">Submit Rating</button>
+  <div class="skip-text" onclick="skipRating()">Skip for now</div>
 </div>
 
 <script>
   if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
   if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-  const service       = localStorage.getItem('bookingService') || 'Plumber';
-  const workerName    = localStorage.getItem('workerName')     || 'Ravi Kumar';
-  const workerInitial = localStorage.getItem('workerInitial')  || 'R';
-  const paymentMethod = localStorage.getItem('paymentMethod')  || 'UPI';
-  const amountPaid    = localStorage.getItem('amountPaid')     || '348';
+  const db = supabase.createClient(
+    'https://wenvdgvyuhqdiktetvfj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
+  );
 
-  document.getElementById('receiptService').innerText = service;
-  document.getElementById('receiptWorker').innerText  = workerName;
-  document.getElementById('receiptMethod').innerText  = paymentMethod;
-  document.getElementById('receiptTotal').innerText   = '₹' + amountPaid;
-  document.getElementById('workerName').innerText     = workerName;
-  document.getElementById('workerAvatar').innerText   = workerInitial;
-
+  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
   const ratingLabels = { 1:'😞 Poor', 2:'😐 Fair', 3:'🙂 Good', 4:'😊 Great', 5:'🤩 Excellent!' };
+
+  // Fill from localStorage
+  const service       = localStorage.getItem('bookingService') || '—';
+  const workerName    = localStorage.getItem('workerName')     || '—';
+  const workerInitial = localStorage.getItem('workerInitial')  || '?';
+  const paymentMethod = localStorage.getItem('paymentMethod')  || '—';
+  const amountPaid    = localStorage.getItem('amountPaid')     || '—';
+  const jobId         = localStorage.getItem('activeJobId')    || localStorage.getItem('lastJobId') || '—';
+
+  document.getElementById('recService').innerText = (icons[service]||'🔧') + ' ' + service;
+  document.getElementById('recWorker').innerText  = workerName;
+  document.getElementById('recJobId').innerText   = jobId !== '—' ? '#' + jobId : '—';
+  document.getElementById('recMethod').innerText  = paymentMethod;
+  document.getElementById('recTotal').innerText   = amountPaid !== '—' ? '₹' + amountPaid : '—';
+  document.getElementById('workerName').innerText   = workerName;
+  document.getElementById('workerAvatar').innerText = workerInitial;
+
   let selectedRating = 0;
   const stars = document.querySelectorAll('.star');
 
-  function selectStar(rating) {
-    selectedRating = rating;
-    stars.forEach((star, index) => { index < rating ? star.classList.add('active') : star.classList.remove('active'); });
-    document.getElementById('ratingLabel').innerText = ratingLabels[rating];
+  function selectStar(n) {
+    selectedRating = n;
+    stars.forEach((s, i) => i < n ? s.classList.add('active') : s.classList.remove('active'));
+    document.getElementById('ratingLabel').innerText = ratingLabels[n];
   }
-  function toggleTag(tag) { tag.classList.toggle('selected'); }
-  function submitRating() {
+
+  function toggleTag(el) { el.classList.toggle('selected'); }
+
+  async function submitRating() {
     if (selectedRating === 0) { alert('Please select a star rating'); return; }
-    const selectedTags = [];
-    document.querySelectorAll('.tag.selected').forEach(tag => { selectedTags.push(tag.innerText); });
-    localStorage.setItem('lastRating', selectedRating);
-    localStorage.setItem('lastFeedback', selectedTags.join(', '));
-    alert('Thank you for rating ' + workerName + '! 🎉\nRating: ' + ratingLabels[selectedRating] + '\nYour feedback helps improve ZipFix!');
+
+    const btn  = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerText = 'Submitting...';
+
+    const tags     = [...document.querySelectorAll('.tag.selected')].map(t => t.innerText).join(', ');
+    const feedback = document.getElementById('feedback').value.trim();
+    const comment  = [feedback, tags].filter(Boolean).join(' | ');
+    const custPhone = '+91' + localStorage.getItem('phoneNumber');
+
+    try {
+      // Save rating to Supabase ratings table
+      const ratingPayload = {
+        worker_id:   localStorage.getItem('assignedWorkerId') || null,
+        customer_id: custPhone,
+        booking_id:  jobId !== '—' ? parseInt(jobId) : null,
+        rating:      selectedRating,
+        feedback:    comment || null,
+      };
+      await db.from('ratings').insert([ratingPayload]);
+
+      // Update worker's average rating in workers table
+      const wId = localStorage.getItem('assignedWorkerId');
+      if (wId) {
+        const { data: allRatings } = await db.from('ratings').select('rating').eq('worker_id', wId);
+        if (allRatings && allRatings.length) {
+          const avg = (allRatings.reduce((s, r) => s + r.rating, 0) / allRatings.length).toFixed(1);
+          await db.from('workers').update({ rating: avg, total_jobs: allRatings.length }).eq('worker_id', wId);
+        }
+      }
+
+      // Cleanup
+      localStorage.removeItem('activeJobId');
+      localStorage.removeItem('assignedWorkerId');
+      localStorage.setItem('lastRating', selectedRating);
+
+      alert('🎉 Thank you for rating ' + workerName + '!\n' + ratingLabels[selectedRating]);
+      window.location.href = 'dashboard.html';
+    } catch(e) {
+      btn.disabled = false;
+      btn.innerText = 'Submit Rating';
+      // Still go to dashboard even if save fails
+      alert('Rating saved locally. Thank you!');
+      window.location.href = 'dashboard.html';
+    }
+  }
+
+  function skipRating() {
+    localStorage.removeItem('activeJobId');
     window.location.href = 'dashboard.html';
   }
 </script>

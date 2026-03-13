@@ -8,42 +8,72 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; flex-direction:column; }
-  .navbar { display:flex; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; z-index:10; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; flex-direction:column; }
+
+  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; gap:15px; z-index:10; }
   .back-btn { font-size:22px; cursor:pointer; color:#00b894; }
-  .navbar h3 { font-size:20px; font-weight:800; color:#1a1a1a; }
-  .map-container { flex:1; position:relative; background-color:#e8f4e8; min-height:400px; overflow:hidden; }
-  .map-grid { position:absolute; width:100%; height:100%; background-image:linear-gradient(rgba(0,184,148,0.07) 1px, transparent 1px),linear-gradient(90deg, rgba(0,184,148,0.07) 1px, transparent 1px); background-size:40px 40px; }
-  .map-road-h { position:absolute; height:8px; background-color:rgba(255,255,255,0.5); width:100%; }
-  .map-road-v { position:absolute; width:8px; background-color:rgba(255,255,255,0.5); height:100%; }
-  .customer-pin { position:absolute; bottom:30%; left:50%; transform:translateX(-50%); text-align:center; z-index:5; }
-  .customer-pin .pin-icon { font-size:35px; }
-  .customer-pin .pin-label { background-color:#00b894; color:#fff; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:800; margin-top:4px; }
-  .worker-pin { position:absolute; text-align:center; z-index:5; transition:all 1s ease; }
-  .worker-pin .pin-icon { font-size:35px; }
-  .worker-pin .pin-label { background-color:#f39c12; color:#fff; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:800; margin-top:4px; }
-  .eta-badge { position:absolute; top:20px; left:50%; transform:translateX(-50%); background-color:#fffdf7; border:2px solid #00b894; border-radius:50px; padding:10px 25px; font-size:15px; font-weight:800; color:#00b894; z-index:10; white-space:nowrap; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
-  .bottom-sheet { background-color:#fffdf7; border-radius:30px 30px 0 0; border-top:1px solid #ede9df; padding:25px 25px 40px 25px; z-index:10; }
-  .worker-row { display:flex; align-items:center; gap:15px; margin-bottom:20px; }
-  .worker-avatar { width:55px; height:55px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; color:#fff; flex-shrink:0; }
-  .worker-info h4 { font-size:17px; font-weight:800; color:#1a1a1a; }
-  .worker-info p { font-size:13px; color:#888; margin-top:3px; }
-  .action-row { display:flex; gap:12px; margin-bottom:15px; }
-  .action-btn { flex:1; padding:15px; border-radius:15px; border:none; font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
-  .btn-call { background-color:#e8f8f4; color:#00b894; }
-  .btn-chat { background-color:#eef4ff; color:#3b82f6; }
-  .btn-sos  { background-color:#fff0ee; color:#e74c3c; }
-  .progress-bar { background-color:#ede9df; border-radius:10px; height:6px; overflow:hidden; }
-  .progress-fill { height:100%; background-color:#00b894; border-radius:10px; width:10%; transition:width 1s ease; }
-  .progress-text { display:flex; justify-content:space-between; font-size:12px; color:#888; margin-top:8px; }
+  .navbar h3 { font-size:18px; font-weight:800; }
+  .nav-status { margin-left:auto; padding:6px 14px; border-radius:50px; font-size:12px; font-weight:800; }
+  .ns-live     { background-color:#0d2b24; color:#00b894; }
+  .ns-waiting  { background-color:#2b2000; color:#e6b800; }
+  .ns-done     { background-color:#0d2b24; color:#00b894; }
+
+  /* Map */
+  .map-container { flex:1; position:relative; background-color:#111; min-height:320px; overflow:hidden; border-bottom:1px solid #222; }
+  .map-grid { position:absolute; width:100%; height:100%; background-image:linear-gradient(rgba(0,184,148,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,148,0.05) 1px, transparent 1px); background-size:40px 40px; }
+  .map-road-h { position:absolute; height:6px; background-color:#1a1a1a; width:100%; }
+  .map-road-v { position:absolute; width:6px; background-color:#1a1a1a; height:100%; }
+  .eta-badge { position:absolute; top:16px; left:50%; transform:translateX(-50%); background-color:#111; border:2px solid #00b894; border-radius:50px; padding:10px 22px; font-size:14px; font-weight:800; color:#00b894; z-index:10; white-space:nowrap; }
+  .customer-pin { position:absolute; bottom:28%; left:50%; transform:translateX(-50%); text-align:center; z-index:5; }
+  .customer-pin .pin-icon  { font-size:32px; }
+  .customer-pin .pin-label { background-color:#00b894; color:#fff; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:800; margin-top:3px; }
+  .worker-pin { position:absolute; text-align:center; z-index:5; transition:all 1.5s ease; }
+  .worker-pin .pin-icon  { font-size:32px; }
+  .worker-pin .pin-label { background-color:#e67e00; color:#fff; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:800; margin-top:3px; }
+
+  /* No active job state */
+  .no-job-state { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#444; }
+  .no-job-state .icon { font-size:48px; margin-bottom:12px; }
+  .no-job-state p { font-size:14px; }
+
+  /* Bottom sheet */
+  .bottom-sheet { background-color:#111; border-radius:28px 28px 0 0; border-top:1px solid #222; padding:22px 25px 35px; }
+  .worker-row { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+  .worker-avatar { width:52px; height:52px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:900; color:#fff; flex-shrink:0; }
+  .worker-info h4 { font-size:16px; font-weight:800; }
+  .worker-info p  { font-size:12px; color:#555; margin-top:3px; }
+
+  .action-row { display:flex; gap:10px; margin-bottom:16px; }
+  .action-btn { flex:1; padding:14px 8px; border-radius:14px; border:none; font-size:13px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all 0.2s; }
+  .btn-call { background-color:#0d2b24; color:#00b894; }
+  .btn-call:hover { background-color:#00b894; color:#fff; }
+  .btn-sos  { background-color:#2b0d0d; color:#e74c3c; }
+  .btn-sos:hover  { background-color:#e74c3c; color:#fff; }
+  .btn-done { background-color:#0d2b24; color:#00b894; }
+  .btn-done:hover { background-color:#00b894; color:#fff; }
+
+  .progress-track { background-color:#1a1a1a; border-radius:10px; height:6px; overflow:hidden; }
+  .progress-fill  { height:100%; background-color:#00b894; border-radius:10px; transition:width 1s ease; }
+  .progress-text  { display:flex; justify-content:space-between; font-size:11px; color:#555; margin-top:6px; }
+
+  .job-details { background-color:#1a1a1a; border-radius:14px; padding:14px 16px; margin-top:14px; }
+  .jd-row { display:flex; justify-content:space-between; font-size:13px; padding:5px 0; }
+  .jd-row .jd-label { color:#555; }
+  .jd-row .jd-val   { font-weight:700; color:#f0f0f0; }
+
+  .btn-payment { width:100%; padding:16px; background-color:#00b894; color:#fff; font-size:16px; font-weight:800; border:none; border-radius:14px; cursor:pointer; margin-top:16px; display:none; }
 </style>
+
+<!-- SOS overlay (reuse from dashboard) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <nav class="navbar">
   <div class="back-btn" onclick="window.location.href='dashboard.html'">←</div>
-  <h3>Worker On The Way 🚗</h3>
+  <h3 id="navTitle">Track Worker</h3>
+  <div class="nav-status ns-waiting" id="navStatus">⏳ Waiting</div>
 </nav>
 
-<div class="map-container">
+<div class="map-container" id="mapContainer">
   <div class="map-grid"></div>
   <div class="map-road-h" style="top:30%"></div>
   <div class="map-road-h" style="top:55%"></div>
@@ -51,69 +81,215 @@
   <div class="map-road-v" style="left:25%"></div>
   <div class="map-road-v" style="left:60%"></div>
   <div class="map-road-v" style="left:80%"></div>
-  <div class="eta-badge" id="etaBadge">⏱️ Arriving in 12 mins</div>
-  <div class="customer-pin"><div class="pin-icon">🏠</div><div class="pin-label">You</div></div>
-  <div class="worker-pin" id="workerPin" style="top:15%;left:20%">
+
+  <div class="eta-badge" id="etaBadge">⏳ Waiting for worker...</div>
+
+  <div class="customer-pin">
+    <div class="pin-icon">🏠</div>
+    <div class="pin-label">You</div>
+  </div>
+  <div class="worker-pin" id="workerPin" style="top:15%;left:18%;display:none">
     <div class="pin-icon">👷</div>
     <div class="pin-label" id="workerPinLabel">Worker</div>
+  </div>
+
+  <div class="no-job-state" id="noJobState" style="display:none">
+    <div class="icon">📋</div>
+    <p>No active booking right now</p>
   </div>
 </div>
 
 <div class="bottom-sheet">
   <div class="worker-row">
-    <div class="worker-avatar" id="workerAvatar">R</div>
+    <div class="worker-avatar" id="workerAvatar">?</div>
     <div class="worker-info">
-      <h4 id="workerName">Ravi Kumar</h4>
-      <p>⭐ 4.9 • Verified Worker • On the way</p>
+      <h4 id="workerName">Loading...</h4>
+      <p id="workerSubtitle">Fetching job details...</p>
     </div>
   </div>
+
   <div class="action-row">
-    <button class="action-btn btn-call" onclick="callWorker()">📞 Call</button>
-    <button class="action-btn btn-chat" onclick="chatWorker()">💬 Chat</button>
-    <button class="action-btn btn-sos"  onclick="sosAlert()">🚨 SOS</button>
+    <button class="action-btn btn-call" id="callBtn" onclick="callWorker()">📞 Call Worker</button>
+    <button class="action-btn btn-done" id="doneBtn" onclick="markArrived()" style="display:none">✅ Mark Done</button>
+    <button class="action-btn btn-sos"  onclick="callSOS()">🚨 SOS</button>
   </div>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="progress-text"><span>Worker dispatched</span><span id="progressPercent">10%</span></div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+  <div class="progress-text"><span id="progressLabel">Waiting for worker</span><span id="progressPct">10%</span></div>
+
+  <div class="job-details" id="jobDetails" style="display:none">
+    <div class="jd-row"><span class="jd-label">Service</span><span class="jd-val" id="jdService">—</span></div>
+    <div class="jd-row"><span class="jd-label">Address</span><span class="jd-val" id="jdAddress" style="max-width:180px;text-align:right;font-size:11px">—</span></div>
+    <div class="jd-row"><span class="jd-label">Amount</span><span class="jd-val" id="jdAmount" style="color:#00b894">—</span></div>
+    <div class="jd-row"><span class="jd-label">Job ID</span><span class="jd-val" id="jdId" style="color:#555">—</span></div>
+  </div>
+
+  <button class="btn-payment" id="paymentBtn" onclick="window.location.href='payment.html'">💳 Proceed to Payment</button>
 </div>
 
 <script>
   if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
   if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-  const workerName    = localStorage.getItem('workerName')    || 'Ravi Kumar';
-  const workerInitial = localStorage.getItem('workerInitial') || 'R';
-  document.getElementById('workerName').innerText     = workerName;
-  document.getElementById('workerAvatar').innerText   = workerInitial;
-  document.getElementById('workerPinLabel').innerText = workerName.split(' ')[0];
+  const db = supabase.createClient(
+    'https://wenvdgvyuhqdiktetvfj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
+  );
 
-  let eta = 12, progress = 10, posIndex = 0;
-  const workerPin = document.getElementById('workerPin');
-  const positions = [
-    {top:'15%',left:'20%'},{top:'20%',left:'30%'},{top:'30%',left:'35%'},
-    {top:'30%',left:'45%'},{top:'40%',left:'50%'},{top:'50%',left:'52%'},{top:'55%',left:'50%'},
+  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
+
+  let currentJob = null, pollTimer = null, animFrame = 0;
+  const workerPositions = [
+    {top:'15%',left:'18%'},{top:'22%',left:'28%'},{top:'30%',left:'36%'},
+    {top:'35%',left:'44%'},{top:'42%',left:'50%'},{top:'50%',left:'52%'}
   ];
 
-  const moveInterval = setInterval(function() {
-    if (posIndex < positions.length) {
-      workerPin.style.top  = positions[posIndex].top;
-      workerPin.style.left = positions[posIndex].left;
-      posIndex++;
-      eta = Math.max(0, eta - 2);
-      progress = Math.min(100, progress + 13);
-      document.getElementById('etaBadge').innerText = eta === 0 ? '✅ Worker Arrived!' : '⏱️ Arriving in ' + eta + ' mins';
-      document.getElementById('progressFill').style.width = progress + '%';
-      document.getElementById('progressPercent').innerText = progress + '%';
-      if (eta === 0) { clearInterval(moveInterval); setTimeout(function() { window.location.href = 'payment.html'; }, 2000); }
-    }
-  }, 3000);
+  async function loadJob() {
+    const myPhone = '+91' + localStorage.getItem('phoneNumber');
+    try {
+      // Try activeJobId first
+      const savedJobId = localStorage.getItem('activeJobId');
+      let job = null;
 
-  function callWorker() { alert('📞 Calling ' + workerName + '...\n(Real calling after backend connection)'); }
-  function chatWorker() { alert('💬 Chat with ' + workerName + '\n(Real chat coming soon!)'); }
-  function sosAlert() {
-    if (confirm('🚨 Trigger Emergency SOS?\nThis alerts our response team immediately!')) {
-      alert('🚨 SOS Activated!\nTeam alerted. Stay calm. Help is coming!');
+      if (savedJobId) {
+        const { data } = await db.from('jobs').select('*').eq('id', savedJobId).single();
+        if (data && (data.status === 'accepted' || data.status === 'in_progress' || data.status === 'pending')) {
+          job = data;
+        }
+      }
+
+      // If not, get latest active job for this customer
+      if (!job) {
+        const { data } = await db.from('jobs').select('*')
+          .eq('customer_phone', myPhone)
+          .in('status', ['pending','accepted','in_progress'])
+          .order('created_at', { ascending:false })
+          .limit(1);
+        if (data && data.length > 0) job = data[0];
+      }
+
+      if (!job) {
+        // No active job
+        document.getElementById('noJobState').style.display = 'flex';
+        document.getElementById('workerPin').style.display  = 'none';
+        document.getElementById('navStatus').innerText = '—';
+        document.getElementById('navTitle').innerText  = 'No Active Job';
+        document.getElementById('workerName').innerText    = 'No active booking';
+        document.getElementById('workerSubtitle').innerText = 'Book a service to get started';
+        document.getElementById('etaBadge').innerText = '📋 No active job';
+        document.getElementById('progressFill').style.width = '0%';
+        return;
+      }
+
+      currentJob = job;
+      localStorage.setItem('activeJobId', job.id);
+      showJob(job);
+
+      // Load worker details if accepted
+      if (job.worker_id) {
+        const { data: worker } = await db.from('workers').select('name,phone,skill,area').eq('worker_id', job.worker_id).single();
+        if (worker) {
+          const name    = worker.name || 'Your Worker';
+          const initial = name.charAt(0).toUpperCase();
+          document.getElementById('workerName').innerText    = name;
+          document.getElementById('workerAvatar').innerText  = initial;
+          document.getElementById('workerSubtitle').innerText = '🔧 ' + (worker.skill||'—') + ' · 📍 ' + (worker.area||'—');
+          document.getElementById('workerPinLabel').innerText = name.split(' ')[0];
+          document.getElementById('workerPin').style.display = 'block';
+          localStorage.setItem('workerName',    name);
+          localStorage.setItem('workerInitial', initial);
+          localStorage.setItem('workerPhone',   worker.phone || '');
+          animateWorker();
+        }
+      }
+
+    } catch (e) {
+      document.getElementById('workerSubtitle').innerText = '⚠️ ' + e.message;
     }
   }
+
+  function showJob(job) {
+    const ico     = icons[job.service] || '🔧';
+    const status  = job.status;
+    const addr    = (job.customer_address||'').length > 35 ? job.customer_address.substring(0,35)+'...' : (job.customer_address||'—');
+
+    // Update nav
+    const statusLabels = { pending:'⏳ Pending', accepted:'🔵 On the way', in_progress:'🟢 In Progress' };
+    const statusClass  = { pending:'ns-waiting', accepted:'ns-live', in_progress:'ns-live' };
+    document.getElementById('navStatus').innerText  = statusLabels[status] || status;
+    document.getElementById('navStatus').className  = 'nav-status ' + (statusClass[status]||'ns-waiting');
+    document.getElementById('navTitle').innerText   = status === 'accepted' ? '🚗 Worker On The Way' : status === 'in_progress' ? '🔧 Work In Progress' : '⏳ Finding Worker';
+
+    // ETA badge
+    document.getElementById('etaBadge').innerText = status === 'pending' ? '⏳ Finding worker...' : status === 'accepted' ? '🚗 Worker is coming' : '🔧 Working now';
+
+    // Progress
+    const pct = status === 'pending' ? 15 : status === 'accepted' ? 55 : 85;
+    const lbl = status === 'pending' ? 'Finding worker' : status === 'accepted' ? 'Worker on the way' : 'Work in progress';
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').innerText  = lbl;
+    document.getElementById('progressPct').innerText    = pct + '%';
+
+    // Job details
+    document.getElementById('jobDetails').style.display = 'block';
+    document.getElementById('jdService').innerText = ico + ' ' + (job.service||'—');
+    document.getElementById('jdAddress').innerText = addr;
+    document.getElementById('jdAmount').innerText  = '₹' + (job.amount||'—');
+    document.getElementById('jdId').innerText      = '#' + job.id;
+
+    // Show/hide mark done button
+    if (status === 'in_progress' || status === 'accepted') {
+      document.getElementById('doneBtn').style.display = 'flex';
+    }
+
+    // If completed — show payment button
+    if (status === 'completed') {
+      document.getElementById('paymentBtn').style.display = 'block';
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressLabel').innerText  = 'Job completed!';
+      document.getElementById('progressPct').innerText    = '100%';
+    }
+  }
+
+  function animateWorker() {
+    if (animFrame >= workerPositions.length) return;
+    const pin = document.getElementById('workerPin');
+    pin.style.top  = workerPositions[animFrame].top;
+    pin.style.left = workerPositions[animFrame].left;
+    animFrame++;
+    setTimeout(animateWorker, 4000);
+  }
+
+  function callWorker() {
+    const workerPhone = localStorage.getItem('workerPhone') || '';
+    if (workerPhone) {
+      window.location.href = 'tel:' + workerPhone;
+    } else {
+      alert('⚠️ Worker phone number not available yet.');
+    }
+  }
+
+  async function markArrived() {
+    if (!currentJob) return;
+    if (!confirm('Mark job as completed?')) return;
+    try {
+      await db.from('jobs').update({ status:'completed', completed_at: new Date().toISOString() }).eq('id', currentJob.id);
+      document.getElementById('paymentBtn').style.display = 'block';
+      document.getElementById('doneBtn').style.display    = 'none';
+      document.getElementById('navStatus').innerText = '✅ Done';
+      document.getElementById('navStatus').className = 'nav-status ns-done';
+      document.getElementById('etaBadge').innerText  = '✅ Job Completed!';
+      document.getElementById('progressFill').style.width = '100%';
+      document.getElementById('progressLabel').innerText  = 'Job completed!';
+      document.getElementById('progressPct').innerText    = '100%';
+    } catch(e) { alert('Error: ' + e.message); }
+  }
+
+  function callSOS() { window.location.href = 'tel:112'; }
+
+  // Poll for status updates every 8 seconds
+  loadJob();
+  pollTimer = setInterval(loadJob, 8000);
 </script>
 </body>
 </html>

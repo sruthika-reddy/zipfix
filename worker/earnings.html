@@ -8,24 +8,24 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; align-items:center; gap:15px; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
+  .navbar { display:flex; align-items:center; gap:15px; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
   .back { font-size:22px; color:#00b894; cursor:pointer; }
   .navbar h3 { font-size:20px; font-weight:800; }
   .content { padding:25px; }
-  .total-card { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border:1px solid #00b89433; border-radius:25px; padding:30px; text-align:center; margin-bottom:20px; }
+  .total-card { background:linear-gradient(135deg,#0d2b24,#071a15); border:1px solid #00b89433; border-radius:25px; padding:30px; text-align:center; margin-bottom:20px; }
   .total-card .lbl { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
   .total-amt { font-size:52px; font-weight:900; color:#00b894; margin-bottom:5px; }
   .total-note { font-size:13px; color:#888; }
   .period-tabs { display:flex; gap:10px; margin-bottom:20px; }
-  .tab { flex:1; padding:12px; background-color:#fffdf7; border:2px solid #ede9df; border-radius:12px; text-align:center; cursor:pointer; font-size:14px; font-weight:700; color:#888; transition:all 0.2s; }
-  .tab.active { border-color:#00b894; color:#00b894; background-color:#e8f8f4; }
+  .tab { flex:1; padding:12px; background-color:#111; border:2px solid #222; border-radius:12px; text-align:center; cursor:pointer; font-size:14px; font-weight:700; color:#888; transition:all 0.2s; }
+  .tab.active { border-color:#00b894; color:#00b894; background-color:#0d2b24; }
   .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
-  .stat-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:20px; text-align:center; }
+  .stat-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:20px; text-align:center; }
   .stat-card h3 { font-size:24px; font-weight:900; color:#00b894; }
   .stat-card p  { font-size:12px; color:#888; margin-top:5px; }
   .section-title { font-size:17px; font-weight:800; margin-bottom:15px; }
-  .job-item { background-color:#fffdf7; border:1px solid #ede9df; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
+  .job-item { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
   .job-left h4 { font-size:16px; font-weight:800; }
   .job-left p  { font-size:13px; color:#888; margin-top:4px; }
   .job-right h4 { font-size:18px; font-weight:900; color:#00b894; text-align:right; }
@@ -34,7 +34,7 @@
   .loading { text-align:center; padding:30px; color:#aaa; font-size:14px; }
   .btn-withdraw { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin:10px 0 40px; transition:background-color 0.2s; }
   .btn-withdraw:hover { background-color:#009e7f; }
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#fffdf7; display:flex; justify-content:space-around; padding:15px 0 20px; border-top:1px solid #ede9df; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#111; display:flex; justify-content:space-around; padding:15px 0 20px; border-top:1px solid #222; }
   .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:3px; }
   .nav-item.active { color:#00b894; }
   .nav-icon { font-size:22px; }
@@ -63,8 +63,8 @@
   <div class="stats-grid">
     <div class="stat-card"><h3 id="pEarnings">₹—</h3><p>Earnings</p></div>
     <div class="stat-card"><h3 id="pJobs">—</h3><p>Jobs Done</p></div>
-    <div class="stat-card"><h3>4.9⭐</h3><p>Avg Rating</p></div>
-    <div class="stat-card"><h3>98%</h3><p>Completion</p></div>
+    <div class="stat-card"><h3 id="pRating">—</h3><p>Avg Rating</p></div>
+    <div class="stat-card"><h3 id="pCompletion">—</h3><p>Completion</p></div>
   </div>
 
   <div class="section-title">Recent Jobs</div>
@@ -123,6 +123,15 @@
     const total = jobs.reduce((s,j)=>s+(j.amount||0),0);
     document.getElementById('pEarnings').innerText = '₹' + total.toLocaleString('en-IN');
     document.getElementById('pJobs').innerText     = jobs.length;
+    // Real rating + completion from worker record
+    db.from('workers').select('rating,total_jobs').eq('worker_id',workerId).single().then(({data:w})=>{
+      if (w) {
+        document.getElementById('pRating').innerText     = w.rating ? w.rating+'⭐' : '—';
+        const done  = allJobs.length;
+        const total2 = w.total_jobs || done;
+        document.getElementById('pCompletion').innerText = total2 > 0 ? Math.round((done/total2)*100)+'%' : '—';
+      }
+    }).catch(()=>{});
     const list = document.getElementById('jobList');
     if (!jobs.length) { list.innerHTML = '<div class="empty-state">No jobs in this period yet</div>'; return; }
     list.innerHTML = jobs.slice(0,20).map(j => {

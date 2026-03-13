@@ -8,31 +8,31 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; align-items:center; gap:15px; padding:20px 25px; background-color:#fffdf7; border-bottom:1px solid #ede9df; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
+  .navbar { display:flex; align-items:center; gap:15px; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
   .back { font-size:22px; color:#00b894; cursor:pointer; }
   .navbar h3 { font-size:20px; font-weight:800; }
-  .status-banner { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border-bottom:3px solid #00b894; padding:20px 25px; display:flex; align-items:center; gap:15px; }
+  .status-banner { background:linear-gradient(135deg,#0d2b24,#071a15); border-bottom:3px solid #00b894; padding:20px 25px; display:flex; align-items:center; gap:15px; }
   .status-icon { font-size:40px; }
   .status-info h3 { font-size:18px; font-weight:900; color:#00b894; }
   .status-info p  { font-size:13px; color:#888; margin-top:3px; }
   .content { padding:25px; }
-  .info-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px 25px; margin-bottom:15px; }
+  .info-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px 25px; margin-bottom:15px; }
   .card-label { font-size:12px; color:#00b894; text-transform:uppercase; letter-spacing:1px; margin-bottom:15px; font-weight:700; }
-  .info-row { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid #ede9df; font-size:14px; gap:15px; }
+  .info-row { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid #222; font-size:14px; gap:15px; }
   .info-row:last-child { border-bottom:none; }
   .info-row .lbl { color:#888; flex-shrink:0; }
   .info-row .val { font-weight:700; text-align:right; }
   .info-row .val.green { color:#00b894; }
-  .problem-box { background-color:#f2efe8; border-radius:12px; padding:15px; font-size:14px; color:#555; line-height:1.6; margin-top:8px; }
+  .problem-box { background-color:#1a1a1a; border-radius:12px; padding:15px; font-size:14px; color:#888; line-height:1.6; margin-top:8px; }
   .checklist { list-style:none; }
-  .checklist li { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #ede9df; font-size:14px; cursor:pointer; color:#888; transition:color 0.2s; }
+  .checklist li { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #222; font-size:14px; cursor:pointer; color:#888; transition:color 0.2s; }
   .checklist li:last-child { border-bottom:none; }
-  .checklist li.done { color:#1a1a1a; text-decoration:line-through; opacity:0.5; }
+  .checklist li.done { color:#f0f0f0; text-decoration:line-through; opacity:0.5; }
   .check-circle { width:24px; height:24px; border-radius:50%; border:2px solid #ccc8bc; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
   .checklist li.done .check-circle { background-color:#00b894; border-color:#00b894; color:#fff; }
   .action-btns { display:flex; flex-direction:column; gap:12px; margin-bottom:12px; }
-  .btn-navigate { width:100%; padding:17px; background-color:#e8f8f4; color:#00b894; font-size:16px; font-weight:800; border:2px solid #00b89433; border-radius:15px; cursor:pointer; }
+  .btn-navigate { width:100%; padding:17px; background-color:#0d2b24; color:#00b894; font-size:16px; font-weight:800; border:2px solid #00b89433; border-radius:15px; cursor:pointer; }
   .btn-call     { width:100%; padding:17px; background-color:#f0f4ff; color:#3b82f6; font-size:16px; font-weight:800; border:2px solid #3b82f633; border-radius:15px; cursor:pointer; }
   .btn-arrived  { width:100%; padding:17px; background-color:#00b894; color:#fff; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
   .btn-arrived:hover { background-color:#009e7f; }

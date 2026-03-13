@@ -8,34 +8,39 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; }
-  .navbar { display:flex; align-items:center; padding:20px 30px; background-color:#fffdf7; border-bottom:1px solid #ede9df; gap:15px; }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
+  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; gap:15px; }
   .back-btn { font-size:22px; cursor:pointer; color:#00b894; }
-  .navbar h3 { font-size:20px; font-weight:800; color:#1a1a1a; }
-  .worker-card { background-color:#fffdf7; border:1px solid #ede9df; margin:25px; border-radius:25px; padding:30px; text-align:center; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
-  .worker-avatar { width:100px; height:100px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:40px; margin:0 auto 15px auto; font-weight:900; color:#fff; }
-  .worker-name { font-size:24px; font-weight:900; margin-bottom:5px; color:#1a1a1a; }
-  .worker-service { color:#00b894; font-size:15px; font-weight:700; margin-bottom:15px; }
-  .stars { font-size:22px; margin-bottom:5px; }
-  .rating-text { font-size:13px; color:#888; margin-bottom:20px; }
-  .worker-stats { display:flex; justify-content:space-around; border-top:1px solid #ede9df; padding-top:20px; margin-top:5px; }
-  .stat { text-align:center; }
+  .navbar h3 { font-size:20px; font-weight:800; }
+
+  .worker-card { background-color:#111; border:1px solid #222; margin:20px 25px; border-radius:25px; padding:30px; text-align:center; }
+  .worker-avatar { width:90px; height:90px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:900; color:#fff; margin:0 auto 14px; }
+  .worker-name    { font-size:24px; font-weight:900; margin-bottom:5px; }
+  .worker-service { color:#00b894; font-size:15px; font-weight:700; margin-bottom:12px; }
+  .verified-badge { display:inline-flex; align-items:center; gap:6px; background-color:#0d2b24; color:#00b894; padding:8px 16px; border-radius:50px; font-size:13px; font-weight:700; margin-bottom:16px; }
+
+  .worker-stats { display:flex; justify-content:space-around; border-top:1px solid #222; padding-top:18px; }
   .stat h4 { font-size:20px; font-weight:900; color:#00b894; }
-  .stat p { font-size:12px; color:#888; margin-top:4px; }
-  .info-section { margin:0 25px 25px 25px; }
-  .info-card { background-color:#fffdf7; border:1px solid #ede9df; border-radius:20px; padding:20px 25px; margin-bottom:15px; }
-  .info-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f0ede6; font-size:15px; }
+  .stat p  { font-size:11px; color:#555; margin-top:4px; }
+
+  .loading-stats { font-size:13px; color:#444; padding:14px 0; }
+
+  .info-section { margin:0 25px 20px; }
+  .info-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 22px; margin-bottom:14px; }
+  .info-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #1a1a1a; font-size:14px; }
   .info-row:last-child { border-bottom:none; }
-  .info-row .label { color:#888; }
-  .info-row .value { font-weight:700; color:#1a1a1a; }
-  .info-row .value.highlight { color:#00b894; }
-  .verified-badge { display:inline-flex; align-items:center; gap:6px; background-color:#e8f8f4; color:#00b894; padding:8px 15px; border-radius:50px; font-size:13px; font-weight:700; margin-bottom:20px; }
-  .action-buttons { display:flex; gap:15px; margin:0 25px 40px 25px; }
-  .btn-confirm { flex:1; padding:18px; background-color:#00b894; color:#fff; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
+  .info-row .label { color:#555; }
+  .info-row .value { font-weight:700; }
+  .info-row .value.green { color:#00b894; }
+  .info-row .value.yellow { color:#e6b800; }
+
+  .action-buttons { display:flex; gap:14px; margin:0 25px 40px; }
+  .btn-confirm { flex:2; padding:18px; background-color:#00b894; color:#fff; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
   .btn-confirm:hover { background-color:#009e7f; }
-  .btn-cancel { flex:1; padding:18px; background-color:#fffdf7; color:#555; font-size:17px; font-weight:800; border:2px solid #ede9df; border-radius:15px; cursor:pointer; transition:all 0.2s; }
+  .btn-cancel { flex:1; padding:18px; background-color:#111; color:#555; font-size:16px; font-weight:800; border:2px solid #222; border-radius:15px; cursor:pointer; transition:all 0.2s; }
   .btn-cancel:hover { border-color:#e74c3c; color:#e74c3c; }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <nav class="navbar">
   <div class="back-btn" onclick="window.location.href='dashboard.html'">←</div>
@@ -43,88 +48,128 @@
 </nav>
 
 <div class="worker-card">
-  <div class="worker-avatar" id="workerAvatar">R</div>
-  <div class="worker-name" id="workerName">Ravi Kumar</div>
-  <div class="worker-service" id="workerService">⚡ Electrician</div>
-  <div class="verified-badge">✅ Verified & Background Checked</div>
-  <div class="stars">⭐⭐⭐⭐⭐</div>
-  <div class="rating-text">4.9 rating • 847 jobs completed</div>
-  <div class="worker-stats">
-    <div class="stat"><h4>8+</h4><p>Years Exp</p></div>
-    <div class="stat"><h4>847</h4><p>Jobs Done</p></div>
-    <div class="stat"><h4>4.9⭐</h4><p>Rating</p></div>
-  </div>
+  <div class="worker-avatar" id="workerAvatar">?</div>
+  <div class="worker-name"    id="workerName">Loading...</div>
+  <div class="worker-service" id="workerService">—</div>
+  <div class="verified-badge">✅ Verified Worker</div>
+  <div id="statsSection" class="loading-stats">Loading worker details...</div>
 </div>
 
 <div class="info-section">
   <div class="info-card">
-    <div class="info-row"><span class="label">📍 Distance</span><span class="value highlight">1.2 km away</span></div>
-    <div class="info-row"><span class="label">⏱️ ETA</span><span class="value highlight">12 minutes</span></div>
-    <div class="info-row"><span class="label">💰 Estimated Cost</span><span class="value" id="bookingCost">₹348</span></div>
-    <div class="info-row"><span class="label">🚨 Urgency</span><span class="value" id="bookingUrgency">Normal</span></div>
+    <div class="info-row"><span class="label">💰 Estimated Cost</span><span class="value green" id="bookingCost">—</span></div>
+    <div class="info-row"><span class="label">🚨 Urgency</span><span class="value" id="bookingUrgency">—</span></div>
+    <div class="info-row"><span class="label">📍 Your Address</span><span class="value" id="bookingAddress" style="max-width:180px;text-align:right;font-size:12px">—</span></div>
+    <div class="info-row"><span class="label">🔧 Service</span><span class="value green" id="bookingService">—</span></div>
   </div>
   <div class="info-card">
-    <div class="info-row"><span class="label">🪪 ID Verified</span><span class="value highlight">✅ Yes</span></div>
-    <div class="info-row"><span class="label">👮 Police Verified</span><span class="value highlight">✅ Yes</span></div>
-    <div class="info-row"><span class="label">🔧 Skill Certified</span><span class="value highlight">✅ Yes</span></div>
+    <div class="info-row"><span class="label">🪪 ID Verified</span><span class="value green">✅ Yes</span></div>
+    <div class="info-row"><span class="label">📱 Area</span><span class="value" id="workerArea">—</span></div>
+    <div class="info-row"><span class="label">💼 Experience</span><span class="value" id="workerExp">—</span></div>
   </div>
 </div>
 
 <div class="action-buttons">
-  <button class="btn-confirm" onclick="confirmWorker()">✅ Confirm Worker</button>
-  <button class="btn-cancel" onclick="cancelWorker()">✗ Cancel</button>
+  <button class="btn-confirm" onclick="confirmWorker()">✅ Confirm & Track</button>
+  <button class="btn-cancel"  onclick="cancelWorker()">✗ Cancel</button>
 </div>
 
 <script>
   if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
   if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
-  const service = localStorage.getItem('bookingService') || 'Plumber';
-  const urgency = localStorage.getItem('bookingUrgency') || 'normal';
+  const db = supabase.createClient(
+    'https://wenvdgvyuhqdiktetvfj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
+  );
 
-  const SERVICE_CONFIG = {
-    'Plumber':{icon:'🔧',price:348},'Electrician':{icon:'⚡',price:398},'Locksmith':{icon:'🔑',price:298},
-    'AC Repair':{icon:'❄️',price:548},'Carpenter':{icon:'🪛',price:348},'Painter':{icon:'🖌️',price:448},
-    'Pest Control':{icon:'🐛',price:548},'Home Cleaning':{icon:'🧹',price:448},
-    'TV / Electronics Repair':{icon:'📺',price:398},'Water Purifier Service':{icon:'🫧',price:348},
-    'Appliance Repair':{icon:'🔩',price:398},'Bathroom Renovation':{icon:'🚿',price:848},
-    'Packers & Movers':{icon:'📦',price:1048},'CCTV Installation':{icon:'🔒',price:648},
-  };
-  const workers = {
-    'Plumber':{name:'Suresh Babu',initial:'S'},'Electrician':{name:'Ravi Kumar',initial:'R'},
-    'Locksmith':{name:'Ajay Singh',initial:'A'},'AC Repair':{name:'Venkat Rao',initial:'V'},
-    'Carpenter':{name:'Mahesh Reddy',initial:'M'},'Painter':{name:'Kiran Kumar',initial:'K'},
-    'Pest Control':{name:'Prasad Naidu',initial:'P'},'Home Cleaning':{name:'Lakshmi Devi',initial:'L'},
-    'TV / Electronics Repair':{name:'Tarun Mehta',initial:'T'},'Water Purifier Service':{name:'Wahid Khan',initial:'W'},
-    'Appliance Repair':{name:'Arun Sharma',initial:'A'},'Bathroom Renovation':{name:'Bheem Reddy',initial:'B'},
-    'Packers & Movers':{name:'Pavan Logistics',initial:'P'},'CCTV Installation':{name:'Chetan Yadav',initial:'C'},
-  };
+  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
+  const urgencyText = { normal:'Normal 🕐', urgent:'Urgent ⚡', emergency:'Emergency 🚨' };
 
-  const savedWorkerName    = localStorage.getItem('workerName');
-  const savedWorkerInitial = localStorage.getItem('workerInitial');
-  const config = SERVICE_CONFIG[service] || { icon:'🔧', price:348 };
-  const worker = workers[service] || { name:'Your Worker', initial:'W' };
-  const displayName    = savedWorkerName    || worker.name;
-  const displayInitial = savedWorkerInitial || worker.initial;
+  const service     = localStorage.getItem('bookingService') || '';
+  const urgency     = localStorage.getItem('bookingUrgency') || 'normal';
+  const amount      = localStorage.getItem('bookingAmount')  || '—';
+  const address     = localStorage.getItem('bookingAddress') || '—';
+  const workerIdStr = localStorage.getItem('assignedWorkerId') || '';
 
-  document.getElementById('workerName').innerText    = displayName;
-  document.getElementById('workerAvatar').innerText  = displayInitial;
-  document.getElementById('workerService').innerText = config.icon + ' ' + service;
+  document.getElementById('bookingService').innerText = (icons[service]||'🔧') + ' ' + service;
+  document.getElementById('bookingUrgency').innerText = urgencyText[urgency] || urgency;
+  document.getElementById('bookingCost').innerText    = '₹' + amount;
+  document.getElementById('bookingAddress').innerText = address.length > 40 ? address.substring(0,40)+'...' : address;
 
-  const urgencyText = { 'normal':'Normal 🕐', 'urgent':'Urgent ⚡', 'emergency':'Emergency 🚨' };
-  document.getElementById('bookingUrgency').innerText = urgencyText[urgency] || 'Normal 🕐';
+  // Load real worker from Supabase
+  async function loadWorker() {
+    try {
+      let workerData = null;
 
-  const savedAmount = localStorage.getItem('bookingAmount');
-  document.getElementById('bookingCost').innerText = '₹' + (savedAmount || config.price);
+      if (workerIdStr) {
+        const { data } = await db.from('workers').select('*').eq('worker_id', workerIdStr).single();
+        workerData = data;
+      }
+
+      // Also try from activeJobId
+      if (!workerData) {
+        const jobId = localStorage.getItem('activeJobId');
+        if (jobId) {
+          const { data: job } = await db.from('jobs').select('worker_id').eq('id', jobId).single();
+          if (job && job.worker_id) {
+            const { data } = await db.from('workers').select('*').eq('worker_id', job.worker_id).single();
+            workerData = data;
+          }
+        }
+      }
+
+      if (workerData) {
+        const name    = workerData.name    || 'Your Worker';
+        const initial = name.charAt(0).toUpperCase();
+        document.getElementById('workerName').innerText    = name;
+        document.getElementById('workerAvatar').innerText  = initial;
+        document.getElementById('workerService').innerText = (icons[workerData.skill]||'🔧') + ' ' + (workerData.skill||service);
+        document.getElementById('workerArea').innerText    = workerData.area       || '—';
+        document.getElementById('workerExp').innerText     = workerData.experience || '—';
+
+        const totalJobs = workerData.total_jobs || 0;
+        const rating    = workerData.rating     || '—';
+        document.getElementById('statsSection').innerHTML = `
+          <div class="worker-stats">
+            <div class="stat"><h4>${totalJobs}</h4><p>Jobs Done</p></div>
+            <div class="stat"><h4>${rating}${rating !== '—' ? '⭐' : ''}</h4><p>Rating</p></div>
+            <div class="stat"><h4>${workerData.experience || '—'}</h4><p>Experience</p></div>
+          </div>`;
+
+        // Save for later pages
+        localStorage.setItem('workerName',    name);
+        localStorage.setItem('workerInitial', initial);
+        localStorage.setItem('workerPhone',   workerData.phone || '');
+      } else {
+        // Worker not found in DB — show what we have from localStorage
+        const savedName    = localStorage.getItem('workerName')    || 'Your Worker';
+        const savedInitial = localStorage.getItem('workerInitial') || 'W';
+        document.getElementById('workerName').innerText    = savedName;
+        document.getElementById('workerAvatar').innerText  = savedInitial;
+        document.getElementById('workerService').innerText = (icons[service]||'🔧') + ' ' + service;
+        document.getElementById('statsSection').innerHTML  = '<div class="loading-stats" style="color:#555">Worker details loading...</div>';
+      }
+    } catch (e) {
+      document.getElementById('statsSection').innerHTML = '<div class="loading-stats" style="color:#555">—</div>';
+    }
+  }
 
   function confirmWorker() {
-    localStorage.setItem('workerName',    displayName);
-    localStorage.setItem('workerInitial', displayInitial);
     window.location.href = 'track.html';
   }
-  function cancelWorker() {
-    if (confirm('Are you sure you want to cancel?')) { window.location.href = 'dashboard.html'; }
+
+  async function cancelWorker() {
+    if (!confirm('Cancel this booking?')) return;
+    const jobId = localStorage.getItem('activeJobId');
+    if (jobId) {
+      try { await db.from('jobs').update({ status:'cancelled' }).eq('id', jobId); } catch(e) {}
+      localStorage.removeItem('activeJobId');
+    }
+    window.location.href = 'dashboard.html';
   }
+
+  loadWorker();
 </script>
 </body>
 </html>

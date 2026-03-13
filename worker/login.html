@@ -8,18 +8,18 @@
 <body>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#faf8f2; color:#1a1a1a; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .login-box { background-color:#fffdf7; border:1px solid #ede9df; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
+  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .login-box { background-color:#111; border:1px solid #222; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
   .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:10px; }
   .tagline { font-size:14px; color:#aaa; margin-bottom:40px; }
-  h2 { font-size:24px; font-weight:800; margin-bottom:10px; color:#1a1a1a; }
+  h2 { font-size:24px; font-weight:800; margin-bottom:10px; color:#f0f0f0; }
   .subtitle { font-size:14px; color:#888; margin-bottom:20px; }
   .phone-wrap { margin-bottom:6px; }
-  .phone-input { display:flex; align-items:center; background-color:#f2efe8; border-radius:15px; padding:5px 15px; border:2px solid #ede9df; transition:border-color 0.2s; }
+  .phone-input { display:flex; align-items:center; background-color:#f0f0f0; border-radius:15px; padding:5px 15px; border:2px solid #222; transition:border-color 0.2s; }
   .phone-input:focus-within { border-color:#00b894; }
   .phone-input.err { border-color:#e74c3c !important; }
-  .country-code { font-size:16px; font-weight:700; color:#00b894; padding-right:10px; border-right:1px solid #ccc8bc; margin-right:10px; }
-  .phone-input input { background:none; border:none; outline:none; color:#1a1a1a; font-size:18px; width:100%; padding:12px 0; }
+  .country-code { font-size:16px; font-weight:700; color:#00b894; padding-right:10px; border-right:1px solid #333; margin-right:10px; }
+  .phone-input input { background:none; border:none; outline:none; color:#fff; font-size:18px; width:100%; padding:12px 0; }
   .field-err { color:#e74c3c; font-size:12px; margin-bottom:14px; display:none; text-align:left; }
   .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; margin-top:10px; transition:background-color 0.2s; }
   .btn-main:hover { background-color:#009e7f; }
@@ -31,14 +31,14 @@
   .status-card { display:none; border-radius:20px; padding:30px 25px; margin-top:10px; text-align:center; }
   .status-card.pending  { background-color:#fff8e6; border:2px solid #f0c040; }
   .status-card.rejected { background-color:#fff0f0; border:2px solid #e74c3c; }
-  .status-card.approved { background-color:#e8f8f4; border:2px solid #00b894; }
+  .status-card.approved { background-color:#0d2b24; border:2px solid #00b894; }
   .status-icon { font-size:48px; margin-bottom:12px; }
   .status-card h3 { font-size:20px; font-weight:900; margin-bottom:8px; }
   .status-card.pending  h3 { color:#e67e00; }
   .status-card.rejected h3 { color:#e74c3c; }
   .status-card.approved h3 { color:#00b894; }
   .status-card p { font-size:14px; color:#888; line-height:1.6; margin-bottom:15px; }
-  .worker-id-box { background-color:#fffdf7; border-radius:15px; padding:15px 20px; margin-bottom:20px; border:1px solid #ede9df; }
+  .worker-id-box { background-color:#111; border-radius:15px; padding:15px 20px; margin-bottom:20px; border:1px solid #222; }
   .worker-id-box .label { font-size:12px; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
   .worker-id-box .wid { font-size:26px; font-weight:900; color:#00b894; letter-spacing:3px; }
   .btn-go { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:17px; font-weight:900; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
@@ -77,7 +77,7 @@
   <div class="status-card rejected" id="cardRejected">
     <div class="status-icon">❌</div>
     <h3>Application Not Approved</h3>
-    <p>Unfortunately your application was not approved at this time. Contact <strong>help@zipfix.com</strong> for more details.</p>
+    <p>Unfortunately your application was not approved at this time. Contact <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a020f061a2a10031a0c031244090507">[email&#160;protected]</a></strong> for more details.</p>
     <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
 
@@ -95,7 +95,7 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -168,12 +168,4 @@
     document.getElementById('cardApproved').style.display = 'none';
     document.getElementById('phoneNumber').value = '';
     clearErr();
-    document.getElementById('phoneErr').innerText = 'Please enter a valid 10-digit phone number';
-  }
-
-  document.getElementById('phoneNumber').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkStatus();
-  });
-</script>
-</body>
-</html>
+    document.getElementById('phone

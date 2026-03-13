@@ -92,12 +92,14 @@
         document.getElementById('statusMsg').innerText = '✅ OTP sent to +91 ' + phone;
         setTimeout(() => { window.location.href = 'otp.html'; }, 800);
       } else {
-        // Show OTP on screen as fallback (remove in production)
-        console.warn('SMS failed:', data.error);
-        document.getElementById('statusMsg').innerText = '⚠️ SMS failed. OTP: ' + otp;
+        // Show exact error from Fast2SMS for debugging
+        console.warn('SMS failed:', data.error, data.fast2sms_response);
+        document.getElementById('statusMsg').style.color = '#e74c3c';
+        document.getElementById('statusMsg').innerText = '❌ ' + (data.error || 'SMS failed');
         btn.disabled = false;
-        btn.innerText = 'Send OTP';
-        setTimeout(() => { window.location.href = 'otp.html'; }, 2000);
+        btn.innerText = 'Retry';
+        // Still go to OTP page after 3s — OTP is saved in localStorage
+        setTimeout(() => { window.location.href = 'otp.html'; }, 3000);
       }
     } catch (e) {
       // Network error fallback

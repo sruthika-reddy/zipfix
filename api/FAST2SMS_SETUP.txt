@@ -1,0 +1,34 @@
+# ZipFix — Fast2SMS Setup on Vercel
+
+## Why this is needed
+Browsers block direct API calls to Fast2SMS due to CORS policy.
+The solution: a Vercel Serverless Function (`/api/send-otp.js`) acts as a 
+secure proxy — your browser calls it, it calls Fast2SMS from the server side.
+
+## Step 1 — Add the API file to your project
+Place this file in your project:
+  zipfix-new/
+  └── api/
+      └── send-otp.js   ← this file
+
+## Step 2 — Add your Fast2SMS key to Vercel Environment Variables
+1. Go to https://vercel.com/dashboard
+2. Click your ZipFix project
+3. Go to Settings → Environment Variables
+4. Add a new variable:
+   - Name:  FAST2SMS_KEY
+   - Value: bkTWOPw5g2Yl8c9NazSyEoZ3jim4eMB70rfRxnQDhKUFtG6I1uBm6TCK8d1VMt3PIrwous7D0LWqcgQ5
+   - Environment: Production + Preview + Development (check all 3)
+5. Click Save
+
+## Step 3 — Redeploy
+Push your code to GitHub — Vercel will auto-deploy.
+Or go to Vercel dashboard → Deployments → Redeploy.
+
+## Step 4 — Test
+Open zipfix.vercel.app/customer/login.html
+Enter your phone number → OTP should arrive on phone within 5 seconds.
+
+## How it works
+login.html  →  POST /api/send-otp  →  Fast2SMS API  →  SMS to phone
+             (same domain, no CORS)   (server-side, works fine)

@@ -64,7 +64,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const FAST2SMS_KEY = 'YOUR_FAST2SMS_API_KEY'; // 🔑 same key as login.html
 
   const phone = localStorage.getItem('phoneNumber') || '';
   if (!phone) { window.location.href = 'login.html'; }
@@ -177,22 +176,17 @@
     inputs.forEach(i => i.value = '');
     inputs[0].focus();
 
-    // Send SMS
-    if (FAST2SMS_KEY !== 'bkTWOPw5g2Yl8c9NazSyEoZ3jim4eMB70rfRxnQDhKUFtG6I1uBm6TCK8d1VMt3PIrwous7D0LWqcgQ5Y') {
-      try {
-        const msg = 'Your ZipFix OTP is ' + otp + '. Valid for 5 minutes. Do not share with anyone.';
-        await fetch('https://www.fast2sms.com/dev/bulkV2', {
-          method: 'POST',
-          headers: { 'authorization': FAST2SMS_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ route:'q', message:msg, language:'english', flash:0, numbers:phone })
-        });
-        document.getElementById('resendMsg').innerText = '✅ New OTP sent!';
-      } catch(e) {
-        document.getElementById('resendMsg').innerText = '📱 OTP: ' + otp + ' (dev)';
-      }
-    } else {
-      console.log('📱 Resend OTP (dev):', otp);
-      document.getElementById('resendMsg').innerText = '📱 OTP: ' + otp + ' (dev mode)';
+    // Call Vercel API (no CORS issues)
+    try {
+      const res = await fetch('/api/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, otp })
+      });
+      const data = await res.json();
+      document.getElementById('resendMsg').innerText = data.success ? '✅ New OTP sent!' : '⚠️ OTP: ' + otp;
+    } catch(e) {
+      document.getElementById('resendMsg').innerText = '⚠️ OTP: ' + otp;
     }
 
     startTimer();

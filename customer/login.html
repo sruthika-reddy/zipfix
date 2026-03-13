@@ -50,8 +50,6 @@
 </div>
 
 <script>
-  const FAST2SMS_KEY = 'bkTWOPw5g2Yl8c9NazSyEoZ3jim4eMB70rfRxnQDhKUFtG6I1uBm6TCK8d1VMt3PIrwous7D0LWqcgQ5'; // 🔑 replace with real key
-
   if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
     window.location.href = 'dashboard.html';
   }
@@ -79,33 +77,36 @@
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     localStorage.setItem('phoneNumber', phone);
     localStorage.setItem('pendingOTP', otp);
-    localStorage.setItem('otpExpiry', Date.now() + 5 * 60 * 1000); // 5 min expiry
+    localStorage.setItem('otpExpiry', Date.now() + 5 * 60 * 1000);
 
-    const sent = await sendSMS(phone, otp);
-
-    if (sent) {
-      document.getElementById('statusMsg').innerText = '✅ OTP sent to +91 ' + phone;
-      setTimeout(() => { window.location.href = 'otp.html'; }, 800);
-    } else {
-      // Fallback: still go to OTP page (dev mode shows OTP in console)
-      console.log('📱 OTP (dev fallback):', otp);
-      document.getElementById('statusMsg').innerText = '📱 OTP: ' + otp + ' (dev mode)';
-      setTimeout(() => { window.location.href = 'otp.html'; }, 1200);
-    }
-  }
-
-  async function sendSMS(phone, otp) {
-    if (FAST2SMS_KEY === 'YOUR_FAST2SMS_API_KEY') return false;
     try {
-      const msg = 'Your ZipFix OTP is ' + otp + '. Valid for 5 minutes. Do not share with anyone.';
-      const res = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+      // Call Vercel serverless function (no CORS issues)
+      const res = await fetch('/api/send-otp', {
         method: 'POST',
-        headers: { 'authorization': FAST2SMS_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ route: 'q', message: msg, language: 'english', flash: 0, numbers: phone })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, otp })
       });
       const data = await res.json();
-      return data.return === true;
-    } catch (e) { return false; }
+
+      if (data.success) {
+        document.getElementById('statusMsg').innerText = '✅ OTP sent to +91 ' + phone;
+        setTimeout(() => { window.location.href = 'otp.html'; }, 800);
+      } else {
+        // Show OTP on screen as fallback (remove in production)
+        console.warn('SMS failed:', data.error);
+        document.getElementById('statusMsg').innerText = '⚠️ SMS failed. OTP: ' + otp;
+        btn.disabled = false;
+        btn.innerText = 'Send OTP';
+        setTimeout(() => { window.location.href = 'otp.html'; }, 2000);
+      }
+    } catch (e) {
+      // Network error fallback
+      console.error(e);
+      document.getElementById('statusMsg').innerText = '⚠️ Could not reach server. OTP: ' + otp;
+      btn.disabled = false;
+      btn.innerText = 'Send OTP';
+      setTimeout(() => { window.location.href = 'otp.html'; }, 2000);
+    }
   }
 
   document.getElementById('phoneNumber').addEventListener('keydown', function(e) {

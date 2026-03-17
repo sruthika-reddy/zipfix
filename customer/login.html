@@ -1,119 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>ZipFix — Login</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .login-box { background-color:#111; border:1px solid #222; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 40px rgba(0,0,0,0.6); }
-  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:10px; }
-  .tagline { font-size:14px; color:#555; margin-bottom:40px; }
-  h2 { font-size:24px; font-weight:800; margin-bottom:10px; color:#f0f0f0; }
-  .subtitle { font-size:14px; color:#555; margin-bottom:20px; }
-  .phone-wrap { margin-bottom:6px; }
-  .phone-input { display:flex; align-items:center; background-color:#1a1a1a; border-radius:15px; padding:5px 15px; border:2px solid #222; transition:border-color 0.2s; }
-  .phone-input:focus-within { border-color:#00b894; }
-  .phone-input.err { border-color:#e74c3c !important; }
-  .country-code { font-size:16px; font-weight:700; color:#00b894; padding-right:10px; border-right:1px solid #333; margin-right:10px; }
-  .phone-input input { background:none; border:none; outline:none; color:#f0f0f0; font-size:18px; width:100%; padding:12px 0; }
-  .field-err { color:#e74c3c; font-size:12px; margin-bottom:14px; display:none; text-align:left; padding-left:4px; }
-  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; margin-top:10px; transition:background-color 0.2s; }
-  .btn-main:hover { background-color:#009e7f; }
-  .btn-main:disabled { background-color:#1a3a30; color:#444; cursor:not-allowed; }
-  .status-msg { font-size:14px; color:#00b894; margin-bottom:12px; min-height:20px; }
-  .register-link { font-size:14px; color:#555; margin-bottom:20px; }
-  .register-link span { color:#00b894; cursor:pointer; font-weight:700; }
-  .terms { font-size:12px; color:#333; }
-  .terms span { color:#00b894; cursor:pointer; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .box{background:#fff;border-radius:28px;padding:44px 32px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.08);text-align:center;}
+  .logo{font-size:28px;font-weight:900;color:#00b894;letter-spacing:2px;margin-bottom:6px;}
+  .tagline{font-size:13px;color:#aaa;margin-bottom:36px;}
+  h2{font-size:22px;font-weight:900;margin-bottom:8px;color:#1a1a1a;}
+  .sub{font-size:13px;color:#888;margin-bottom:24px;}
+  .phone-wrap{margin-bottom:6px;}
+  .phone-row{display:flex;align-items:center;background:#f5f5f5;border-radius:14px;padding:4px 16px;border:2px solid #e0e0e0;transition:border-color 0.2s;}
+  .phone-row:focus-within{border-color:#00b894;}
+  .phone-row.err{border-color:#e74c3c!important;}
+  .code{font-size:16px;font-weight:700;color:#00b894;padding-right:10px;border-right:1px solid #ddd;margin-right:10px;}
+  .phone-row input{background:none;border:none;outline:none;color:#1a1a1a;font-size:18px;width:100%;padding:12px 0;}
+  .field-err{color:#e74c3c;font-size:12px;margin-bottom:12px;display:none;text-align:left;padding-left:4px;}
+  .status-msg{font-size:13px;color:#00b894;min-height:20px;margin-bottom:10px;}
+  .btn{width:100%;padding:17px;background:#00b894;color:#fff;font-size:17px;font-weight:800;border:none;border-radius:14px;cursor:pointer;margin-bottom:18px;transition:background 0.2s;}
+  .btn:hover{background:#009e7f;}
+  .btn:disabled{background:#ccc;cursor:not-allowed;}
+  .link-row{font-size:14px;color:#888;}
+  .link-row span{color:#00b894;font-weight:700;cursor:pointer;}
+  .terms{font-size:12px;color:#aaa;margin-top:16px;}
+  .terms span{color:#00b894;cursor:pointer;}
 </style>
-
-<div class="login-box">
+<div class="box">
   <div class="logo">ZIPFIX</div>
   <div class="tagline">Emergency help in minutes</div>
   <h2>Enter your phone number</h2>
-  <p class="subtitle">We'll send you a 6-digit OTP to verify</p>
+  <p class="sub">We'll send you a 6-digit OTP to verify</p>
   <div class="phone-wrap">
-    <div class="phone-input" id="phoneWrap">
-      <div class="country-code">+91</div>
-      <input type="tel" id="phoneNumber" placeholder="98765 43210" maxlength="10" oninput="clearErr()" />
+    <div class="phone-row" id="phoneWrap">
+      <div class="code">+91</div>
+      <input type="tel" id="phoneNumber" placeholder="98765 43210" maxlength="10" oninput="clearErr()"/>
     </div>
     <div class="field-err" id="phoneErr">Please enter a valid 10-digit number</div>
   </div>
   <div class="status-msg" id="statusMsg"></div>
-  <button class="btn-main" id="sendBtn" onclick="sendOTP()">Send OTP</button>
-  <p class="register-link">New to ZipFix? <span onclick="window.location.href='register.html'">Create Account</span></p>
+  <button class="btn" id="sendBtn" onclick="sendOTP()">Send OTP</button>
+  <p class="link-row">New to ZipFix? <span onclick="window.location.href='register.html'">Create Account</span></p>
   <p class="terms">By continuing you agree to our <span>Terms of Service</span></p>
 </div>
-
 <script>
-  if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
-    window.location.href = 'dashboard.html';
-  }
-
-  function clearErr() {
+  if(localStorage.getItem('phoneNumber')&&localStorage.getItem('userName')){window.location.href='dashboard.html';}
+  function clearErr(){
     document.getElementById('phoneWrap').classList.remove('err');
-    document.getElementById('phoneErr').style.display = 'none';
-    document.getElementById('statusMsg').innerText = '';
+    document.getElementById('phoneErr').style.display='none';
+    document.getElementById('statusMsg').innerText='';
+    document.getElementById('statusMsg').style.color='#00b894';
   }
-
-  async function sendOTP() {
-    const phone = document.getElementById('phoneNumber').value.trim();
-    if (phone.length < 10 || !/^\d{10}$/.test(phone)) {
+  async function sendOTP(){
+    const phone=document.getElementById('phoneNumber').value.trim();
+    if(phone.length<10||!/^\d{10}$/.test(phone)){
       document.getElementById('phoneWrap').classList.add('err');
-      document.getElementById('phoneErr').style.display = 'block';
+      document.getElementById('phoneErr').style.display='block';
       return;
     }
-
-    const btn = document.getElementById('sendBtn');
-    btn.disabled = true;
-    btn.innerText = 'Sending OTP...';
-    document.getElementById('statusMsg').innerText = '';
-
-    // Generate 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    localStorage.setItem('phoneNumber', phone);
-    localStorage.setItem('pendingOTP', otp);
-    localStorage.setItem('otpExpiry', Date.now() + 5 * 60 * 1000);
-
-    try {
-      // Call Vercel serverless function (no CORS issues)
-      const res = await fetch('/api/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, otp })
-      });
-      const data = await res.json();
-
-      if (data.success) {
-        document.getElementById('statusMsg').innerText = '✅ OTP sent to +91 ' + phone;
-        setTimeout(() => { window.location.href = 'otp.html'; }, 800);
+    const btn=document.getElementById('sendBtn');
+    btn.disabled=true; btn.innerText='Sending OTP...';
+    const otp=Math.floor(100000+Math.random()*900000).toString();
+    localStorage.setItem('phoneNumber',phone);
+    localStorage.setItem('pendingOTP',otp);
+    localStorage.setItem('otpExpiry',Date.now()+5*60*1000);
+    try{
+      const res=await fetch('/api/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,otp})});
+      const data=await res.json();
+      if(data.success){
+        document.getElementById('statusMsg').innerText='✅ OTP sent to +91 '+phone;
+        setTimeout(()=>{window.location.href='otp.html';},800);
       } else {
-        // Show exact error from Fast2SMS for debugging
-        console.warn('SMS failed:', data.error, data.fast2sms_response);
-        document.getElementById('statusMsg').style.color = '#e74c3c';
-        document.getElementById('statusMsg').innerText = '❌ ' + (data.error || 'SMS failed');
-        btn.disabled = false;
-        btn.innerText = 'Retry';
-        // Still go to OTP page after 3s — OTP is saved in localStorage
-        setTimeout(() => { window.location.href = 'otp.html'; }, 3000);
+        document.getElementById('statusMsg').style.color='#e74c3c';
+        document.getElementById('statusMsg').innerText='⚠️ Could not send SMS. OTP: '+otp;
+        btn.disabled=false; btn.innerText='Retry';
+        setTimeout(()=>{window.location.href='otp.html';},2500);
       }
-    } catch (e) {
-      // Network error fallback
-      console.error(e);
-      document.getElementById('statusMsg').innerText = '⚠️ Could not reach server. OTP: ' + otp;
-      btn.disabled = false;
-      btn.innerText = 'Send OTP';
-      setTimeout(() => { window.location.href = 'otp.html'; }, 2000);
+    } catch(e){
+      document.getElementById('statusMsg').innerText='⚠️ Network error. OTP: '+otp;
+      btn.disabled=false; btn.innerText='Send OTP';
+      setTimeout(()=>{window.location.href='otp.html';},2000);
     }
   }
-
-  document.getElementById('phoneNumber').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') sendOTP();
-  });
+  document.getElementById('phoneNumber').addEventListener('keydown',e=>{if(e.key==='Enter')sendOTP();});
 </script>
 </body>
 </html>

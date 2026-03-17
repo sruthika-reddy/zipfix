@@ -1,174 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>ZipFix — Worker Found</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
-  .navbar { display:flex; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; gap:15px; }
-  .back-btn { font-size:22px; cursor:pointer; color:#00b894; }
-  .navbar h3 { font-size:20px; font-weight:800; }
-
-  .worker-card { background-color:#111; border:1px solid #222; margin:20px 25px; border-radius:25px; padding:30px; text-align:center; }
-  .worker-avatar { width:90px; height:90px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:900; color:#fff; margin:0 auto 14px; }
-  .worker-name    { font-size:24px; font-weight:900; margin-bottom:5px; }
-  .worker-service { color:#00b894; font-size:15px; font-weight:700; margin-bottom:12px; }
-  .verified-badge { display:inline-flex; align-items:center; gap:6px; background-color:#0d2b24; color:#00b894; padding:8px 16px; border-radius:50px; font-size:13px; font-weight:700; margin-bottom:16px; }
-
-  .worker-stats { display:flex; justify-content:space-around; border-top:1px solid #222; padding-top:18px; }
-  .stat h4 { font-size:20px; font-weight:900; color:#00b894; }
-  .stat p  { font-size:11px; color:#555; margin-top:4px; }
-
-  .loading-stats { font-size:13px; color:#444; padding:14px 0; }
-
-  .info-section { margin:0 25px 20px; }
-  .info-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 22px; margin-bottom:14px; }
-  .info-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #1a1a1a; font-size:14px; }
-  .info-row:last-child { border-bottom:none; }
-  .info-row .label { color:#555; }
-  .info-row .value { font-weight:700; }
-  .info-row .value.green { color:#00b894; }
-  .info-row .value.yellow { color:#e6b800; }
-
-  .action-buttons { display:flex; gap:14px; margin:0 25px 40px; }
-  .btn-confirm { flex:2; padding:18px; background-color:#00b894; color:#fff; font-size:17px; font-weight:800; border:none; border-radius:15px; cursor:pointer; transition:background-color 0.2s; }
-  .btn-confirm:hover { background-color:#009e7f; }
-  .btn-cancel { flex:1; padding:18px; background-color:#111; color:#555; font-size:16px; font-weight:800; border:2px solid #222; border-radius:15px; cursor:pointer; transition:all 0.2s; }
-  .btn-cancel:hover { border-color:#e74c3c; color:#e74c3c; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .back-btn{font-size:22px;color:#00b894;cursor:pointer;background:none;border:none;}
+  .navbar h3{font-size:18px;font-weight:900;}
+  .worker-card{background:#fff;margin:16px 20px;border-radius:22px;padding:28px 20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .worker-avatar{width:88px;height:88px;background:#00b894;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;color:#fff;margin:0 auto 14px;}
+  .worker-name{font-size:22px;font-weight:900;margin-bottom:4px;}
+  .worker-service{color:#00b894;font-size:14px;font-weight:700;margin-bottom:12px;}
+  .verified-badge{display:inline-flex;align-items:center;gap:6px;background:#e8f8f4;color:#00b894;padding:7px 16px;border-radius:50px;font-size:13px;font-weight:700;margin-bottom:16px;}
+  .loading-stats{font-size:13px;color:#aaa;padding:12px 0;}
+  .worker-stats{display:flex;justify-content:space-around;border-top:1px solid #f5f5f5;padding-top:18px;}
+  .stat h4{font-size:20px;font-weight:900;color:#00b894;}
+  .stat p{font-size:11px;color:#888;margin-top:4px;}
+  .info-section{margin:0 20px 18px;}
+  .info-card{background:#fff;border-radius:18px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f5f5f5;font-size:14px;}
+  .info-row:last-child{border-bottom:none;}
+  .info-row .lbl{color:#888;}
+  .info-row .val{font-weight:700;}
+  .info-row .val.green{color:#00b894;}
+  .action-buttons{display:flex;gap:12px;margin:0 20px 40px;}
+  .btn-confirm{flex:2;padding:17px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:14px;cursor:pointer;transition:background 0.2s;}
+  .btn-confirm:hover{background:#009e7f;}
+  .btn-cancel{flex:1;padding:17px;background:#fff;color:#888;font-size:15px;font-weight:800;border:2px solid #e0e0e0;border-radius:14px;cursor:pointer;transition:all 0.2s;}
+  .btn-cancel:hover{border-color:#e74c3c;color:#e74c3c;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <nav class="navbar">
-  <div class="back-btn" onclick="window.location.href='dashboard.html'">←</div>
+  <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
   <h3>Worker Found! 🎉</h3>
 </nav>
-
 <div class="worker-card">
   <div class="worker-avatar" id="workerAvatar">?</div>
-  <div class="worker-name"    id="workerName">Loading...</div>
+  <div class="worker-name" id="workerName">Loading...</div>
   <div class="worker-service" id="workerService">—</div>
   <div class="verified-badge">✅ Verified Worker</div>
   <div id="statsSection" class="loading-stats">Loading worker details...</div>
 </div>
-
 <div class="info-section">
   <div class="info-card">
-    <div class="info-row"><span class="label">💰 Estimated Cost</span><span class="value green" id="bookingCost">—</span></div>
-    <div class="info-row"><span class="label">🚨 Urgency</span><span class="value" id="bookingUrgency">—</span></div>
-    <div class="info-row"><span class="label">📍 Your Address</span><span class="value" id="bookingAddress" style="max-width:180px;text-align:right;font-size:12px">—</span></div>
-    <div class="info-row"><span class="label">🔧 Service</span><span class="value green" id="bookingService">—</span></div>
+    <div class="info-row"><span class="lbl">💰 Estimated Cost</span><span class="val green" id="bookingCost">—</span></div>
+    <div class="info-row"><span class="lbl">🚨 Urgency</span><span class="val" id="bookingUrgency">—</span></div>
+    <div class="info-row"><span class="lbl">📍 Address</span><span class="val" id="bookingAddress" style="max-width:180px;text-align:right;font-size:12px">—</span></div>
+    <div class="info-row"><span class="lbl">🔧 Service</span><span class="val green" id="bookingService">—</span></div>
   </div>
   <div class="info-card">
-    <div class="info-row"><span class="label">🪪 ID Verified</span><span class="value green">✅ Yes</span></div>
-    <div class="info-row"><span class="label">📱 Area</span><span class="value" id="workerArea">—</span></div>
-    <div class="info-row"><span class="label">💼 Experience</span><span class="value" id="workerExp">—</span></div>
+    <div class="info-row"><span class="lbl">🪪 ID Verified</span><span class="val green">✅ Yes</span></div>
+    <div class="info-row"><span class="lbl">📍 Area</span><span class="val" id="workerArea">—</span></div>
+    <div class="info-row"><span class="lbl">💼 Experience</span><span class="val" id="workerExp">—</span></div>
   </div>
 </div>
-
 <div class="action-buttons">
   <button class="btn-confirm" onclick="confirmWorker()">✅ Confirm & Track</button>
-  <button class="btn-cancel"  onclick="cancelWorker()">✗ Cancel</button>
+  <button class="btn-cancel" onclick="cancelWorker()">✗ Cancel</button>
 </div>
-
 <script>
-  if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
+  if(!localStorage.getItem('phoneNumber')){window.location.href='login.html';}
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  const icons={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
+  const urgencyText={normal:'Normal 🕐',urgent:'Urgent ⚡',emergency:'Emergency 🚨'};
+  const service=localStorage.getItem('bookingService')||'';
+  const urgency=localStorage.getItem('bookingUrgency')||'normal';
+  const amount=localStorage.getItem('bookingAmount')||'—';
+  const address=localStorage.getItem('bookingAddress')||'—';
+  const workerIdStr=localStorage.getItem('assignedWorkerId')||'';
+  document.getElementById('bookingService').innerText=(icons[service]||'🔧')+' '+service;
+  document.getElementById('bookingUrgency').innerText=urgencyText[urgency]||urgency;
+  document.getElementById('bookingCost').innerText='₹'+amount;
+  document.getElementById('bookingAddress').innerText=address.length>40?address.substring(0,40)+'...':address;
 
-  const db = supabase.createClient(
-    'https://wenvdgvyuhqdiktetvfj.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
-  );
-
-  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
-  const urgencyText = { normal:'Normal 🕐', urgent:'Urgent ⚡', emergency:'Emergency 🚨' };
-
-  const service     = localStorage.getItem('bookingService') || '';
-  const urgency     = localStorage.getItem('bookingUrgency') || 'normal';
-  const amount      = localStorage.getItem('bookingAmount')  || '—';
-  const address     = localStorage.getItem('bookingAddress') || '—';
-  const workerIdStr = localStorage.getItem('assignedWorkerId') || '';
-
-  document.getElementById('bookingService').innerText = (icons[service]||'🔧') + ' ' + service;
-  document.getElementById('bookingUrgency').innerText = urgencyText[urgency] || urgency;
-  document.getElementById('bookingCost').innerText    = '₹' + amount;
-  document.getElementById('bookingAddress').innerText = address.length > 40 ? address.substring(0,40)+'...' : address;
-
-  // Load real worker from Supabase
-  async function loadWorker() {
-    try {
-      let workerData = null;
-
-      if (workerIdStr) {
-        const { data } = await db.from('workers').select('*').eq('worker_id', workerIdStr).single();
-        workerData = data;
-      }
-
-      // Also try from activeJobId
-      if (!workerData) {
-        const jobId = localStorage.getItem('activeJobId');
-        if (jobId) {
-          const { data: job } = await db.from('jobs').select('worker_id').eq('id', jobId).single();
-          if (job && job.worker_id) {
-            const { data } = await db.from('workers').select('*').eq('worker_id', job.worker_id).single();
-            workerData = data;
-          }
-        }
-      }
-
-      if (workerData) {
-        const name    = workerData.name    || 'Your Worker';
-        const initial = name.charAt(0).toUpperCase();
-        document.getElementById('workerName').innerText    = name;
-        document.getElementById('workerAvatar').innerText  = initial;
-        document.getElementById('workerService').innerText = (icons[workerData.skill]||'🔧') + ' ' + (workerData.skill||service);
-        document.getElementById('workerArea').innerText    = workerData.area       || '—';
-        document.getElementById('workerExp').innerText     = workerData.experience || '—';
-
-        const totalJobs = workerData.total_jobs || 0;
-        const rating    = workerData.rating     || '—';
-        document.getElementById('statsSection').innerHTML = `
-          <div class="worker-stats">
-            <div class="stat"><h4>${totalJobs}</h4><p>Jobs Done</p></div>
-            <div class="stat"><h4>${rating}${rating !== '—' ? '⭐' : ''}</h4><p>Rating</p></div>
-            <div class="stat"><h4>${workerData.experience || '—'}</h4><p>Experience</p></div>
-          </div>`;
-
-        // Save for later pages
-        localStorage.setItem('workerName',    name);
-        localStorage.setItem('workerInitial', initial);
-        localStorage.setItem('workerPhone',   workerData.phone || '');
+  async function loadWorker(){
+    try{
+      let w=null;
+      if(workerIdStr){const{data}=await db.from('workers').select('*').eq('worker_id',workerIdStr).single();w=data;}
+      if(!w){const jobId=localStorage.getItem('activeJobId');if(jobId){const{data:job}=await db.from('jobs').select('worker_id').eq('id',jobId).single();if(job&&job.worker_id){const{data}=await db.from('workers').select('*').eq('worker_id',job.worker_id).single();w=data;}}}
+      if(w){
+        const name=w.name||'Your Worker',initial=name.charAt(0).toUpperCase();
+        document.getElementById('workerName').innerText=name;
+        document.getElementById('workerAvatar').innerText=initial;
+        document.getElementById('workerService').innerText=(icons[w.skill]||'🔧')+' '+(w.skill||service);
+        document.getElementById('workerArea').innerText=w.area||'—';
+        document.getElementById('workerExp').innerText=w.experience||'—';
+        const tj=w.total_jobs||0,rat=w.rating||'—';
+        document.getElementById('statsSection').innerHTML=`<div class="worker-stats"><div class="stat"><h4>${tj}</h4><p>Jobs Done</p></div><div class="stat"><h4>${rat}${rat!=='—'?'⭐':''}</h4><p>Rating</p></div><div class="stat"><h4>${w.experience||'—'}</h4><p>Experience</p></div></div>`;
+        localStorage.setItem('workerName',name);localStorage.setItem('workerInitial',initial);localStorage.setItem('workerPhone',w.phone||'');
       } else {
-        // Worker not found in DB — show what we have from localStorage
-        const savedName    = localStorage.getItem('workerName')    || 'Your Worker';
-        const savedInitial = localStorage.getItem('workerInitial') || 'W';
-        document.getElementById('workerName').innerText    = savedName;
-        document.getElementById('workerAvatar').innerText  = savedInitial;
-        document.getElementById('workerService').innerText = (icons[service]||'🔧') + ' ' + service;
-        document.getElementById('statsSection').innerHTML  = '<div class="loading-stats" style="color:#555">Worker details loading...</div>';
+        const sn=localStorage.getItem('workerName')||'Your Worker',si=localStorage.getItem('workerInitial')||'W';
+        document.getElementById('workerName').innerText=sn;document.getElementById('workerAvatar').innerText=si;
+        document.getElementById('workerService').innerText=(icons[service]||'🔧')+' '+service;
+        document.getElementById('statsSection').innerHTML='<div class="loading-stats" style="color:#aaa">Worker details loading...</div>';
       }
-    } catch (e) {
-      document.getElementById('statsSection').innerHTML = '<div class="loading-stats" style="color:#555">—</div>';
-    }
+    }catch(e){document.getElementById('statsSection').innerHTML='<div class="loading-stats" style="color:#aaa">—</div>';}
   }
-
-  function confirmWorker() {
-    window.location.href = 'track.html';
+  function confirmWorker(){window.location.href='track.html';}
+  async function cancelWorker(){
+    if(!confirm('Cancel this booking?'))return;
+    const jobId=localStorage.getItem('activeJobId');
+    if(jobId){try{await db.from('jobs').update({status:'cancelled'}).eq('id',jobId);}catch(e){}localStorage.removeItem('activeJobId');}
+    window.location.href='dashboard.html';
   }
-
-  async function cancelWorker() {
-    if (!confirm('Cancel this booking?')) return;
-    const jobId = localStorage.getItem('activeJobId');
-    if (jobId) {
-      try { await db.from('jobs').update({ status:'cancelled' }).eq('id', jobId); } catch(e) {}
-      localStorage.removeItem('activeJobId');
-    }
-    window.location.href = 'dashboard.html';
-  }
-
   loadWorker();
 </script>
 </body>

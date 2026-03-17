@@ -1,183 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>ZipFix — My Bookings</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
-
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
-  .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
-  .back-btn { background:none; border:none; color:#00b894; font-size:22px; cursor:pointer; }
-
-  .page-title    { padding:28px 25px 4px; font-size:26px; font-weight:900; }
-  .page-subtitle { padding:0 25px 20px; font-size:14px; color:#555; }
-
-  .filter-tabs { display:flex; gap:8px; padding:0 25px 20px; overflow-x:auto; }
-  .tab { padding:9px 18px; border-radius:50px; font-size:13px; font-weight:700; cursor:pointer; border:2px solid #222; color:#555; background:#111; transition:all 0.2s; white-space:nowrap; }
-  .tab.active { background-color:#00b894; color:#fff; border-color:#00b894; }
-
-  .bookings-section { padding:0 25px 30px; }
-
-  .booking-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:18px 20px; margin-bottom:12px; transition:border-color 0.2s; }
-  .booking-card:active { border-color:#00b894; }
-  .bc-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
-  .bc-service { font-size:17px; font-weight:800; }
-  .bc-status { padding:6px 13px; border-radius:50px; font-size:12px; font-weight:800; white-space:nowrap; }
-  .s-completed { background-color:#0d2b24; color:#00b894; }
-  .s-cancelled  { background-color:#2b0d0d; color:#e74c3c; }
-  .s-pending    { background-color:#2b2000; color:#e6b800; }
-  .s-accepted   { background-color:#0d1a2b; color:#3b9eff; }
-
-  .bc-meta { display:flex; flex-wrap:wrap; gap:12px; font-size:12px; color:#555; margin-bottom:10px; }
-  .bc-address { font-size:13px; color:#555; margin-bottom:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .bc-bottom { display:flex; justify-content:space-between; align-items:center; }
-  .bc-amount { font-size:16px; font-weight:900; color:#00b894; }
-  .bc-date { font-size:11px; color:#333; }
-
-  .bc-problem { background-color:#1a1a1a; border-radius:10px; padding:10px 12px; font-size:13px; color:#888; font-style:italic; margin-bottom:8px; }
-
-  .empty-state { text-align:center; padding:60px 25px; color:#333; }
-  .empty-state .empty-icon { font-size:56px; margin-bottom:15px; }
-  .empty-state p { font-size:16px; font-weight:700; }
-  .empty-state small { font-size:13px; color:#333; margin-top:8px; display:block; }
-  .loading-note { text-align:center; padding:40px; color:#333; font-size:14px; }
-  .spacer { height:90px; }
-
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#111; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #222; z-index:100; }
-  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#444; gap:4px; }
-  .nav-item.active { color:#00b894; }
-  .nav-icon { font-size:22px; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .back-btn{background:none;border:none;color:#00b894;font-size:22px;cursor:pointer;}
+  .page-title{padding:22px 20px 4px;font-size:24px;font-weight:900;}
+  .page-sub{padding:0 20px 18px;font-size:13px;color:#888;}
+  .tabs{display:flex;gap:8px;padding:0 20px 16px;overflow-x:auto;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{padding:8px 18px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;border:2px solid #e0e0e0;color:#888;background:#fff;white-space:nowrap;transition:all 0.2s;}
+  .tab.active{background:#00b894;color:#fff;border-color:#00b894;}
+  .list{padding:0 20px 20px;}
+  .booking-card{background:#fff;border-radius:18px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .bc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .bc-service{font-size:16px;font-weight:800;}
+  .bc-status{padding:5px 12px;border-radius:50px;font-size:11px;font-weight:800;white-space:nowrap;}
+  .s-completed{background:#e8f8f4;color:#00b894;}
+  .s-cancelled{background:#fff0ee;color:#e74c3c;}
+  .s-pending{background:#fff8e6;color:#e67e00;}
+  .s-accepted{background:#eef4ff;color:#3b82f6;}
+  .bc-problem{background:#f5f5f5;border-radius:10px;padding:10px 12px;font-size:13px;color:#888;font-style:italic;margin-bottom:10px;}
+  .bc-address{font-size:12px;color:#888;margin-bottom:8px;}
+  .bc-meta{display:flex;gap:12px;font-size:12px;color:#aaa;margin-bottom:10px;flex-wrap:wrap;}
+  .bc-bottom{display:flex;justify-content:space-between;align-items:center;}
+  .bc-amount{font-size:16px;font-weight:900;color:#00b894;}
+  .bc-actions{display:flex;gap:8px;}
+  .btn-track{padding:7px 14px;background:#eef4ff;color:#3b82f6;border:1px solid #3b82f633;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;}
+  .btn-rate{padding:7px 14px;background:#e8f8f4;color:#00b894;border:1px solid #00b89433;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;}
+  .empty-state{text-align:center;padding:56px 20px;color:#aaa;}
+  .empty-state .icon{font-size:52px;margin-bottom:14px;}
+  .empty-state p{font-size:15px;font-weight:700;}
+  .empty-state small{font-size:13px;color:#aaa;margin-top:6px;display:block;}
+  .loading-note{text-align:center;padding:40px;color:#aaa;font-size:14px;}
+  .spacer{height:90px;}
+  .bottom-nav{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:12px 0 16px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);z-index:100;}
+  .nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:10px;color:#aaa;gap:3px;}
+  .nav-item.active{color:#00b894;}
+  .nav-icon{font-size:22px;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <nav class="navbar">
   <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
   <div class="logo">ZIPFIX</div>
   <div style="width:40px"></div>
 </nav>
-
 <div class="page-title">My Bookings</div>
-<div class="page-subtitle">Your real-time service history</div>
-
-<div class="filter-tabs">
+<div class="page-sub">Your real-time service history</div>
+<div class="tabs">
   <button class="tab active" onclick="filterTab('all',this)">All</button>
   <button class="tab" onclick="filterTab('pending',this)">Pending</button>
   <button class="tab" onclick="filterTab('accepted',this)">Live</button>
   <button class="tab" onclick="filterTab('completed',this)">Completed</button>
   <button class="tab" onclick="filterTab('cancelled',this)">Cancelled</button>
 </div>
-
-<div class="bookings-section" id="bookingsList">
-  <div class="loading-note">⏳ Loading your bookings...</div>
-</div>
-
+<div class="list" id="bookingsList"><div class="loading-note">⏳ Loading your bookings...</div></div>
 <div class="spacer"></div>
-
 <nav class="bottom-nav">
   <div class="nav-item" onclick="window.location.href='dashboard.html'"><div class="nav-icon">🏠</div><div>Home</div></div>
   <div class="nav-item active"><div class="nav-icon">📋</div><div>Bookings</div></div>
+  <div class="nav-item" onclick="window.location.href='subscription.html'"><div class="nav-icon">⭐</div><div>Plans</div></div>
   <div class="nav-item" onclick="window.location.href='track.html'"><div class="nav-icon">📍</div><div>Track</div></div>
   <div class="nav-item" onclick="window.location.href='profile.html'"><div class="nav-icon">👤</div><div>Profile</div></div>
 </nav>
-
 <script>
-  if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
+  if(!localStorage.getItem('phoneNumber')){window.location.href='login.html';}
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  const icons={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
+  let allBookings=[],currentFilter='all';
+  const myPhone='+91'+localStorage.getItem('phoneNumber');
 
-  const db = supabase.createClient(
-    'https://wenvdgvyuhqdiktetvfj.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
-  );
-
-  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
-
-  let allBookings = [], currentFilter = 'all';
-  const myPhone = '+91' + localStorage.getItem('phoneNumber');
-
-  async function loadBookings() {
-    try {
-      const { data, error } = await db
-        .from('jobs')
-        .select('*')
-        .eq('customer_phone', myPhone)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      allBookings = data || [];
+  async function loadBookings(){
+    try{
+      const{data,error}=await db.from('jobs').select('*').eq('customer_phone',myPhone).order('created_at',{ascending:false});
+      if(error)throw error;
+      allBookings=data||[];
       renderBookings(currentFilter);
-    } catch (e) {
-      document.getElementById('bookingsList').innerHTML =
-        '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Could not load bookings</p><small>' + e.message + '</small></div>';
+    }catch(e){
+      document.getElementById('bookingsList').innerHTML='<div class="empty-state"><div class="icon">⚠️</div><p>Could not load bookings</p><small>'+e.message+'</small></div>';
     }
   }
 
-  function filterTab(status, el) {
-    currentFilter = status;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  function filterTab(status,el){
+    currentFilter=status;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     el.classList.add('active');
     renderBookings(status);
   }
 
-  function renderBookings(filter) {
-    let list = allBookings;
-    if (filter === 'accepted') {
-      list = allBookings.filter(j => j.status === 'accepted' || j.status === 'in_progress');
-    } else if (filter !== 'all') {
-      list = allBookings.filter(j => j.status === filter);
-    }
-
-    const el = document.getElementById('bookingsList');
-    if (!list.length) {
-      const msgs = { all:'You have no bookings yet', pending:'No pending bookings', accepted:'No live bookings', completed:'No completed bookings', cancelled:'No cancelled bookings' };
-      el.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><p>${msgs[filter]||'No bookings'}</p><small>Book a service from the home screen</small></div>`;
+  function renderBookings(filter){
+    let list=allBookings;
+    if(filter==='accepted')list=allBookings.filter(j=>j.status==='accepted'||j.status==='in_progress');
+    else if(filter!=='all')list=allBookings.filter(j=>j.status===filter);
+    const el=document.getElementById('bookingsList');
+    if(!list.length){
+      const msgs={all:'No bookings yet',pending:'No pending bookings',accepted:'No live bookings',completed:'No completed bookings',cancelled:'No cancelled bookings'};
+      el.innerHTML=`<div class="empty-state"><div class="icon">📋</div><p>${msgs[filter]||'No bookings'}</p><small>Book a service from the home screen</small></div>`;
       return;
     }
-
-    el.innerHTML = list.map(j => buildCard(j)).join('');
+    el.innerHTML=list.map(j=>buildCard(j)).join('');
   }
 
-  function buildCard(j) {
-    const ico  = icons[j.service] || '🔧';
-    const date = j.created_at ? new Date(j.created_at).toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
-    const statusMap = { pending:'⏳ Pending', accepted:'🔵 Live', in_progress:'🔵 In Progress', completed:'✅ Completed', cancelled:'❌ Cancelled' };
-    const classMap  = { pending:'s-pending', accepted:'s-accepted', in_progress:'s-accepted', completed:'s-completed', cancelled:'s-cancelled' };
-    const sl  = statusMap[j.status] || j.status;
-    const sc  = classMap[j.status]  || 's-pending';
-    const addr = (j.customer_address || '').length > 50 ? j.customer_address.substring(0,50)+'...' : (j.customer_address||'—');
-
-    const canTrack = j.status === 'accepted' || j.status === 'in_progress';
-    const canRate  = j.status === 'completed' && !j.rated;
-
+  function buildCard(j){
+    const ico=icons[j.service]||'🔧';
+    const date=j.created_at?new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+    const sMap={pending:'⏳ Pending',accepted:'🔵 Live',in_progress:'🔵 In Progress',completed:'✅ Completed',cancelled:'❌ Cancelled'};
+    const cMap={pending:'s-pending',accepted:'s-accepted',in_progress:'s-accepted',completed:'s-completed',cancelled:'s-cancelled'};
+    const canTrack=j.status==='accepted'||j.status==='in_progress';
+    const canRate=j.status==='completed';
+    const addr=(j.customer_address||'').length>45?j.customer_address.substring(0,45)+'...':(j.customer_address||'—');
     return `<div class="booking-card">
       <div class="bc-top">
         <div class="bc-service">${ico} ${j.service||'—'}</div>
-        <div class="bc-status ${sc}">${sl}</div>
+        <div class="bc-status ${cMap[j.status]||'s-pending'}">${sMap[j.status]||j.status}</div>
       </div>
-      ${j.problem ? `<div class="bc-problem">"${j.problem.substring(0,80)}${j.problem.length>80?'...':''}"</div>` : ''}
+      ${j.problem?`<div class="bc-problem">"${j.problem.substring(0,70)}${j.problem.length>70?'...':''}"</div>`:''}
       <div class="bc-address">📍 ${addr}</div>
-      <div class="bc-meta">
-        <span>⚡ ${j.urgency||'normal'}</span>
-        ${j.worker_id ? '<span>👷 Worker: '+j.worker_id+'</span>' : ''}
-        <span>📅 ${date}</span>
-      </div>
+      <div class="bc-meta"><span>⚡ ${j.urgency||'normal'}</span>${j.worker_id?'<span>👷 Worker: '+j.worker_id+'</span>':''}<span>📅 ${date}</span></div>
       <div class="bc-bottom">
         <div class="bc-amount">₹${j.amount||0}</div>
-        <div style="display:flex;gap:8px">
-          ${canTrack ? `<button onclick="window.location.href='track.html'" style="padding:8px 14px;background:#0d1a2b;color:#3b9eff;border:1px solid #3b9eff33;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;">📍 Track</button>` : ''}
-          ${canRate  ? `<button onclick="window.location.href='rate.html'" style="padding:8px 14px;background:#0d2b24;color:#00b894;border:1px solid #00b89433;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;">⭐ Rate</button>` : ''}
+        <div class="bc-actions">
+          ${canTrack?`<button class="btn-track" onclick="window.location.href='track.html'">📍 Track</button>`:''}
+          ${canRate?`<button class="btn-rate" onclick="window.location.href='rate.html'">⭐ Rate</button>`:''}
         </div>
       </div>
     </div>`;
   }
 
   loadBookings();
-  // Auto-refresh for live jobs
-  setInterval(loadBookings, 15000);
+  setInterval(loadBookings,15000);
 </script>
 </body>
 </html>

@@ -1,97 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>ZipFix — Create Account</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .register-box { background-color:#111; border:1px solid #222; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
-  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:5px; text-align:center; }
-  .tagline { font-size:14px; color:#aaa; margin-bottom:35px; text-align:center; }
-  h2 { font-size:22px; font-weight:800; margin-bottom:5px; color:#f0f0f0; }
-  .subtitle { font-size:14px; color:#888; margin-bottom:30px; }
-  .input-group { margin-bottom:20px; }
-  .input-group label { display:block; font-size:13px; font-weight:700; color:#888; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
-  .input-group input, .input-group select {
-    width:100%; padding:15px 20px; background-color:#f0f0f0;
-    border:2px solid #222; border-radius:15px; color:#f0f0f0;
-    font-size:16px; outline:none; transition:border-color 0.2s;
-  }
-  .input-group input:focus, .input-group select:focus { border-color:#00b894; }
-  .input-group select option { background-color:#1a1a1a; color:#f0f0f0; }
-  .input-group input.err, .input-group select.err { border-color:#e74c3c; }
-  .field-err { color:#e74c3c; font-size:12px; margin-top:5px; display:none; }
-  .phone-row { display:flex; align-items:center; background-color:#f0f0f0; border:2px solid #222; border-radius:15px; overflow:hidden; transition:border-color 0.2s; }
-  .phone-row:focus-within { border-color:#00b894; }
-  .phone-row.err { border-color:#e74c3c; }
-  .phone-prefix { padding:15px; font-size:16px; font-weight:700; color:#00b894; border-right:2px solid #333; white-space:nowrap; }
-  .phone-row input { border:none !important; border-radius:0 !important; background:none !important; padding:15px !important; outline:none; color:#f0f0f0; font-size:16px; width:100%; }
-  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-top:10px; transition:background-color 0.2s; }
-  .btn-main:hover { background-color:#009e7f; }
-  .btn-main:disabled { background-color:#ccc; cursor:not-allowed; }
-  .login-link { text-align:center; margin-top:20px; font-size:14px; color:#888; }
-  .login-link span { color:#00b894; cursor:pointer; font-weight:700; }
-  .success-card { display:none; text-align:center; padding:20px 0; }
-  .success-card .s-icon { font-size:60px; margin-bottom:15px; }
-  .success-card h3 { font-size:24px; font-weight:900; color:#00b894; margin-bottom:10px; }
-  .success-card p { font-size:15px; color:#888; line-height:1.7; margin-bottom:25px; }
-  .btn-go { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; }
-  .btn-go:hover { background-color:#009e7f; }
-  .api-err { background:#fff0ee; border:1px solid #e74c3c; color:#e74c3c; border-radius:12px; padding:14px 16px; font-size:14px; margin-top:15px; display:none; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .box{background:#fff;border-radius:28px;padding:44px 32px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+  .logo{font-size:26px;font-weight:900;color:#00b894;letter-spacing:2px;margin-bottom:5px;text-align:center;}
+  .tagline{font-size:13px;color:#aaa;margin-bottom:32px;text-align:center;}
+  h2{font-size:21px;font-weight:900;margin-bottom:5px;color:#1a1a1a;}
+  .sub{font-size:13px;color:#888;margin-bottom:26px;}
+  .grp{margin-bottom:18px;}
+  .grp label{display:block;font-size:12px;font-weight:700;color:#888;margin-bottom:7px;text-transform:uppercase;letter-spacing:1px;}
+  .grp input,.grp select{width:100%;padding:14px 16px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;color:#1a1a1a;font-size:15px;outline:none;transition:border-color 0.2s;}
+  .grp input:focus,.grp select:focus{border-color:#00b894;}
+  .grp input.err,.grp select.err{border-color:#e74c3c;}
+  .grp select option{background:#fff;color:#1a1a1a;}
+  .field-err{color:#e74c3c;font-size:12px;margin-top:5px;display:none;}
+  .phone-row{display:flex;align-items:center;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;overflow:hidden;transition:border-color 0.2s;}
+  .phone-row:focus-within{border-color:#00b894;}
+  .phone-row.err{border-color:#e74c3c;}
+  .prefix{padding:14px 12px;font-size:16px;font-weight:700;color:#00b894;border-right:2px solid #e0e0e0;white-space:nowrap;}
+  .phone-row input{border:none!important;border-radius:0!important;background:none!important;padding:14px!important;outline:none;color:#1a1a1a;font-size:15px;width:100%;}
+  .btn{width:100%;padding:17px;background:#00b894;color:#fff;font-size:17px;font-weight:800;border:none;border-radius:14px;cursor:pointer;margin-top:8px;transition:background 0.2s;}
+  .btn:hover{background:#009e7f;}
+  .btn:disabled{background:#ccc;cursor:not-allowed;}
+  .api-err{background:#fff0ee;border:1px solid #e74c3c;color:#e74c3c;border-radius:12px;padding:14px 16px;font-size:13px;margin-top:14px;display:none;}
+  .login-link{text-align:center;margin-top:18px;font-size:14px;color:#888;}
+  .login-link span{color:#00b894;font-weight:700;cursor:pointer;}
+  .success-card{display:none;text-align:center;padding:20px 0;}
+  .success-card .s-icon{font-size:56px;margin-bottom:14px;}
+  .success-card h3{font-size:22px;font-weight:900;color:#00b894;margin-bottom:8px;}
+  .success-card p{font-size:14px;color:#888;line-height:1.7;margin-bottom:22px;}
+  .btn-go{width:100%;padding:17px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:14px;cursor:pointer;}
+  .btn-go:hover{background:#009e7f;}
 </style>
-
-<div class="register-box">
+<div class="box">
   <div id="formSection">
     <div class="logo">ZIPFIX</div>
     <div class="tagline">Emergency help in minutes</div>
     <h2>Create your account</h2>
-    <p class="subtitle">Just a few details to get you started</p>
+    <p class="sub">Just a few details to get started</p>
 
-    <div class="input-group">
+    <div class="grp">
       <label>Full Name</label>
-      <input type="text" id="fullName" placeholder="Enter your full name" oninput="clearErr('fullName','errName')" />
+      <input type="text" id="fullName" placeholder="Enter your full name" oninput="ce('fullName','errName')"/>
       <div class="field-err" id="errName">Please enter your full name</div>
     </div>
-    <div class="input-group">
+    <div class="grp">
       <label>Phone Number</label>
       <div class="phone-row" id="phoneRow">
-        <div class="phone-prefix">+91</div>
-        <input type="number" id="phoneNumber" placeholder="98765 43210" oninput="clearErr('phoneRow','errPhone')" />
+        <div class="prefix">+91</div>
+        <input type="number" id="phoneNumber" placeholder="98765 43210" oninput="ce('phoneRow','errPhone')"/>
       </div>
       <div class="field-err" id="errPhone">Please enter a valid 10-digit phone number</div>
     </div>
-    <div class="input-group">
+    <div class="grp">
       <label>Email Address</label>
-      <input type="email" id="email" placeholder="Enter your email" oninput="clearErr('email','errEmail')" />
-      <div class="field-err" id="errEmail">Please enter a valid email address</div>
+      <input type="email" id="email" placeholder="Enter your email" oninput="ce('email','errEmail')"/>
+      <div class="field-err" id="errEmail">Please enter a valid email</div>
     </div>
-    <div class="input-group">
+    <div class="grp">
       <label>Your Area in Hyderabad</label>
-      <select id="area" onchange="clearErr('area','errArea')">
+      <select id="area" onchange="ce('area','errArea')">
         <option value="">Select your area</option>
-        <option value="Banjara Hills">Banjara Hills</option>
-        <option value="Jubilee Hills">Jubilee Hills</option>
-        <option value="Madhapur">Madhapur</option>
-        <option value="Gachibowli">Gachibowli</option>
-        <option value="Hitech City">Hitech City</option>
-        <option value="Kondapur">Kondapur</option>
-        <option value="Kukatpally">Kukatpally</option>
-        <option value="Secunderabad">Secunderabad</option>
-        <option value="Begumpet">Begumpet</option>
-        <option value="Ameerpet">Ameerpet</option>
-        <option value="LB Nagar">LB Nagar</option>
-        <option value="Dilsukhnagar">Dilsukhnagar</option>
-        <option value="Uppal">Uppal</option>
-        <option value="Other">Other</option>
+        <option>Banjara Hills</option><option>Jubilee Hills</option><option>Madhapur</option>
+        <option>Gachibowli</option><option>Hitech City</option><option>Kondapur</option>
+        <option>Kukatpally</option><option>Secunderabad</option><option>Begumpet</option>
+        <option>Ameerpet</option><option>LB Nagar</option><option>Dilsukhnagar</option>
+        <option>Uppal</option><option>Other</option>
       </select>
       <div class="field-err" id="errArea">Please select your area</div>
     </div>
 
-    <button class="btn-main" id="submitBtn" onclick="createAccount()">Create Account</button>
+    <button class="btn" id="submitBtn" onclick="createAccount()">Create Account</button>
     <div class="api-err" id="apiErr"></div>
     <div class="login-link">Already have an account? <span onclick="window.location.href='login.html'">Login</span></div>
   </div>
@@ -99,69 +85,54 @@
   <div class="success-card" id="successCard">
     <div class="s-icon">🎉</div>
     <h3 id="welcomeName">Welcome!</h3>
-    <p>Your ZipFix account has been created.<br/>Get emergency help in minutes, any time.</p>
+    <p>Your ZipFix account is ready.<br/>Get help in minutes, any time.</p>
     <button class="btn-go" onclick="window.location.href='dashboard.html'">Go to Dashboard →</button>
   </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
-    window.location.href = 'dashboard.html';
-  }
+  if(localStorage.getItem('phoneNumber')&&localStorage.getItem('userName')){window.location.href='dashboard.html';}
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  const savedPhone=localStorage.getItem('phoneNumber');
+  if(savedPhone)document.getElementById('phoneNumber').value=savedPhone;
 
-  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  const savedPhone = localStorage.getItem('phoneNumber');
-  if (savedPhone) document.getElementById('phoneNumber').value = savedPhone;
-
-  function clearErr(elId, errId) {
+  function ce(elId,errId){
     document.getElementById(elId).classList.remove('err');
-    document.getElementById(errId).style.display = 'none';
-    document.getElementById('apiErr').style.display = 'none';
+    document.getElementById(errId).style.display='none';
+    document.getElementById('apiErr').style.display='none';
   }
-  function markErr(elId, errId) {
+  function me(elId,errId){
     document.getElementById(elId).classList.add('err');
-    document.getElementById(errId).style.display = 'block';
+    document.getElementById(errId).style.display='block';
     return true;
   }
-
-  async function createAccount() {
-    const name  = document.getElementById('fullName').value.trim();
-    const phone = document.getElementById('phoneNumber').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const area  = document.getElementById('area').value;
-    let hasErr = false;
-    if (!name)                         hasErr = markErr('fullName', 'errName');
-    if (!phone || phone.length < 10)   hasErr = markErr('phoneRow', 'errPhone');
-    if (!email || !email.includes('@')) hasErr = markErr('email',    'errEmail');
-    if (!area)                         hasErr = markErr('area',      'errArea');
-    if (hasErr) { document.querySelector('.err').scrollIntoView({ behavior:'smooth', block:'center' }); return; }
-
-    const btn = document.getElementById('submitBtn');
-    btn.innerText = 'Creating Account...';
-    btn.disabled  = true;
-
-    try {
-      const { data, error } = await db.from('users').insert([{
-        phone: '+91' + phone, name, email, area
-      }]);
-      if (error) throw error;
-      localStorage.setItem('userName',    name);
-      localStorage.setItem('userEmail',   email);
-      localStorage.setItem('userArea',    area);
-      localStorage.setItem('phoneNumber', phone);
-      document.getElementById('formSection').style.display = 'none';
-      document.getElementById('welcomeName').innerText = 'Welcome, ' + name.split(' ')[0] + '! 👋';
-      document.getElementById('successCard').style.display = 'block';
-    } catch (err) {
-      btn.innerText = 'Create Account';
-      btn.disabled  = false;
-      const apiErr = document.getElementById('apiErr');
-      apiErr.innerText = '⚠️ ' + err.message;
-      apiErr.style.display = 'block';
+  async function createAccount(){
+    const name=document.getElementById('fullName').value.trim();
+    const phone=document.getElementById('phoneNumber').value.trim();
+    const email=document.getElementById('email').value.trim();
+    const area=document.getElementById('area').value;
+    let hasErr=false;
+    if(!name)hasErr=me('fullName','errName');
+    if(!phone||phone.length<10)hasErr=me('phoneRow','errPhone');
+    if(!email||!email.includes('@'))hasErr=me('email','errEmail');
+    if(!area)hasErr=me('area','errArea');
+    if(hasErr){document.querySelector('.err').scrollIntoView({behavior:'smooth',block:'center'});return;}
+    const btn=document.getElementById('submitBtn');
+    btn.innerText='Creating Account...';btn.disabled=true;
+    try{
+      const{error}=await db.from('users').insert([{phone:'+91'+phone,name,email,area}]);
+      if(error)throw error;
+      localStorage.setItem('userName',name);
+      localStorage.setItem('userEmail',email);
+      localStorage.setItem('userArea',area);
+      localStorage.setItem('phoneNumber',phone);
+      document.getElementById('formSection').style.display='none';
+      document.getElementById('welcomeName').innerText='Welcome, '+name.split(' ')[0]+'! 👋';
+      document.getElementById('successCard').style.display='block';
+    }catch(err){
+      btn.innerText='Create Account';btn.disabled=false;
+      const e=document.getElementById('apiErr');
+      e.innerText='⚠️ '+err.message;e.style.display='block';
     }
   }
 </script>

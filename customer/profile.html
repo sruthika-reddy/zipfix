@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>ZipFix — Profile</title>
+  <title>ZipFix — My Profile</title>
 </head>
 <body>
 <style>
@@ -12,103 +12,259 @@
   .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
   .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
   .back-btn{background:none;border:none;color:#00b894;font-size:22px;cursor:pointer;}
-  .avatar-section{background:#fff;display:flex;flex-direction:column;align-items:center;padding:32px 20px 24px;margin-bottom:8px;}
-  .avatar{width:84px;height:84px;background:#00b894;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;color:#fff;margin-bottom:12px;}
-  .av-name{font-size:20px;font-weight:900;color:#1a1a1a;}
-  .av-area{font-size:13px;color:#888;margin-top:4px;}
-  .section{background:#fff;padding:18px 20px;margin-bottom:8px;}
-  .section-title{font-size:12px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
-  .info-card{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f5f5f5;}
-  .info-card:last-child{border-bottom:none;}
-  .info-icon{font-size:20px;width:32px;text-align:center;}
-  .info-label{font-size:11px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
-  .info-value{font-size:15px;font-weight:700;color:#1a1a1a;}
-  /* Subscription card */
-  .sub-active{background:linear-gradient(135deg,#e8f8f4,#d4f2ea);border:2px solid #00b894;border-radius:16px;padding:18px 20px;cursor:pointer;display:none;}
-  .sub-active.show{display:block;}
-  .sub-active .plan-label{font-size:11px;color:#00b894;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-  .sub-active .plan-name{font-size:18px;font-weight:900;color:#1a1a1a;margin-bottom:4px;}
-  .sub-active .plan-exp{font-size:13px;color:#888;}
-  .sub-active .plan-arrow{float:right;color:#00b894;font-weight:800;font-size:14px;margin-top:-42px;}
-  .sub-cta{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:16px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
-  .sub-cta-left h4{font-size:14px;font-weight:900;color:#fff;margin-bottom:3px;}
-  .sub-cta-left p{font-size:12px;color:#aaa;}
-  .sub-cta-right{background:#00b894;color:#fff;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:800;white-space:nowrap;}
-  .support-card{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;text-decoration:none;color:#1a1a1a;}
-  .support-card:last-child{border-bottom:none;}
-  .coming{font-size:11px;color:#aaa;margin-top:2px;}
-  .logout-btn{display:block;width:calc(100% - 40px);margin:0 20px 20px;padding:17px;background:#e74c3c;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:14px;cursor:pointer;transition:background 0.2s;}
-  .logout-btn:hover{background:#c0392b;}
+  /* Avatar hero */
+  .avatar-hero{background:linear-gradient(135deg,#00b894,#009e7f);padding:28px 20px 24px;text-align:center;position:relative;}
+  .edit-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:13px;font-weight:700;padding:7px 14px;border-radius:50px;cursor:pointer;}
+  .avatar-circle{width:78px;height:78px;background:rgba(255,255,255,0.25);border:3px solid rgba(255,255,255,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;color:#fff;margin:0 auto 10px;}
+  .avatar-name{font-size:19px;font-weight:900;color:#fff;margin-bottom:3px;}
+  .avatar-phone{font-size:13px;color:rgba(255,255,255,0.8);}
+  .avatar-badges{display:flex;justify-content:center;gap:8px;margin-top:10px;}
+  .av-badge{background:rgba(255,255,255,0.2);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:50px;}
+  /* Stats */
+  .stats-row{background:#fff;margin-bottom:8px;padding:16px 20px;display:flex;}
+  .stat-item{flex:1;text-align:center;border-right:1px solid #f5f5f5;}
+  .stat-item:last-child{border-right:none;}
+  .stat-item h4{font-size:19px;font-weight:900;color:#00b894;}
+  .stat-item p{font-size:11px;color:#888;margin-top:3px;}
+  /* Location card */
+  .loc-card{background:#fff;margin-bottom:8px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+  .loc-left{display:flex;align-items:center;gap:12px;}
+  .loc-icon{width:40px;height:40px;background:#e8f8f4;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .loc-info h4{font-size:15px;font-weight:700;}
+  .loc-info p{font-size:12px;color:#888;margin-top:2px;}
+  .loc-change{font-size:13px;font-weight:800;color:#00b894;background:#e8f8f4;padding:7px 14px;border-radius:50px;border:none;cursor:pointer;}
+  /* Subscription */
+  .sub-banner{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:8px;}
+  .sub-banner.active-sub{background:linear-gradient(135deg,#00b894,#009e7f);}
+  .sub-left h4{font-size:14px;font-weight:900;color:#fff;margin-bottom:3px;}
+  .sub-left p{font-size:12px;color:rgba(255,255,255,0.7);}
+  .sub-right-btn{background:rgba(255,255,255,0.2);color:#fff;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:800;white-space:nowrap;}
+  /* Menu sections */
+  .section{background:#fff;margin-bottom:8px;}
+  .sec-head{padding:14px 20px 2px;font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:1px;}
+  .menu-row{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid #f8f8f8;cursor:pointer;transition:background 0.1s;}
+  .menu-row:last-child{border-bottom:none;}
+  .menu-row:active{background:#fafafa;}
+  .mi{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+  .mi-g{background:#e8f8f4;} .mi-b{background:#eef4ff;} .mi-o{background:#fff4e6;}
+  .mi-p{background:#f5f0ff;} .mi-r{background:#fff0ee;} .mi-y{background:#fffce6;}
+  .mi-t{background:#e8fff8;}
+  .menu-info{flex:1;}
+  .menu-title{font-size:15px;font-weight:700;color:#1a1a1a;}
+  .menu-sub{font-size:12px;color:#aaa;margin-top:2px;}
+  .menu-right{display:flex;align-items:center;gap:8px;}
+  .menu-arrow{color:#ddd;font-size:20px;font-weight:300;}
+  .menu-val{font-size:13px;color:#aaa;}
+  /* Modals */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:none;align-items:flex-end;justify-content:center;}
+  .overlay.show{display:flex;}
+  .sheet{background:#fff;border-radius:28px 28px 0 0;padding:26px 22px 38px;width:100%;max-width:480px;}
+  .sheet h3{font-size:18px;font-weight:900;margin-bottom:18px;}
+  .mfield{margin-bottom:14px;}
+  .mfield label{display:block;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+  .mfield input,.mfield select{width:100%;padding:13px 16px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:13px;font-size:15px;color:#1a1a1a;outline:none;transition:border-color 0.2s;}
+  .mfield input:focus,.mfield select:focus{border-color:#00b894;}
+  .m-btn{width:100%;padding:15px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:13px;cursor:pointer;transition:background 0.2s;}
+  .m-btn:hover{background:#009e7f;}
+  .m-close{width:100%;padding:13px;background:#f5f5f5;color:#888;font-size:14px;font-weight:700;border:none;border-radius:13px;cursor:pointer;margin-top:8px;}
+  /* Location options */
+  .loc-opt{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;}
+  .loc-opt:last-of-type{border-bottom:none;}
+  .lo-icon{width:42px;height:42px;background:#e8f8f4;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .lo-title{font-size:15px;font-weight:700;}
+  .lo-sub{font-size:12px;color:#aaa;margin-top:2px;}
+  /* Area grid */
+  .area-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:240px;overflow-y:auto;margin-top:10px;padding-right:2px;}
+  .area-chip{padding:11px 10px;background:#f5f5f5;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;text-align:center;transition:all 0.15s;}
+  .area-chip.sel{border-color:#00b894;background:#e8f8f4;color:#00b894;}
+  /* Toast */
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
   .spacer{height:90px;}
   .bottom-nav{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:12px 0 16px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);z-index:100;}
   .nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:10px;color:#aaa;gap:3px;}
   .nav-item.active{color:#00b894;}
   .nav-icon{font-size:22px;}
 </style>
+
+<!-- Edit Profile Modal -->
+<div class="overlay" id="editModal" onclick="cm('editModal',event)">
+  <div class="sheet">
+    <h3>✏️ Edit Profile</h3>
+    <div class="mfield"><label>Full Name</label><input type="text" id="editName" placeholder="Your full name"/></div>
+    <div class="mfield"><label>Email Address</label><input type="email" id="editEmail" placeholder="your@email.com"/></div>
+    <button class="m-btn" onclick="saveProfile()">Save Changes</button>
+    <button class="m-close" onclick="document.getElementById('editModal').classList.remove('show')">Cancel</button>
+  </div>
+</div>
+
+<!-- Location Modal -->
+<div class="overlay" id="locModal" onclick="cm('locModal',event)">
+  <div class="sheet">
+    <h3>📍 Update Location</h3>
+    <div class="loc-opt" onclick="detectGPS()">
+      <div class="lo-icon">🎯</div>
+      <div><div class="lo-title">Use Current Location</div><div class="lo-sub">Auto-detect via GPS</div></div>
+    </div>
+    <div class="loc-opt" onclick="showAreas()">
+      <div class="lo-icon">🏙️</div>
+      <div><div class="lo-title">Choose Your Area</div><div class="lo-sub">Select area in Hyderabad</div></div>
+    </div>
+    <div id="areaPicker" style="display:none">
+      <div style="font-size:11px;color:#aaa;font-weight:700;margin:8px 0 4px;text-transform:uppercase;letter-spacing:1px">Select Area</div>
+      <div class="area-grid" id="areaGrid"></div>
+      <button class="m-btn" style="margin-top:12px" onclick="saveArea()">Confirm Location</button>
+    </div>
+    <button class="m-close" onclick="document.getElementById('locModal').classList.remove('show');document.getElementById('areaPicker').style.display='none'">Cancel</button>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="overlay" id="helpModal" onclick="cm('helpModal',event)">
+  <div class="sheet">
+    <h3>🆘 Help & Support</h3>
+    <div class="loc-opt" onclick="window.location.href='mailto:support@zipfix.in'">
+      <div class="lo-icon">✉️</div>
+      <div><div class="lo-title">Email Support</div><div class="lo-sub">support@zipfix.in · Reply within 24 hrs</div></div>
+    </div>
+    <div class="loc-opt" onclick="openWA()">
+      <div class="lo-icon">💬</div>
+      <div><div class="lo-title">WhatsApp Us</div><div class="lo-sub">Quick help on WhatsApp</div></div>
+    </div>
+    <div class="loc-opt" onclick="window.location.href='bookings.html'">
+      <div class="lo-icon">📋</div>
+      <div><div class="lo-title">View My Bookings</div><div class="lo-sub">Track & manage your orders</div></div>
+    </div>
+    <div class="loc-opt" onclick="showToast('📞 Helpline coming soon!')">
+      <div class="lo-icon">📞</div>
+      <div><div class="lo-title">Call Helpline</div><div class="lo-sub">Coming soon</div></div>
+    </div>
+    <button class="m-close" onclick="document.getElementById('helpModal').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <nav class="navbar">
   <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
   <div class="logo">ZIPFIX</div>
   <div style="width:40px"></div>
 </nav>
 
-<div class="avatar-section">
-  <div class="avatar" id="avatarInitial">?</div>
-  <div class="av-name" id="avatarName">—</div>
-  <div class="av-area" id="avatarArea">📍 —</div>
-</div>
-
-<div class="section">
-  <div class="section-title">Account Info</div>
-  <div class="info-card">
-    <div class="info-icon">👤</div>
-    <div><div class="info-label">Full Name</div><div class="info-value" id="infoName">—</div></div>
-  </div>
-  <div class="info-card">
-    <div class="info-icon">📱</div>
-    <div><div class="info-label">Phone Number</div><div class="info-value" id="infoPhone">—</div></div>
-  </div>
-  <div class="info-card">
-    <div class="info-icon">✉️</div>
-    <div><div class="info-label">Email Address</div><div class="info-value" id="infoEmail">—</div></div>
-  </div>
-  <div class="info-card">
-    <div class="info-icon">📍</div>
-    <div><div class="info-label">Area</div><div class="info-value" id="infoArea">—</div></div>
+<!-- Avatar Hero -->
+<div class="avatar-hero">
+  <button class="edit-btn" onclick="openEdit()">✏️ Edit</button>
+  <div class="avatar-circle" id="avInit">?</div>
+  <div class="avatar-name" id="avName">—</div>
+  <div class="avatar-phone" id="avPhone">—</div>
+  <div class="avatar-badges">
+    <div class="av-badge" id="subBadge" style="display:none">⭐ Pro</div>
+    <div class="av-badge">✅ Verified</div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-title">My Subscription</div>
-  <div class="sub-active" id="subActiveCard" onclick="window.location.href='subscription.html'">
-    <div class="plan-label">Active Plan</div>
-    <div class="plan-name" id="subPlanName">—</div>
-    <div class="plan-exp" id="subPlanExp">—</div>
-    <div class="plan-arrow">Manage →</div>
-  </div>
-  <div class="sub-cta" id="subCtaCard" onclick="window.location.href='subscription.html'">
-    <div class="sub-cta-left">
-      <h4>⭐ Try ZipFix Pro</h4>
-      <p>Save up to 30% on every booking</p>
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-item"><h4 id="stJobs">—</h4><p>Bookings</p></div>
+  <div class="stat-item"><h4 id="stSaved">₹0</h4><p>Saved</p></div>
+  <div class="stat-item"><h4>24/7</h4><p>Support</p></div>
+</div>
+
+<!-- Location -->
+<div class="loc-card" onclick="document.getElementById('locModal').classList.add('show')">
+  <div class="loc-left">
+    <div class="loc-icon">📍</div>
+    <div class="loc-info">
+      <h4 id="locTitle">Set Your Location</h4>
+      <p id="locSub">Tap to add home address</p>
     </div>
-    <div class="sub-cta-right">View Plans</div>
   </div>
+  <button class="loc-change">Change</button>
 </div>
 
+<!-- Subscription -->
+<div class="sub-banner" id="subBanner" onclick="window.location.href='subscription.html'">
+  <div class="sub-left">
+    <h4 id="subTitle">⭐ Try ZipFix Pro</h4>
+    <p id="subDesc">Save up to 30% on every booking</p>
+  </div>
+  <div class="sub-right-btn" id="subBtn">View Plans</div>
+</div>
+
+<!-- Account section -->
 <div class="section">
-  <div class="section-title">Customer Support</div>
-  <a class="support-card" href="mailto:support@zipfix.in">
-    <div class="info-icon">✉️</div>
-    <div><div class="info-label">Email Us</div><div class="info-value">support@zipfix.in</div></div>
-  </a>
-  <div class="support-card">
-    <div class="info-icon">📞</div>
-    <div><div class="info-label">Call Us</div><div class="info-value">—</div><div class="coming">Helpline coming soon</div></div>
+  <div class="sec-head">Account</div>
+  <div class="menu-row" onclick="openEdit()">
+    <div class="mi mi-g">👤</div>
+    <div class="menu-info"><div class="menu-title">Personal Info</div><div class="menu-sub" id="menuInfo">Name & email</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="document.getElementById('locModal').classList.add('show')">
+    <div class="mi mi-b">📍</div>
+    <div class="menu-info"><div class="menu-title">My Location</div><div class="menu-sub" id="menuLoc">Home, work & saved areas</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="window.location.href='bookings.html'">
+    <div class="mi mi-o">📋</div>
+    <div class="menu-info"><div class="menu-title">My Bookings</div><div class="menu-sub">All service history</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="window.location.href='track.html'">
+    <div class="mi mi-t">📍</div>
+    <div class="menu-info"><div class="menu-title">Track Worker</div><div class="menu-sub">Live tracking for active jobs</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
   </div>
 </div>
 
-<button class="logout-btn" onclick="logoutUser()">🚪 Logout</button>
-<div class="spacer"></div>
+<!-- Plans & Offers -->
+<div class="section">
+  <div class="sec-head">Plans & Offers</div>
+  <div class="menu-row" onclick="window.location.href='subscription.html'">
+    <div class="mi mi-p">⭐</div>
+    <div class="menu-info"><div class="menu-title">ZipFix Pro</div><div class="menu-sub">Unlimited services, save 30%</div></div>
+    <div class="menu-right"><div class="menu-val" id="planVal" style="color:#00b894;font-weight:700"></div><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('🎁 No active coupons right now')">
+    <div class="mi mi-y">🎁</div>
+    <div class="menu-info"><div class="menu-title">Coupons & Offers</div><div class="menu-sub">Apply discount codes</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+</div>
 
+<!-- Help -->
+<div class="section">
+  <div class="sec-head">Help & Support</div>
+  <div class="menu-row" onclick="document.getElementById('helpModal').classList.add('show')">
+    <div class="mi mi-t">🆘</div>
+    <div class="menu-info"><div class="menu-title">Help Centre</div><div class="menu-sub">Email, WhatsApp & FAQ</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('🔔 Notifications coming soon!')">
+    <div class="mi mi-b">🔔</div>
+    <div class="menu-info"><div class="menu-title">Notifications</div><div class="menu-sub">Booking alerts & offers</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('⭐ Rate us on Play Store soon!')">
+    <div class="mi mi-y">⭐</div>
+    <div class="menu-info"><div class="menu-title">Rate the App</div><div class="menu-sub">Share your feedback</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('📄 Terms of Service — coming soon')">
+    <div class="mi mi-o">📄</div>
+    <div class="menu-info"><div class="menu-title">Terms & Privacy Policy</div><div class="menu-sub">Legal information</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+</div>
+
+<!-- Logout -->
+<div class="section" style="margin-bottom:20px">
+  <div class="menu-row" onclick="logoutUser()">
+    <div class="mi mi-r">🚪</div>
+    <div class="menu-info"><div class="menu-title" style="color:#e74c3c">Logout</div><div class="menu-sub">Sign out of ZipFix</div></div>
+    <div class="menu-right"><div class="menu-arrow" style="color:#e74c3c">›</div></div>
+  </div>
+</div>
+
+<div class="spacer"></div>
 <nav class="bottom-nav">
   <div class="nav-item" onclick="window.location.href='dashboard.html'"><div class="nav-icon">🏠</div><div>Home</div></div>
   <div class="nav-item" onclick="window.location.href='bookings.html'"><div class="nav-icon">📋</div><div>Bookings</div></div>
@@ -117,32 +273,120 @@
   <div class="nav-item active"><div class="nav-icon">👤</div><div>Profile</div></div>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  var p=localStorage.getItem('phoneNumber'),n=localStorage.getItem('userName');
-  if(!p||!n){localStorage.clear();window.location.href='login.html';}
-  var name=localStorage.getItem('userName')||'';
-  var phone=localStorage.getItem('phoneNumber')||'';
-  var email=localStorage.getItem('userEmail')||'';
-  var area=localStorage.getItem('userArea')||'';
-  document.getElementById('avatarInitial').innerText=name?name.charAt(0).toUpperCase():'?';
-  document.getElementById('avatarName').innerText=name||'—';
-  document.getElementById('avatarArea').innerText='📍 '+(area||'—');
-  document.getElementById('infoName').innerText=name||'—';
-  document.getElementById('infoPhone').innerText=phone?'+91 '+phone:'—';
-  document.getElementById('infoEmail').innerText=email||'—';
-  document.getElementById('infoArea').innerText=area||'—';
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
 
-  // Subscription status
-  var sp=localStorage.getItem('subscriptionPlan'),se=localStorage.getItem('subscriptionExpiry'),sb=localStorage.getItem('subscriptionBilling');
+  const phone=localStorage.getItem('phoneNumber'),uname=localStorage.getItem('userName');
+  if(!phone||!uname){localStorage.clear();window.location.href='login.html';}
+
+  const name=uname||'',email=localStorage.getItem('userEmail')||'',area=localStorage.getItem('userArea')||'';
+
+  // Init UI
+  document.getElementById('avInit').innerText=name?name.charAt(0).toUpperCase():'?';
+  document.getElementById('avName').innerText=name||'—';
+  document.getElementById('avPhone').innerText=phone?'+91 '+phone:'—';
+  document.getElementById('menuInfo').innerText=name+(email?' · '+email:'');
+  document.getElementById('menuLoc').innerText=area||'Tap to set location';
+  document.getElementById('locTitle').innerText=area||'Set Your Location';
+  document.getElementById('locSub').innerText=area?'Hyderabad · Tap to change':'Tap to set your area';
+
+  // Subscription
+  const sp=localStorage.getItem('subscriptionPlan'),se=localStorage.getItem('subscriptionExpiry');
   if(sp&&se&&new Date(se)>new Date()){
-    document.getElementById('subActiveCard').classList.add('show');
-    document.getElementById('subCtaCard').style.display='none';
-    document.getElementById('subPlanName').innerText=sp.charAt(0).toUpperCase()+sp.slice(1)+' Plan · '+(sb||'Monthly');
-    document.getElementById('subPlanExp').innerText='Active until '+new Date(se).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+    document.getElementById('subBanner').classList.add('active-sub');
+    document.getElementById('subTitle').innerText='⭐ '+sp.charAt(0).toUpperCase()+sp.slice(1)+' Plan Active';
+    document.getElementById('subDesc').innerText='Valid until '+new Date(se).toLocaleDateString('en-IN',{day:'numeric',month:'long'});
+    document.getElementById('subBtn').innerText='Manage';
+    document.getElementById('subBadge').style.display='block';
+    const pLabel={basic:'Basic',standard:'Standard',premium:'Premium'};
+    document.getElementById('planVal').innerText=pLabel[sp]||sp;
   }
 
+  // Load stats
+  async function loadStats(){
+    try{
+      const{data}=await db.from('jobs').select('amount,status').eq('customer_phone','+91'+phone);
+      if(data){
+        document.getElementById('stJobs').innerText=data.length;
+        if(sp&&se&&new Date(se)>new Date()){
+          const disc=sp==='premium'?0.30:sp==='standard'?0.20:0.10;
+          const spent=data.filter(j=>j.status==='completed').reduce((s,j)=>s+(j.amount||0),0);
+          document.getElementById('stSaved').innerText='₹'+Math.round(spent*disc);
+        }
+      }
+    }catch(e){}
+  }
+  loadStats();
+
+  // Edit Profile
+  function openEdit(){
+    document.getElementById('editName').value=name;
+    document.getElementById('editEmail').value=email;
+    document.getElementById('editModal').classList.add('show');
+  }
+  async function saveProfile(){
+    const nn=document.getElementById('editName').value.trim();
+    const ne=document.getElementById('editEmail').value.trim();
+    if(!nn){showToast('⚠️ Name cannot be empty');return;}
+    try{
+      await db.from('users').update({name:nn,email:ne}).eq('phone','+91'+phone);
+      localStorage.setItem('userName',nn);if(ne)localStorage.setItem('userEmail',ne);
+      document.getElementById('avInit').innerText=nn.charAt(0).toUpperCase();
+      document.getElementById('avName').innerText=nn;
+      document.getElementById('menuInfo').innerText=nn+(ne?' · '+ne:'');
+      document.getElementById('editModal').classList.remove('show');
+      showToast('✅ Profile updated!');
+    }catch(e){showToast('⚠️ '+e.message);}
+  }
+
+  // Location
+  const AREAS=['Banjara Hills','Jubilee Hills','Madhapur','Gachibowli','Hitech City','Kondapur','Kukatpally','Secunderabad','Begumpet','Ameerpet','LB Nagar','Dilsukhnagar','Uppal','Miyapur','Manikonda','Sainikpuri','Alwal','Malkajgiri','Other'];
+  let selArea=area||'';
+
+  function showAreas(){
+    const g=document.getElementById('areaGrid');
+    g.innerHTML=AREAS.map(a=>`<div class="area-chip${a===selArea?' sel':''}" onclick="pickArea('${a}',this)">${a}</div>`).join('');
+    document.getElementById('areaPicker').style.display='block';
+  }
+  function pickArea(a,el){selArea=a;document.querySelectorAll('.area-chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+  async function saveArea(){
+    if(!selArea){showToast('Please select an area');return;}
+    try{
+      await db.from('users').update({area:selArea}).eq('phone','+91'+phone);
+      localStorage.setItem('userArea',selArea);
+      document.getElementById('locTitle').innerText=selArea;
+      document.getElementById('locSub').innerText='Hyderabad · Tap to change';
+      document.getElementById('menuLoc').innerText=selArea;
+      document.getElementById('locModal').classList.remove('show');
+      document.getElementById('areaPicker').style.display='none';
+      showToast('✅ Location updated to '+selArea+'!');
+    }catch(e){showToast('⚠️ '+e.message);}
+  }
+  function detectGPS(){
+    if(!navigator.geolocation){showToast('❌ GPS not supported');return;}
+    showToast('📡 Detecting your location...');
+    navigator.geolocation.getCurrentPosition(async pos=>{
+      try{
+        const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+        const d=await r.json();
+        const a=d.address?.suburb||d.address?.neighbourhood||d.address?.city_district||'Hyderabad';
+        await db.from('users').update({area:a}).eq('phone','+91'+phone);
+        localStorage.setItem('userArea',a);
+        document.getElementById('locTitle').innerText=a;
+        document.getElementById('locSub').innerText='Hyderabad · Tap to change';
+        document.getElementById('menuLoc').innerText=a;
+        document.getElementById('locModal').classList.remove('show');
+        showToast('✅ Location set to '+a+'!');
+      }catch(e){showToast('⚠️ Could not read your area');}
+    },()=>showToast('❌ Permission denied. Choose manually.'),{timeout:8000,enableHighAccuracy:true});
+  }
+
+  function openWA(){window.open('https://wa.me/91XXXXXXXXXX?text='+encodeURIComponent('Hi ZipFix! I need help. Phone: +91'+phone),'_blank');}
+  function cm(id,e){if(e.target.id===id)document.getElementById(id).classList.remove('show');}
+  function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
   function logoutUser(){
-    if(confirm('Are you sure you want to logout?')){
+    if(confirm('Logout from ZipFix?')){
       ['userName','phoneNumber','userEmail','userArea','bookingService','bookingProblem','bookingAddress','bookingUrgency','bookingAmount','bookingIcon','activeJobId','workerName','workerInitial','assignedWorkerId','paymentMethod','amountPaid','pendingOTP','otpExpiry','subscriptionPlan','subscriptionBilling','subscriptionExpiry','subscriptionAmount'].forEach(k=>localStorage.removeItem(k));
       window.location.href='landing.html';
     }

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ZipFix Partner — My Profile</title>
+</head>
+<body>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .back-btn{background:none;border:none;color:#00b894;font-size:22px;cursor:pointer;}
+  /* Hero */
+  .avatar-hero{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:28px 20px 24px;text-align:center;position:relative;}
+  .hero-edit{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:13px;font-weight:700;padding:7px 14px;border-radius:50px;cursor:pointer;}
+  .avatar-circle{width:78px;height:78px;background:rgba(0,184,148,0.3);border:3px solid rgba(0,184,148,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;color:#fff;margin:0 auto 10px;}
+  .avatar-name{font-size:19px;font-weight:900;color:#fff;margin-bottom:3px;}
+  .avatar-skill{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:10px;}
+  .wid-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(0,184,148,0.2);border:1px solid rgba(0,184,148,0.4);color:#00b894;font-size:13px;font-weight:800;padding:6px 16px;border-radius:50px;letter-spacing:2px;}
+  /* Stats */
+  .stats-row{background:#fff;margin-bottom:8px;padding:16px 20px;display:flex;}
+  .stat-item{flex:1;text-align:center;border-right:1px solid #f5f5f5;}
+  .stat-item:last-child{border-right:none;}
+  .stat-item h4{font-size:19px;font-weight:900;color:#00b894;}
+  .stat-item p{font-size:11px;color:#888;margin-top:3px;}
+  /* Online status card */
+  .status-card{background:#fff;margin-bottom:8px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+  .sc-left{display:flex;align-items:center;gap:12px;}
+  .sc-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .sc-icon.online-icon{background:#e8f8f4;}
+  .sc-icon.offline-icon{background:#f5f5f5;}
+  .sc-info h4{font-size:15px;font-weight:700;}
+  .sc-info p{font-size:12px;color:#888;margin-top:2px;}
+  .status-dot{width:10px;height:10px;border-radius:50%;margin-right:6px;display:inline-block;}
+  .dot-online{background:#00b894;}
+  .dot-offline{background:#ccc;}
+  /* Location */
+  .loc-card{background:#fff;margin-bottom:8px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+  .loc-left{display:flex;align-items:center;gap:12px;}
+  .loc-icon{width:40px;height:40px;background:#e8f8f4;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .loc-info h4{font-size:15px;font-weight:700;}
+  .loc-info p{font-size:12px;color:#888;margin-top:2px;}
+  .loc-change{font-size:13px;font-weight:800;color:#00b894;background:#e8f8f4;padding:7px 14px;border-radius:50px;border:none;cursor:pointer;}
+  /* Sections */
+  .section{background:#fff;margin-bottom:8px;}
+  .sec-head{padding:14px 20px 2px;font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:1px;}
+  .menu-row{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid #f8f8f8;cursor:pointer;transition:background 0.1s;}
+  .menu-row:last-child{border-bottom:none;}
+  .menu-row:active{background:#fafafa;}
+  .mi{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+  .mi-g{background:#e8f8f4;} .mi-b{background:#eef4ff;} .mi-o{background:#fff4e6;}
+  .mi-p{background:#f5f0ff;} .mi-r{background:#fff0ee;} .mi-y{background:#fffce6;}
+  .mi-t{background:#e8fff8;} .mi-d{background:#f0f0f0;}
+  .menu-info{flex:1;}
+  .menu-title{font-size:15px;font-weight:700;color:#1a1a1a;}
+  .menu-sub{font-size:12px;color:#aaa;margin-top:2px;}
+  .menu-right{display:flex;align-items:center;gap:8px;}
+  .menu-arrow{color:#ddd;font-size:20px;}
+  .menu-val{font-size:13px;color:#aaa;}
+  /* Earning card */
+  .earn-banner{background:linear-gradient(135deg,#00b894,#009e7f);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:8px;}
+  .eb-left h4{font-size:14px;font-weight:900;color:#fff;margin-bottom:3px;}
+  .eb-left p{font-size:12px;color:rgba(255,255,255,0.75);}
+  .eb-right{background:rgba(255,255,255,0.2);color:#fff;padding:8px 16px;border-radius:10px;font-size:12px;font-weight:800;}
+  /* Modals */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:none;align-items:flex-end;justify-content:center;}
+  .overlay.show{display:flex;}
+  .sheet{background:#fff;border-radius:28px 28px 0 0;padding:26px 22px 38px;width:100%;max-width:480px;}
+  .sheet h3{font-size:18px;font-weight:900;margin-bottom:18px;}
+  .mfield{margin-bottom:14px;}
+  .mfield label{display:block;font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+  .mfield input,.mfield select{width:100%;padding:13px 16px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:13px;font-size:15px;color:#1a1a1a;outline:none;transition:border-color 0.2s;}
+  .mfield input:focus,.mfield select:focus{border-color:#00b894;}
+  .m-btn{width:100%;padding:15px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:13px;cursor:pointer;}
+  .m-btn:hover{background:#009e7f;}
+  .m-close{width:100%;padding:13px;background:#f5f5f5;color:#888;font-size:14px;font-weight:700;border:none;border-radius:13px;cursor:pointer;margin-top:8px;}
+  /* Location options */
+  .loc-opt{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;}
+  .loc-opt:last-of-type{border-bottom:none;}
+  .lo-icon{width:42px;height:42px;background:#e8f8f4;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .lo-title{font-size:15px;font-weight:700;}
+  .lo-sub{font-size:12px;color:#aaa;margin-top:2px;}
+  .area-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:240px;overflow-y:auto;margin-top:10px;}
+  .area-chip{padding:11px 10px;background:#f5f5f5;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;text-align:center;transition:all 0.15s;}
+  .area-chip.sel{border-color:#00b894;background:#e8f8f4;color:#00b894;}
+  /* Toast */
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;display:none;white-space:nowrap;}
+  .spacer{height:30px;}
+</style>
+
+<!-- Edit Profile Modal -->
+<div class="overlay" id="editModal" onclick="cm('editModal',event)">
+  <div class="sheet">
+    <h3>✏️ Edit Profile</h3>
+    <div class="mfield"><label>Full Name</label><input type="text" id="editName" placeholder="Your full name"/></div>
+    <div class="mfield"><label>Skill / Service</label>
+      <select id="editSkill">
+        <option>Plumber</option><option>Electrician</option><option>Locksmith</option>
+        <option>AC Repair</option><option>Carpenter</option><option>Painter</option>
+        <option>Pest Control</option><option>Home Cleaning</option>
+        <option>TV / Electronics Repair</option><option>Water Purifier Service</option>
+        <option>Appliance Repair</option><option>Bathroom Renovation</option>
+        <option>Packers & Movers</option><option>CCTV Installation</option>
+      </select>
+    </div>
+    <button class="m-btn" onclick="saveProfile()">Save Changes</button>
+    <button class="m-close" onclick="document.getElementById('editModal').classList.remove('show')">Cancel</button>
+  </div>
+</div>
+
+<!-- Location Modal -->
+<div class="overlay" id="locModal" onclick="cm('locModal',event)">
+  <div class="sheet">
+    <h3>📍 Update Service Area</h3>
+    <div class="loc-opt" onclick="detectGPS()">
+      <div class="lo-icon">🎯</div>
+      <div><div class="lo-title">Use Current Location</div><div class="lo-sub">Auto-detect via GPS</div></div>
+    </div>
+    <div class="loc-opt" onclick="showAreas()">
+      <div class="lo-icon">🏙️</div>
+      <div><div class="lo-title">Choose Service Area</div><div class="lo-sub">Select your area in Hyderabad</div></div>
+    </div>
+    <div id="areaPicker" style="display:none">
+      <div style="font-size:11px;color:#aaa;font-weight:700;margin:8px 0 4px;text-transform:uppercase;letter-spacing:1px">Select Area</div>
+      <div class="area-grid" id="areaGrid"></div>
+      <button class="m-btn" style="margin-top:12px" onclick="saveArea()">Confirm Area</button>
+    </div>
+    <button class="m-close" onclick="document.getElementById('locModal').classList.remove('show');document.getElementById('areaPicker').style.display='none'">Cancel</button>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="overlay" id="helpModal" onclick="cm('helpModal',event)">
+  <div class="sheet">
+    <h3>🆘 Partner Support</h3>
+    <div class="loc-opt" onclick="window.location.href='mailto:partners@zipfix.in'">
+      <div class="lo-icon">✉️</div>
+      <div><div class="lo-title">Email Partner Support</div><div class="lo-sub">partners@zipfix.in</div></div>
+    </div>
+    <div class="loc-opt" onclick="openWA()">
+      <div class="lo-icon">💬</div>
+      <div><div class="lo-title">WhatsApp Support</div><div class="lo-sub">Quick help for partners</div></div>
+    </div>
+    <div class="loc-opt" onclick="window.location.href='earnings.html'">
+      <div class="lo-icon">💰</div>
+      <div><div class="lo-title">Earnings & Payments</div><div class="lo-sub">View and withdraw earnings</div></div>
+    </div>
+    <div class="loc-opt" onclick="showToast('📋 Job policy coming soon')">
+      <div class="lo-icon">📋</div>
+      <div><div class="lo-title">Partner Policy</div><div class="lo-sub">Rules, guidelines & terms</div></div>
+    </div>
+    <button class="m-close" onclick="document.getElementById('helpModal').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<!-- Bank Details Modal -->
+<div class="overlay" id="bankModal" onclick="cm('bankModal',event)">
+  <div class="sheet">
+    <h3>🏦 Bank Account Details</h3>
+    <div class="mfield"><label>Account Holder Name</label><input type="text" id="bankName" placeholder="As per bank records"/></div>
+    <div class="mfield"><label>Account Number</label><input type="number" id="bankAcc" placeholder="Enter account number"/></div>
+    <div class="mfield"><label>IFSC Code</label><input type="text" id="bankIFSC" placeholder="e.g. SBIN0001234"/></div>
+    <div class="mfield"><label>UPI ID (optional)</label><input type="text" id="bankUPI" placeholder="e.g. name@upi"/></div>
+    <button class="m-btn" onclick="saveBank()">Save Bank Details</button>
+    <button class="m-close" onclick="document.getElementById('bankModal').classList.remove('show')">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<nav class="navbar">
+  <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
+  <div class="logo">ZIPFIX</div>
+  <div style="width:40px"></div>
+</nav>
+
+<!-- Hero -->
+<div class="avatar-hero">
+  <button class="hero-edit" onclick="openEdit()">✏️ Edit</button>
+  <div class="avatar-circle" id="avInit">?</div>
+  <div class="avatar-name" id="avName">—</div>
+  <div class="avatar-skill" id="avSkill">—</div>
+  <div class="wid-pill">🪪 <span id="avWid">ZF-XXXX</span></div>
+</div>
+
+<!-- Stats -->
+<div class="stats-row">
+  <div class="stat-item"><h4 id="stJobs">0</h4><p>Jobs Done</p></div>
+  <div class="stat-item"><h4 id="stRating">—</h4><p>Rating</p></div>
+  <div class="stat-item"><h4 id="stEarned">₹0</h4><p>Earned</p></div>
+</div>
+
+<!-- Online Status -->
+<div class="status-card">
+  <div class="sc-left">
+    <div class="sc-icon offline-icon" id="statusIcon">💤</div>
+    <div class="sc-info">
+      <h4><span class="status-dot dot-offline" id="statusDot"></span><span id="statusTitle">Currently Offline</span></h4>
+      <p id="statusSub">Go to dashboard to toggle online</p>
+    </div>
+  </div>
+  <button style="padding:9px 16px;background:#e8f8f4;color:#00b894;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;" onclick="window.location.href='dashboard.html'">Dashboard →</button>
+</div>
+
+<!-- Service Area -->
+<div class="loc-card" onclick="document.getElementById('locModal').classList.add('show')">
+  <div class="loc-left">
+    <div class="loc-icon">📍</div>
+    <div class="loc-info">
+      <h4 id="locTitle">Service Area</h4>
+      <p id="locSub">Tap to update your area</p>
+    </div>
+  </div>
+  <button class="loc-change">Change</button>
+</div>
+
+<!-- Earnings Banner -->
+<div class="earn-banner" onclick="window.location.href='earnings.html'">
+  <div class="eb-left">
+    <h4 id="todayEarn">Today's Earnings: ₹—</h4>
+    <p>Tap to view full earnings & withdraw</p>
+  </div>
+  <div class="eb-right">View →</div>
+</div>
+
+<!-- Profile sections -->
+<div class="section">
+  <div class="sec-head">My Details</div>
+  <div class="menu-row" onclick="openEdit()">
+    <div class="mi mi-g">👤</div>
+    <div class="menu-info"><div class="menu-title">Personal Info</div><div class="menu-sub" id="menuName">Name & skill</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="document.getElementById('locModal').classList.add('show')">
+    <div class="mi mi-b">📍</div>
+    <div class="menu-info"><div class="menu-title">Service Area</div><div class="menu-sub" id="menuArea">Where you take jobs</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="document.getElementById('bankModal').classList.add('show')">
+    <div class="mi mi-g">🏦</div>
+    <div class="menu-info"><div class="menu-title">Bank Account</div><div class="menu-sub">For earnings withdrawal</div></div>
+    <div class="menu-right"><div class="menu-val" id="bankVal">Add</div><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('🪪 Worker ID: '+localStorage.getItem('workerId'))">
+    <div class="mi mi-p">🪪</div>
+    <div class="menu-info"><div class="menu-title">Worker ID</div><div class="menu-sub" id="menuWid">—</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+</div>
+
+<!-- Earnings & Performance -->
+<div class="section">
+  <div class="sec-head">Earnings & Performance</div>
+  <div class="menu-row" onclick="window.location.href='earnings.html'">
+    <div class="mi mi-g">💰</div>
+    <div class="menu-info"><div class="menu-title">My Earnings</div><div class="menu-sub">Daily, weekly & monthly</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('📊 Performance report coming soon')">
+    <div class="mi mi-b">📊</div>
+    <div class="menu-info"><div class="menu-title">Performance Report</div><div class="menu-sub">Jobs, ratings & completion rate</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+</div>
+
+<!-- Support -->
+<div class="section">
+  <div class="sec-head">Support</div>
+  <div class="menu-row" onclick="document.getElementById('helpModal').classList.add('show')">
+    <div class="mi mi-t">🆘</div>
+    <div class="menu-info"><div class="menu-title">Partner Help Centre</div><div class="menu-sub">Email, WhatsApp & policy</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('🔔 Notifications coming soon')">
+    <div class="mi mi-y">🔔</div>
+    <div class="menu-info"><div class="menu-title">Notifications</div><div class="menu-sub">Job alerts & updates</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+  <div class="menu-row" onclick="showToast('📄 Partner policy coming soon')">
+    <div class="mi mi-o">📄</div>
+    <div class="menu-info"><div class="menu-title">Partner Policy & Terms</div><div class="menu-sub">Rules & guidelines</div></div>
+    <div class="menu-right"><div class="menu-arrow">›</div></div>
+  </div>
+</div>
+
+<!-- Logout -->
+<div class="section" style="margin-bottom:20px">
+  <div class="menu-row" onclick="logoutWorker()">
+    <div class="mi mi-r">🚪</div>
+    <div class="menu-info"><div class="menu-title" style="color:#e74c3c">Logout</div><div class="menu-sub">Sign out of partner account</div></div>
+    <div class="menu-right"><div class="menu-arrow" style="color:#e74c3c">›</div></div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+
+  const wname=localStorage.getItem('workerName')||'';
+  const wskill=localStorage.getItem('workerSkill')||'';
+  const warea=localStorage.getItem('workerArea')||'';
+  const wid=localStorage.getItem('workerId')||'';
+  const wphone=localStorage.getItem('workerPhone')||'';
+
+  if(!wname||!wid){window.location.href='login.html';}
+
+  // Init UI
+  document.getElementById('avInit').innerText=wname?wname.charAt(0).toUpperCase():'?';
+  document.getElementById('avName').innerText=wname||'—';
+  document.getElementById('avSkill').innerText=(wskill||'—')+' · '+(warea||'—');
+  document.getElementById('avWid').innerText=wid||'—';
+  document.getElementById('menuName').innerText=wname+(wskill?' · '+wskill:'');
+  document.getElementById('menuArea').innerText=warea||'Tap to set area';
+  document.getElementById('menuWid').innerText=wid||'—';
+  document.getElementById('locTitle').innerText=warea||'Not set';
+  document.getElementById('locSub').innerText=warea?'Hyderabad · Tap to change':'Tap to set service area';
+
+  // Load bank status
+  const hasBankDetails = localStorage.getItem('bankAcc')||'';
+  if(hasBankDetails) document.getElementById('bankVal').innerText='Saved';
+
+  // Load stats
+  async function loadStats(){
+    try{
+      const{data:jobs}=await db.from('jobs').select('amount,status').eq('worker_id',wid);
+      if(jobs){
+        const done=jobs.filter(j=>j.status==='completed');
+        document.getElementById('stJobs').innerText=done.length;
+        document.getElementById('stEarned').innerText='₹'+done.reduce((s,j)=>s+(j.amount||0),0).toLocaleString('en-IN');
+      }
+      const today=new Date().toISOString().split('T')[0];
+      const{data:todayJobs}=await db.from('jobs').select('amount').eq('worker_id',wid).eq('status','completed').gte('created_at',today);
+      if(todayJobs) document.getElementById('todayEarn').innerText="Today's Earnings: ₹"+todayJobs.reduce((s,j)=>s+(j.amount||0),0);
+      const{data:w}=await db.from('workers').select('rating').eq('worker_id',wid).single();
+      if(w&&w.rating) document.getElementById('stRating').innerText=w.rating+'⭐';
+    }catch(e){}
+  }
+  loadStats();
+
+  // Edit Profile
+  function openEdit(){
+    document.getElementById('editName').value=wname;
+    const sel=document.getElementById('editSkill');
+    for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===wskill)sel.selectedIndex=i;}
+    document.getElementById('editModal').classList.add('show');
+  }
+  async function saveProfile(){
+    const nn=document.getElementById('editName').value.trim();
+    const ns=document.getElementById('editSkill').value;
+    if(!nn){showToast('⚠️ Name cannot be empty');return;}
+    try{
+      await db.from('workers').update({name:nn,skill:ns}).eq('worker_id',wid);
+      localStorage.setItem('workerName',nn);localStorage.setItem('workerSkill',ns);
+      document.getElementById('avInit').innerText=nn.charAt(0).toUpperCase();
+      document.getElementById('avName').innerText=nn;
+      document.getElementById('avSkill').innerText=ns+' · '+(warea||'—');
+      document.getElementById('menuName').innerText=nn+' · '+ns;
+      document.getElementById('editModal').classList.remove('show');
+      showToast('✅ Profile updated!');
+    }catch(e){showToast('⚠️ '+e.message);}
+  }
+
+  // Location
+  const AREAS=['Banjara Hills','Jubilee Hills','Madhapur','Gachibowli','Hitech City','Kondapur','Kukatpally','Secunderabad','Begumpet','Ameerpet','LB Nagar','Dilsukhnagar','Uppal','Miyapur','Manikonda','Sainikpuri','Alwal','Malkajgiri','Other'];
+  let selArea=warea||'';
+  function showAreas(){
+    document.getElementById('areaGrid').innerHTML=AREAS.map(a=>`<div class="area-chip${a===selArea?' sel':''}" onclick="pickArea('${a}',this)">${a}</div>`).join('');
+    document.getElementById('areaPicker').style.display='block';
+  }
+  function pickArea(a,el){selArea=a;document.querySelectorAll('.area-chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+  async function saveArea(){
+    if(!selArea){showToast('Please select an area');return;}
+    try{
+      await db.from('workers').update({area:selArea}).eq('worker_id',wid);
+      localStorage.setItem('workerArea',selArea);
+      document.getElementById('locTitle').innerText=selArea;
+      document.getElementById('locSub').innerText='Hyderabad · Tap to change';
+      document.getElementById('menuArea').innerText=selArea;
+      document.getElementById('avSkill').innerText=(localStorage.getItem('workerSkill')||'—')+' · '+selArea;
+      document.getElementById('locModal').classList.remove('show');
+      document.getElementById('areaPicker').style.display='none';
+      showToast('✅ Service area updated to '+selArea+'!');
+    }catch(e){showToast('⚠️ '+e.message);}
+  }
+  function detectGPS(){
+    if(!navigator.geolocation){showToast('❌ GPS not supported');return;}
+    showToast('📡 Detecting your location...');
+    navigator.geolocation.getCurrentPosition(async pos=>{
+      try{
+        const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+        const d=await r.json();
+        const a=d.address?.suburb||d.address?.neighbourhood||d.address?.city_district||'Hyderabad';
+        await db.from('workers').update({area:a}).eq('worker_id',wid);
+        localStorage.setItem('workerArea',a);
+        document.getElementById('locTitle').innerText=a;
+        document.getElementById('locSub').innerText='Hyderabad · Tap to change';
+        document.getElementById('menuArea').innerText=a;
+        document.getElementById('locModal').classList.remove('show');
+        showToast('✅ Area set to '+a+'!');
+      }catch(e){showToast('⚠️ Could not read your area');}
+    },()=>showToast('❌ Permission denied. Choose manually.'),{timeout:8000,enableHighAccuracy:true});
+  }
+
+  // Bank details (stored in localStorage for now)
+  function saveBank(){
+    const name=document.getElementById('bankName').value.trim();
+    const acc=document.getElementById('bankAcc').value.trim();
+    const ifsc=document.getElementById('bankIFSC').value.trim();
+    const upi=document.getElementById('bankUPI').value.trim();
+    if(!acc||!ifsc){showToast('⚠️ Account number and IFSC are required');return;}
+    localStorage.setItem('bankName',name);localStorage.setItem('bankAcc',acc);
+    localStorage.setItem('bankIFSC',ifsc);if(upi)localStorage.setItem('bankUPI',upi);
+    document.getElementById('bankVal').innerText='Saved';
+    document.getElementById('bankModal').classList.remove('show');
+    showToast('✅ Bank details saved!');
+  }
+
+  function openWA(){window.open('https://wa.me/91XXXXXXXXXX?text='+encodeURIComponent('Hi ZipFix Partner Support! Worker ID: '+wid+', Phone: '+wphone),'_blank');}
+  function cm(id,e){if(e.target.id===id)document.getElementById(id).classList.remove('show');}
+  function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+  function logoutWorker(){
+    if(confirm('Logout from ZipFix Partner?')){
+      ['workerName','workerSkill','workerArea','workerStatus','workerId','workerPhone','workerDbId'].forEach(k=>localStorage.removeItem(k));
+      window.location.href='landing.html';
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,89 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix Worker — Apply Now</title>
-</head>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>ZipFix Partner — Apply Now</title></head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .register-box { background-color:#111; border:1px solid #222; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
-  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:5px; text-align:center; }
-  .tagline { font-size:14px; color:#aaa; margin-bottom:35px; text-align:center; }
-  h2 { font-size:22px; font-weight:800; margin-bottom:5px; color:#f0f0f0; }
-  .subtitle { font-size:14px; color:#888; margin-bottom:30px; }
-  .input-group { margin-bottom:20px; }
-  .input-group label { display:block; font-size:13px; font-weight:700; color:#888; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
-  .input-group input, .input-group select {
-    width:100%; padding:15px 20px; background-color:#f0f0f0;
-    border:2px solid #222; border-radius:15px; color:#f0f0f0;
-    font-size:16px; outline:none; transition:border-color 0.2s;
-  }
-  .input-group input:focus, .input-group select:focus { border-color:#00b894; }
-  .input-group select option { background-color:#1a1a1a; color:#f0f0f0; }
-  .input-group input.err, .input-group select.err { border-color:#e74c3c; }
-  .field-err { color:#e74c3c; font-size:12px; margin-top:5px; display:none; }
-  .phone-row { display:flex; align-items:center; background-color:#f0f0f0; border:2px solid #222; border-radius:15px; overflow:hidden; transition:border-color 0.2s; }
-  .phone-row:focus-within { border-color:#00b894; }
-  .phone-row.err { border-color:#e74c3c; }
-  .phone-prefix { padding:15px; font-size:16px; font-weight:700; color:#00b894; border-right:2px solid #333; white-space:nowrap; }
-  .phone-row input { border:none !important; border-radius:0 !important; background:none !important; padding:15px !important; outline:none; color:#f0f0f0; font-size:16px; width:100%; }
-  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-top:10px; transition:background-color 0.2s; }
-  .btn-main:hover { background-color:#009e7f; }
-  .btn-main:disabled { background-color:#ccc; cursor:not-allowed; }
-  .login-link { text-align:center; margin-top:20px; font-size:14px; color:#888; }
-  .login-link span { color:#00b894; cursor:pointer; font-weight:700; }
-  .success-card { display:none; text-align:center; padding:20px 0; }
-  .success-card .s-icon { font-size:60px; margin-bottom:15px; }
-  .success-card h3 { font-size:24px; font-weight:900; color:#00b894; margin-bottom:10px; }
-  .success-card p { font-size:15px; color:#888; line-height:1.7; margin-bottom:25px; }
-  .btn-go { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; }
-  .btn-go:hover { background-color:#009e7f; }
-  .api-err { background:#fff0ee; border:1px solid #e74c3c; color:#e74c3c; border-radius:12px; padding:14px 16px; font-size:14px; margin-top:15px; display:none; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .box{background:#fff;border-radius:28px;padding:44px 32px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.08);}
+  .logo{font-size:26px;font-weight:900;color:#00b894;letter-spacing:2px;margin-bottom:5px;text-align:center;}
+  .tagline{font-size:13px;color:#aaa;margin-bottom:30px;text-align:center;}
+  h2{font-size:20px;font-weight:900;margin-bottom:5px;color:#1a1a1a;}
+  .sub{font-size:13px;color:#888;margin-bottom:24px;}
+  .grp{margin-bottom:18px;}
+  .grp label{display:block;font-size:12px;font-weight:700;color:#888;margin-bottom:7px;text-transform:uppercase;letter-spacing:1px;}
+  .grp input,.grp select{width:100%;padding:13px 16px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;color:#1a1a1a;font-size:15px;outline:none;transition:border-color 0.2s;}
+  .grp input:focus,.grp select:focus{border-color:#00b894;}
+  .grp input.err,.grp select.err{border-color:#e74c3c;}
+  .grp select option{background:#fff;color:#1a1a1a;}
+  .field-err{color:#e74c3c;font-size:12px;margin-top:5px;display:none;}
+  .phone-row{display:flex;align-items:center;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;overflow:hidden;transition:border-color 0.2s;}
+  .phone-row:focus-within{border-color:#00b894;}
+  .phone-row.err{border-color:#e74c3c;}
+  .prefix{padding:13px 12px;font-size:16px;font-weight:700;color:#00b894;border-right:2px solid #e0e0e0;white-space:nowrap;}
+  .phone-row input{border:none!important;border-radius:0!important;background:none!important;padding:13px!important;outline:none;color:#1a1a1a;font-size:15px;width:100%;}
+  .btn{width:100%;padding:16px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:14px;cursor:pointer;margin-top:8px;transition:background 0.2s;}
+  .btn:hover{background:#009e7f;}
+  .btn:disabled{background:#ccc;cursor:not-allowed;}
+  .api-err{background:#fff0ee;border:1px solid #e74c3c;color:#e74c3c;border-radius:12px;padding:12px 14px;font-size:13px;margin-top:12px;display:none;}
+  .link-row{text-align:center;margin-top:16px;font-size:14px;color:#888;}
+  .link-row span{color:#00b894;font-weight:700;cursor:pointer;}
+  .success-card{display:none;text-align:center;padding:16px 0;}
+  .s-icon{font-size:52px;margin-bottom:12px;}
+  .success-card h3{font-size:22px;font-weight:900;color:#00b894;margin-bottom:8px;}
+  .success-card p{font-size:14px;color:#888;line-height:1.7;margin-bottom:20px;}
+  .btn-go{width:100%;padding:16px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:14px;cursor:pointer;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<div class="register-box">
+<div class="box">
   <div id="formSection">
     <div class="logo">ZIPFIX</div>
-    <div class="tagline">Worker Portal — Earn Near You</div>
-    <h2>Apply as a Worker</h2>
-    <p class="subtitle">Fill in your details — admin will review and approve</p>
+    <div class="tagline">Partner Portal — Earn Near You</div>
+    <h2>Apply as a Partner</h2>
+    <p class="sub">Fill in your details — admin will review and approve within 24 hours</p>
 
-    <div class="input-group">
-      <label>Full Name</label>
-      <input type="text" id="fullName" placeholder="Enter your full name" oninput="clearErr('fullName','errName')" />
+    <div class="grp"><label>Full Name</label>
+      <input type="text" id="fullName" placeholder="Enter your full name" oninput="ce('fullName','errName')"/>
       <div class="field-err" id="errName">Please enter your full name</div>
     </div>
-
-    <div class="input-group">
-      <label>Phone Number</label>
+    <div class="grp"><label>Phone Number</label>
       <div class="phone-row" id="phoneRow">
-        <div class="phone-prefix">+91</div>
-        <input type="number" id="phoneNumber" placeholder="98765 43210" oninput="clearErr('phoneRow','errPhone')" />
+        <div class="prefix">+91</div>
+        <input type="number" id="phoneNumber" placeholder="98765 43210" oninput="ce('phoneRow','errPhone')"/>
       </div>
-      <div class="field-err" id="errPhone">Please enter a valid 10-digit phone number</div>
+      <div class="field-err" id="errPhone">Please enter a valid 10-digit number</div>
     </div>
-
-    <div class="input-group">
-      <label>Your Skill</label>
-      <select id="skill" onchange="clearErr('skill','errSkill')">
+    <div class="grp"><label>Your Skill</label>
+      <select id="skill" onchange="ce('skill','errSkill')">
         <option value="">Select your skill</option>
-        <option>Plumber</option>
-        <option>Electrician</option>
-        <option>Locksmith</option>
-        <option>AC Repair</option>
-        <option>Carpenter</option>
-        <option>Painter</option>
+        <option>Plumber</option><option>Electrician</option><option>Locksmith</option>
+        <option>AC Repair</option><option>Carpenter</option><option>Painter</option>
+        <option>Pest Control</option><option>Home Cleaning</option>
+        <option>TV / Electronics Repair</option><option>Water Purifier Service</option>
+        <option>Appliance Repair</option><option>Bathroom Renovation</option>
+        <option>Packers & Movers</option><option>CCTV Installation</option>
       </select>
       <div class="field-err" id="errSkill">Please select your skill</div>
     </div>
-
-    <div class="input-group">
-      <label>Your Area in Hyderabad</label>
-      <select id="area" onchange="clearErr('area','errArea')">
+    <div class="grp"><label>Your Area in Hyderabad</label>
+      <select id="area" onchange="ce('area','errArea')">
         <option value="">Select your area</option>
         <option>Banjara Hills</option><option>Jubilee Hills</option><option>Madhapur</option>
         <option>Gachibowli</option><option>Hitech City</option><option>Kondapur</option>
@@ -93,104 +76,69 @@
       </select>
       <div class="field-err" id="errArea">Please select your area</div>
     </div>
-
-    <div class="input-group">
-      <label>Years of Experience</label>
-      <select id="experience" onchange="clearErr('experience','errExp')">
+    <div class="grp"><label>Years of Experience</label>
+      <select id="experience" onchange="ce('experience','errExp')">
         <option value="">Select experience</option>
         <option>Less than 1 year</option><option>1-2 years</option>
         <option>3-5 years</option><option>5+ years</option>
       </select>
       <div class="field-err" id="errExp">Please select your experience</div>
     </div>
-
-    <div class="input-group">
-      <label>ID Proof Type</label>
-      <select id="idType" onchange="clearErr('idType','errIdType')">
+    <div class="grp"><label>ID Proof Type</label>
+      <select id="idType" onchange="ce('idType','errIdType')">
         <option value="">Select ID type</option>
         <option>Aadhaar Card</option><option>PAN Card</option>
         <option>Voter ID</option><option>Driving Licence</option>
       </select>
       <div class="field-err" id="errIdType">Please select ID proof type</div>
     </div>
-
-    <div class="input-group">
-      <label>ID Number</label>
-      <input type="text" id="idNumber" placeholder="Enter your ID number" oninput="clearErr('idNumber','errIdNum')" />
+    <div class="grp"><label>ID Number</label>
+      <input type="text" id="idNumber" placeholder="Enter your ID number" oninput="ce('idNumber','errIdNum')"/>
       <div class="field-err" id="errIdNum">Please enter your ID number</div>
     </div>
-
-    <button class="btn-main" id="submitBtn" onclick="applyNow()">Submit Application</button>
+    <button class="btn" id="submitBtn" onclick="applyNow()">Submit Application</button>
     <div class="api-err" id="apiErr"></div>
-    <div class="login-link">Already registered? <span onclick="window.location.href='login.html'">Check Status</span></div>
+    <div class="link-row">Already applied? <span onclick="window.location.href='login.html'">Check Status</span></div>
   </div>
-
   <div class="success-card" id="successCard">
     <div class="s-icon">✅</div>
     <h3>Application Submitted!</h3>
-    <p>Your application is under review.<br/>You will receive an SMS once approved.<br/>Check status anytime at <strong>login page</strong>.</p>
+    <p>Your application is under review.<br/>You'll receive an SMS once approved.<br/>Check status anytime from the login page.</p>
     <button class="btn-go" onclick="window.location.href='login.html'">Check Application Status →</button>
   </div>
 </div>
-
 <script>
-  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
-    window.location.href = 'dashboard.html';
-  }
-
-  function clearErr(elId, errId) {
-    document.getElementById(elId).classList.remove('err');
-    document.getElementById(errId).style.display = 'none';
-    document.getElementById('apiErr').style.display = 'none';
-  }
-  function markErr(elId, errId) {
-    document.getElementById(elId).classList.add('err');
-    document.getElementById(errId).style.display = 'block';
-    return true;
-  }
-
-  async function applyNow() {
-    const name       = document.getElementById('fullName').value.trim();
-    const phone      = document.getElementById('phoneNumber').value.trim();
-    const skill      = document.getElementById('skill').value;
-    const area       = document.getElementById('area').value;
-    const experience = document.getElementById('experience').value;
-    const idType     = document.getElementById('idType').value;
-    const idNumber   = document.getElementById('idNumber').value.trim();
-    let hasErr = false;
-    if (!name)                       hasErr = markErr('fullName',   'errName');
-    if (!phone || phone.length < 10) hasErr = markErr('phoneRow',   'errPhone');
-    if (!skill)                      hasErr = markErr('skill',      'errSkill');
-    if (!area)                       hasErr = markErr('area',       'errArea');
-    if (!experience)                 hasErr = markErr('experience', 'errExp');
-    if (!idType)                     hasErr = markErr('idType',     'errIdType');
-    if (!idNumber)                   hasErr = markErr('idNumber',   'errIdNum');
-    if (hasErr) { document.querySelector('.err').scrollIntoView({behavior:'smooth',block:'center'}); return; }
-
-    const btn = document.getElementById('submitBtn');
-    btn.innerText = 'Submitting...';
-    btn.disabled = true;
-
-    try {
-      const { error } = await db.from('workers').insert([{
-        name, phone: '+91'+phone, skill, area, experience,
-        id_type: idType, id_number: idNumber, status: 'pending'
-      }]);
-      if (error) throw error;
-      document.getElementById('formSection').style.display = 'none';
-      document.getElementById('successCard').style.display = 'block';
-    } catch(err) {
-      btn.innerText = 'Submit Application';
-      btn.disabled = false;
-      const apiErr = document.getElementById('apiErr');
-      apiErr.innerText = '⚠️ ' + err.message;
-      apiErr.style.display = 'block';
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  if(localStorage.getItem('workerName')&&localStorage.getItem('workerId'))window.location.href='dashboard.html';
+  function ce(el,err){document.getElementById(el).classList.remove('err');document.getElementById(err).style.display='none';document.getElementById('apiErr').style.display='none';}
+  function me(el,err){document.getElementById(el).classList.add('err');document.getElementById(err).style.display='block';return true;}
+  async function applyNow(){
+    const name=document.getElementById('fullName').value.trim();
+    const phone=document.getElementById('phoneNumber').value.trim();
+    const skill=document.getElementById('skill').value;
+    const area=document.getElementById('area').value;
+    const exp=document.getElementById('experience').value;
+    const idType=document.getElementById('idType').value;
+    const idNum=document.getElementById('idNumber').value.trim();
+    let hasErr=false;
+    if(!name)hasErr=me('fullName','errName');
+    if(!phone||phone.length<10)hasErr=me('phoneRow','errPhone');
+    if(!skill)hasErr=me('skill','errSkill');
+    if(!area)hasErr=me('area','errArea');
+    if(!exp)hasErr=me('experience','errExp');
+    if(!idType)hasErr=me('idType','errIdType');
+    if(!idNum)hasErr=me('idNumber','errIdNum');
+    if(hasErr){document.querySelector('.err').scrollIntoView({behavior:'smooth',block:'center'});return;}
+    const btn=document.getElementById('submitBtn');btn.innerText='Submitting...';btn.disabled=true;
+    try{
+      const{error}=await db.from('workers').insert([{name,phone:'+91'+phone,skill,area,experience:exp,id_type:idType,id_number:idNum,status:'pending'}]);
+      if(error)throw error;
+      document.getElementById('formSection').style.display='none';
+      document.getElementById('successCard').style.display='block';
+    }catch(err){
+      btn.innerText='Submit Application';btn.disabled=false;
+      const e=document.getElementById('apiErr');e.innerText='⚠️ '+err.message;e.style.display='block';
     }
   }
 </script>
-</body>
-</html>
+</body></html>

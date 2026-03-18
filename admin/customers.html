@@ -121,6 +121,8 @@
       document.getElementById('weekUsers').innerText  = week;
 
       renderAll(allCustomers);
+      loadSubStatuses();
+      loadSubStatuses();
     } catch (e) {
       document.getElementById('customerList').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>' + e.message + '</p></div>';
     }
@@ -146,6 +148,7 @@
         <div class="cc-phone">📞 ${u.phone||'—'}</div>
         <div class="cc-area">📍 ${u.area||'—'}</div>
         <div class="cc-email">✉️ ${u.email||'—'}</div>
+      <div id="sub-${u.phone?.replace('+91','')}" class="cc-sub" style="font-size:11px;margin-top:4px;color:#aaa">⏳ Checking plan...</div>
       </div>
       <div class="cc-right">
         <div class="cc-date">Joined ${date}</div>
@@ -156,7 +159,8 @@
 
   function filterCustomers() {
     const q = document.getElementById('searchInput').value.trim().toLowerCase();
-    if (!q) { renderAll(allCustomers); return; }
+    if (!q) { renderAll(allCustomers);
+      loadSubStatuses(); return; }
     const filtered = allCustomers.filter(u =>
       (u.name||'').toLowerCase().includes(q) ||
       (u.phone||'').includes(q) ||
@@ -164,6 +168,22 @@
       (u.email||'').toLowerCase().includes(q)
     );
     renderAll(filtered);
+  }
+
+  async function loadSubStatuses(){
+    try{
+      const{data:subs}=await db.from('subscriptions').select('customer_phone,plan,status,expires_at').eq('status','active');
+      if(!subs)return;
+      subs.forEach(s=>{
+        const phone=(s.customer_phone||'').replace('+91','');
+        const el=document.getElementById('sub-'+phone);
+        if(el&&new Date(s.expires_at)>new Date()){
+          const pMap={basic:'🟤 Basic',standard:'⭐ Standard',premium:'💎 Premium'};
+          el.style.color='#00b894';el.style.fontWeight='700';
+          el.innerText=(pMap[s.plan]||s.plan)+' Plan';
+        } else if(el){el.innerText='No subscription';}
+      });
+    }catch(e){document.querySelectorAll('.cc-sub').forEach(el=>el.style.display='none');}
   }
 
   function adminLogout() {

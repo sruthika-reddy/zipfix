@@ -1,94 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>ZipFix — Book Service</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background:#f5f5f5; color:#1a1a1a; min-height:100vh; }
-
-  .navbar { display:flex; align-items:center; gap:14px; padding:16px 20px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06); position:sticky; top:0; z-index:10; }
-  .back-btn { font-size:22px; color:#00b894; cursor:pointer; background:none; border:none; }
-  .navbar-title { font-size:17px; font-weight:900; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:10;}
+  .back-btn{font-size:22px;color:#00b894;cursor:pointer;background:none;border:none;}
+  .navbar-title{font-size:17px;font-weight:900;}
 
   /* Service hero */
-  .svc-hero { background:#fff; padding:20px 20px 0; display:flex; align-items:center; gap:16px; }
-  .svc-icon-box { width:72px; height:72px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:36px; flex-shrink:0; }
-  .svc-hero-info h2 { font-size:20px; font-weight:900; }
-  .svc-hero-info p  { font-size:13px; color:#888; margin-top:3px; }
-  .svc-badges { display:flex; gap:8px; padding:14px 20px 18px; background:#fff; border-bottom:8px solid #f5f5f5; flex-wrap:wrap; }
-  .svc-badge { display:flex; align-items:center; gap:5px; background:#e8f8f4; color:#00b894; border-radius:50px; padding:5px 12px; font-size:11px; font-weight:700; }
+  .svc-hero{background:#fff;padding:20px 20px 0;display:flex;align-items:center;gap:16px;}
+  .svc-icon-box{width:68px;height:68px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;}
+  .svc-hero-info h2{font-size:20px;font-weight:900;}
+  .svc-hero-info p{font-size:13px;color:#888;margin-top:3px;}
+  .svc-badges{display:flex;gap:8px;padding:14px 20px 18px;background:#fff;border-bottom:8px solid #f5f5f5;flex-wrap:wrap;}
+  .svc-badge{display:flex;align-items:center;gap:5px;background:#e8f8f4;color:#00b894;border-radius:50px;padding:5px 12px;font-size:11px;font-weight:700;}
 
-  /* Packages */
-  .section { padding:18px 20px; background:#fff; margin-bottom:8px; }
-  .section h3 { font-size:16px; font-weight:900; margin-bottom:14px; }
+  /* Pro discount banner — only shown if subscribed */
+  .pro-discount-banner{margin:14px 20px 0;background:linear-gradient(135deg,#e8f8f4,#d4f2ea);border:1.5px solid #00b89433;border-radius:14px;padding:12px 16px;display:none;align-items:center;justify-content:space-between;}
+  .pro-discount-banner.show{display:flex;}
+  .pdb-left h4{font-size:13px;font-weight:800;color:#00b894;margin-bottom:2px;}
+  .pdb-left p{font-size:11px;color:#888;}
+  .pdb-badge{background:#00b894;color:#fff;font-size:12px;font-weight:900;padding:5px 12px;border-radius:8px;white-space:nowrap;}
 
-  .pkg-card { border:2px solid #ededf0; border-radius:16px; padding:16px; margin-bottom:12px; cursor:pointer; transition:border-color 0.2s; position:relative; }
-  .pkg-card.selected { border-color:#00b894; background:#f0fdf8; }
-  .pkg-card.popular::before { content:'POPULAR'; position:absolute; top:-1px; right:14px; background:#00b894; color:#fff; font-size:10px; font-weight:900; padding:3px 10px; border-radius:0 0 8px 8px; }
-  .pkg-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
-  .pkg-name { font-size:16px; font-weight:800; }
-  .pkg-price { font-size:20px; font-weight:900; color:#00b894; }
-  .pkg-price .orig { font-size:13px; color:#aaa; text-decoration:line-through; margin-left:4px; }
-  .pkg-desc { font-size:13px; color:#888; margin-bottom:10px; line-height:1.5; }
-  .pkg-features { display:flex; flex-direction:column; gap:5px; }
-  .pkg-feat { display:flex; align-items:center; gap:8px; font-size:13px; color:#555; }
-  .pkg-feat::before { content:'✅'; font-size:12px; }
-  .pkg-time { font-size:12px; color:#aaa; margin-top:8px; }
-
-  /* Sub discount banner */
-  .sub-discount-banner { background:linear-gradient(135deg,#1a1a2e,#16213e); border-radius:14px; padding:14px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; display:none; }
-  .sub-discount-banner.show { display:flex; }
-  .sdb-left h4 { font-size:14px; font-weight:800; color:#00b894; margin-bottom:2px; }
-  .sdb-left p  { font-size:12px; color:#aaa; }
-  .sdb-badge { background:#00b894; color:#fff; font-size:12px; font-weight:900; padding:6px 12px; border-radius:8px; }
-
-  /* Form fields */
-  .field-label { font-size:12px; font-weight:800; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:block; }
-  textarea, input[type="text"], input[type="date"], input[type="time"] {
-    width:100%; padding:14px 16px; background:#f5f5f5;
-    border:2px solid #ededf0; border-radius:14px; color:#1a1a1a;
-    font-size:15px; outline:none; transition:border-color 0.2s;
-    font-family:'Segoe UI',sans-serif; resize:none;
-  }
-  textarea:focus, input:focus { border-color:#00b894; }
-  textarea.err, input.err { border-color:#e74c3c; }
-  .field-err { color:#e74c3c; font-size:12px; margin-top:6px; display:none; }
-
-  .location-row { display:flex; gap:10px; }
-  .location-row input { flex:1; }
-  .gps-btn { flex-shrink:0; padding:14px; background:#e8f8f4; color:#00b894; border:2px solid #00b89433; border-radius:14px; font-size:18px; cursor:pointer; }
-  .gps-status { font-size:12px; color:#00b894; margin-top:6px; min-height:16px; }
-
-  .schedule-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  /* Form */
+  .section{padding:18px 20px;background:#fff;margin-top:8px;}
+  .section h3{font-size:15px;font-weight:900;margin-bottom:14px;}
+  .field-label{font-size:12px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;display:block;}
+  textarea,input[type="text"]{width:100%;padding:14px 16px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;color:#1a1a1a;font-size:15px;outline:none;transition:border-color 0.2s;font-family:'Segoe UI',sans-serif;resize:none;}
+  textarea:focus,input[type="text"]:focus{border-color:#00b894;}
+  textarea.err,input.err{border-color:#e74c3c;}
+  .field-err{color:#e74c3c;font-size:12px;margin-top:6px;display:none;}
+  .location-row{display:flex;gap:10px;}
+  .location-row input{flex:1;}
+  .gps-btn{flex-shrink:0;padding:14px;background:#e8f8f4;color:#00b894;border:2px solid #00b89433;border-radius:14px;font-size:18px;cursor:pointer;}
+  .gps-status{font-size:12px;color:#00b894;margin-top:6px;min-height:16px;}
 
   /* Urgency */
-  .urgency-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .urg-card { border:2px solid #ededf0; border-radius:14px; padding:14px 8px; text-align:center; cursor:pointer; transition:all 0.2s; }
-  .urg-card.sel-normal    { border-color:#00b894; background:#e8f8f4; }
-  .urg-card.sel-urgent    { border-color:#f59e0b; background:#fff8e6; }
-  .urg-card.sel-emergency { border-color:#e74c3c; background:#ffe8e8; }
-  .urg-icon  { font-size:24px; margin-bottom:6px; }
-  .urg-name  { font-size:12px; font-weight:800; color:#1a1a1a; }
-  .urg-extra { font-size:11px; color:#888; margin-top:3px; }
+  .urgency-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .urg-card{border:2px solid #e0e0e0;border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;}
+  .urg-card.sel-normal{border-color:#00b894;background:#e8f8f4;}
+  .urg-card.sel-urgent{border-color:#f59e0b;background:#fff8e6;}
+  .urg-card.sel-emergency{border-color:#e74c3c;background:#fff0ee;}
+  .urg-icon{font-size:24px;margin-bottom:6px;}
+  .urg-name{font-size:12px;font-weight:800;color:#1a1a1a;}
+  .urg-price{font-size:11px;color:#888;margin-top:3px;}
 
   /* Price summary */
-  .price-card { background:#fff; border-radius:16px; padding:18px 20px; }
-  .price-row  { display:flex; justify-content:space-between; font-size:14px; color:#888; margin-bottom:8px; }
-  .price-row:last-child { border-top:1px solid #f0f0f0; padding-top:10px; margin-bottom:0; margin-top:4px; font-size:18px; font-weight:900; color:#1a1a1a; }
-  .price-row:last-child span { color:#00b894; }
-  .discount-row { display:flex; justify-content:space-between; font-size:13px; color:#00b894; font-weight:700; margin-bottom:8px; }
+  .price-card{background:#f5f5f5;border-radius:14px;padding:16px 18px;}
+  .price-row{display:flex;justify-content:space-between;font-size:14px;color:#888;margin-bottom:8px;}
+  .price-row:last-child{border-top:1px solid #e0e0e0;padding-top:10px;margin-bottom:0;margin-top:4px;font-size:17px;font-weight:900;color:#1a1a1a;}
+  .price-row:last-child span{color:#00b894;}
+  .discount-row{display:flex;justify-content:space-between;font-size:13px;color:#00b894;font-weight:700;margin-bottom:8px;}
 
   /* Bottom CTA */
-  .bottom-cta { position:sticky; bottom:0; background:#fff; padding:14px 20px; box-shadow:0 -2px 12px rgba(0,0,0,0.08); }
-  .cta-summary { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .cta-summary .pkg-sel { font-size:13px; color:#888; }
-  .cta-summary .cta-price { font-size:20px; font-weight:900; color:#00b894; }
-  .btn-find { width:100%; padding:18px; background:#00b894; color:#fff; font-size:17px; font-weight:900; border:none; border-radius:14px; cursor:pointer; transition:background-color 0.2s; }
-  .btn-find:hover { background:#009e7f; }
+  .bottom-cta{position:sticky;bottom:0;background:#fff;padding:14px 20px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);}
+  .cta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .cta-price{font-size:22px;font-weight:900;color:#00b894;}
+  .cta-label{font-size:12px;color:#888;}
+  .btn-find{width:100%;padding:17px;background:#00b894;color:#fff;font-size:17px;font-weight:900;border:none;border-radius:14px;cursor:pointer;transition:background 0.2s;}
+  .btn-find:hover{background:#009e7f;}
+  .spacer{height:100px;}
+
+  /* Color helpers */
+  .bg-blue{background:#e8f4ff;} .bg-green{background:#e8f8f4;} .bg-orange{background:#fff4e6;}
+  .bg-purple{background:#f0e8ff;} .bg-red{background:#ffe8e8;} .bg-teal{background:#e8fff8;} .bg-yellow{background:#fffce6;}
 </style>
 
 <nav class="navbar">
@@ -98,12 +79,10 @@
 
 <!-- Service Hero -->
 <div class="svc-hero">
-  <div class="svc-icon-box bg-blue" id="svcIconBox">
-    <span id="svcIcon">🔧</span>
-  </div>
+  <div class="svc-icon-box bg-green" id="svcIconBox"><span id="svcIcon">🔧</span></div>
   <div class="svc-hero-info">
     <h2 id="svcName">Service</h2>
-    <p>Verified professionals • Guaranteed work</p>
+    <p>Verified professionals · Guaranteed work</p>
   </div>
 </div>
 <div class="svc-badges">
@@ -113,20 +92,13 @@
   <div class="svc-badge">⭐ 4.8+ Rated</div>
 </div>
 
-<!-- Packages -->
-<div class="section" id="packagesSection">
-  <h3>Choose a Package</h3>
-
-  <!-- Sub discount banner -->
-  <div class="sub-discount-banner" id="subBanner">
-    <div class="sdb-left">
-      <h4>⭐ Your Pro Discount Applied</h4>
-      <p id="subDiscountText">20% off as Standard member</p>
-    </div>
-    <div class="sdb-badge" id="subDiscountBadge">−20%</div>
+<!-- Pro discount banner (only for subscribers) -->
+<div class="pro-discount-banner" id="proDiscountBanner">
+  <div class="pdb-left">
+    <h4>⭐ Your Pro Discount Applied</h4>
+    <p id="proDiscountLabel">Saving 20% as Standard member</p>
   </div>
-
-  <div id="pkgList"></div>
+  <div class="pdb-badge" id="proDiscountBadge">−20%</div>
 </div>
 
 <!-- Problem -->
@@ -140,25 +112,11 @@
 <div class="section">
   <span class="field-label">Your Location</span>
   <div class="location-row">
-    <input type="text" id="address" placeholder="Enter address or use GPS 📍" oninput="clearField('address','errAddress')" />
+    <input type="text" id="address" placeholder="Enter address or use GPS 📍" oninput="clearField('address','errAddress')"/>
     <button class="gps-btn" id="gpsBtn" onclick="getGPS()">📍</button>
   </div>
   <div class="gps-status" id="gpsStatus"></div>
   <div class="field-err" id="errAddress">Please enter your address</div>
-</div>
-
-<!-- Schedule -->
-<div class="section">
-  <span class="field-label">Schedule (Optional)</span>
-  <div class="schedule-row">
-    <div>
-      <input type="date" id="bookDate" min="" />
-    </div>
-    <div>
-      <input type="time" id="bookTime" value="10:00" />
-    </div>
-  </div>
-  <p style="font-size:12px;color:#aaa;margin-top:8px">Leave blank for ASAP / On-demand booking</p>
 </div>
 
 <!-- Urgency -->
@@ -168,216 +126,159 @@
     <div class="urg-card sel-normal" id="urg-normal" onclick="selectUrgency('normal')">
       <div class="urg-icon">🟢</div>
       <div class="urg-name">Normal</div>
-      <div class="urg-extra">No extra charge</div>
+      <div class="urg-price" id="price-normal">₹—</div>
     </div>
     <div class="urg-card" id="urg-urgent" onclick="selectUrgency('urgent')">
       <div class="urg-icon">🟡</div>
       <div class="urg-name">Urgent</div>
-      <div class="urg-extra" id="urgentExtra">+₹—</div>
+      <div class="urg-price" id="price-urgent">₹—</div>
     </div>
     <div class="urg-card" id="urg-emergency" onclick="selectUrgency('emergency')">
       <div class="urg-icon">🔴</div>
       <div class="urg-name">Emergency</div>
-      <div class="urg-extra" id="emergencyExtra">+₹—</div>
+      <div class="urg-price" id="price-emergency">₹—</div>
     </div>
   </div>
 </div>
 
 <!-- Price Summary -->
-<div class="section" id="priceSection">
+<div class="section">
   <h3>Price Summary</h3>
   <div class="price-card">
-    <div class="price-row"><span>Package</span><span id="sumBase">₹—</span></div>
-    <div class="price-row"><span>Urgency</span><span id="sumUrgency">₹0</span></div>
-    <div class="discount-row" id="discountRow" style="display:none"><span id="discountLabel">Pro Discount</span><span id="discountAmt">−₹0</span></div>
+    <div class="price-row"><span>Base Service Fee</span><span id="sumBase">₹—</span></div>
+    <div class="price-row"><span>Urgency Charges</span><span id="sumUrgency">₹0</span></div>
+    <div class="discount-row" id="discountRow" style="display:none">
+      <span id="discountLabel">Pro Discount</span>
+      <span id="discountAmt">−₹0</span>
+    </div>
     <div class="price-row"><span>Platform Fee</span><span>₹49</span></div>
     <div class="price-row"><span>Total Estimate</span><span id="sumTotal">₹—</span></div>
   </div>
 </div>
 
-<div style="height:100px"></div>
+<div class="spacer"></div>
 
 <!-- Bottom CTA -->
 <div class="bottom-cta">
-  <div class="cta-summary">
-    <div class="pkg-sel" id="ctaPkg">Select a package</div>
+  <div class="cta-row">
+    <div class="cta-label">Total Estimate</div>
     <div class="cta-price" id="ctaPrice">₹—</div>
   </div>
   <button class="btn-find" onclick="findWorker()">🔍 Find Worker Now</button>
 </div>
 
 <script>
-  if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
+  if(!localStorage.getItem('phoneNumber')){window.location.href='login.html';}
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const service   = urlParams.get('service') || localStorage.getItem('bookingService') || 'Plumber';
+  const urlParams=new URLSearchParams(window.location.search);
+  const service=urlParams.get('service')||localStorage.getItem('bookingService')||'Plumber';
 
-  const icons = { Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒' };
-  const bgs = { Plumber:'bg-blue',Electrician:'bg-yellow',Locksmith:'bg-orange','AC Repair':'bg-blue',Carpenter:'bg-purple',Painter:'bg-orange','Pest Control':'bg-red','Home Cleaning':'bg-teal','TV / Electronics Repair':'bg-purple','Water Purifier Service':'bg-teal','Appliance Repair':'bg-orange','Bathroom Renovation':'bg-blue','Packers & Movers':'bg-yellow','CCTV Installation':'bg-red' };
-
-  // Packages per service
-  const servicePackages = {
-    default: [
-      { id:'basic',    name:'Basic',    price:249, urgent:100, emergency:200, desc:'Quick fix for standard issues',    features:['Standard quality parts','1 professional','1 hour service','30-day warranty'] },
-      { id:'standard', name:'Standard', price:399, urgent:150, emergency:300, desc:'Most popular — thorough & reliable',features:['Quality parts & tools','1 senior professional','Up to 2 hours','60-day warranty','Follow-up check'], popular:true },
-      { id:'premium',  name:'Premium',  price:599, urgent:200, emergency:400, desc:'Best quality, top-rated workers',  features:['Premium parts & tools','Experienced specialist','Up to 3 hours','90-day warranty','2 free follow-ups','Priority support'] },
-    ],
-    'Home Cleaning': [
-      { id:'basic',    name:'Basic',    price:399, urgent:150, emergency:300, desc:'Essential cleaning for 1–2 rooms',  features:['Dusting & mopping','Bathroom cleaning','Kitchen surface wipe','1 cleaner, 2 hrs'] },
-      { id:'standard', name:'Deep Clean',price:699, urgent:200, emergency:400,desc:'Full home deep clean',             features:['Everything in Basic','Inside cupboards','Sofa & carpet vacuum','2 cleaners, 4 hrs','Eco-friendly products'], popular:true },
-      { id:'premium',  name:'Premium',  price:999, urgent:300, emergency:600, desc:'Top-to-bottom professional clean', features:['Everything in Deep Clean','Window cleaning','Balcony cleaning','Mattress vacuuming','3 cleaners, 6 hrs'] },
-    ],
-    'Pest Control': [
-      { id:'basic',    name:'Spray',    price:599, urgent:200, emergency:400, desc:'Chemical spray for common pests',   features:['1 BHK coverage','Cockroach & ant spray','1 professional','2-hour treatment'] },
-      { id:'standard', name:'Gel+Spray',price:999, urgent:300, emergency:600, desc:'Spray + gel treatment',           features:['2–3 BHK coverage','All pests treated','Gel & spray combo','3-month warranty'], popular:true },
-      { id:'premium',  name:'Complete', price:1499,urgent:400, emergency:800, desc:'Full home fumigation',            features:['Entire home coverage','All pests & rodents','Fumigation + gel','6-month warranty','Follow-up visit'] },
-    ],
-    'Bathroom Renovation': [
-      { id:'basic',    name:'Repair',   price:799, urgent:300, emergency:600, desc:'Fix leaks, taps & minor issues',   features:['Tap & pipe repair','Tile fixing','Drainage check','Up to 3 hrs'] },
-      { id:'standard', name:'Refresh',  price:1499,urgent:500, emergency:1000,desc:'Tile replacement & fitting',      features:['New tile installation','Shower fitting','Mirror & shelf fix','Up to 6 hrs'], popular:true },
-      { id:'premium',  name:'Full Reno',price:2999,urgent:800, emergency:1500,desc:'Complete bathroom makeover',      features:['Complete renovation','Premium fixtures','2 specialists','Multi-day work','6-month warranty'] },
-    ],
+  const SERVICE_CONFIG={
+    'Plumber':               {icon:'🔧',bg:'bg-blue',   base:349,urgent:150,emergency:300},
+    'Electrician':           {icon:'⚡',bg:'bg-yellow', base:299,urgent:150,emergency:300},
+    'Locksmith':             {icon:'🔑',bg:'bg-orange', base:249,urgent:100,emergency:200},
+    'AC Repair':             {icon:'❄️',bg:'bg-blue',   base:499,urgent:200,emergency:400},
+    'Carpenter':             {icon:'🪛',bg:'bg-purple', base:399,urgent:150,emergency:300},
+    'Painter':               {icon:'🖌️',bg:'bg-orange', base:549,urgent:200,emergency:400},
+    'Pest Control':          {icon:'🐛',bg:'bg-red',    base:799,urgent:300,emergency:600},
+    'Home Cleaning':         {icon:'🧹',bg:'bg-teal',   base:499,urgent:200,emergency:400},
+    'TV / Electronics Repair':{icon:'📺',bg:'bg-purple',base:349,urgent:150,emergency:300},
+    'Water Purifier Service':{icon:'🫧',bg:'bg-teal',   base:299,urgent:100,emergency:200},
+    'Appliance Repair':      {icon:'🔩',bg:'bg-orange', base:399,urgent:150,emergency:300},
+    'Bathroom Renovation':   {icon:'🛁',bg:'bg-blue',   base:999,urgent:400,emergency:800},
+    'Packers & Movers':      {icon:'📦',bg:'bg-yellow', base:1499,urgent:500,emergency:1000},
+    'CCTV Installation':     {icon:'🔒',bg:'bg-red',    base:699,urgent:300,emergency:600},
   };
 
-  const pkgs = servicePackages[service] || servicePackages.default;
-  let selectedPkgId   = null;
-  let selectedUrgencyVal = 'normal';
+  const config=SERVICE_CONFIG[service]||SERVICE_CONFIG['Plumber'];
 
-  // Subscription discount
-  const subPlan = localStorage.getItem('subscriptionPlan');
-  const subExp  = localStorage.getItem('subscriptionExpiry');
-  const subDiscount = (subPlan && subExp && new Date(subExp) > new Date())
-    ? (subPlan==='premium'?0.30 : subPlan==='standard'?0.20 : 0.10)
-    : 0;
-  const subDiscountLabels = { premium:'30%', standard:'20%', basic:'10%' };
-
-  if (subDiscount > 0) {
-    document.getElementById('subBanner').classList.add('show');
-    document.getElementById('subDiscountText').innerText = subDiscountLabels[subPlan] + ' off as ' + subPlan.charAt(0).toUpperCase()+subPlan.slice(1) + ' member';
-    document.getElementById('subDiscountBadge').innerText = '−' + subDiscountLabels[subPlan];
-  }
-
-  document.getElementById('svcIcon').innerText = icons[service] || '🔧';
-  document.getElementById('svcIconBox').className = 'svc-icon-box ' + (bgs[service]||'bg-green');
+  document.getElementById('svcIcon').innerText   = config.icon;
+  document.getElementById('svcIconBox').className = 'svc-icon-box '+config.bg;
   document.getElementById('svcName').innerText   = service;
   document.getElementById('navTitle').innerText  = service;
+  document.getElementById('price-normal').innerText    = '₹'+config.base;
+  document.getElementById('price-urgent').innerText    = '₹'+(config.base+config.urgent);
+  document.getElementById('price-emergency').innerText = '₹'+(config.base+config.emergency);
 
-  // Set min date to today
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('bookDate').min = today;
-
-  // Render packages
-  function renderPkgs() {
-    document.getElementById('pkgList').innerHTML = pkgs.map(p => `
-      <div class="pkg-card${p.popular?' popular':''}" id="pkg-${p.id}" onclick="selectPkg('${p.id}')">
-        <div class="pkg-head">
-          <div class="pkg-name">${p.name}</div>
-          <div class="pkg-price">₹${p.price}</div>
-        </div>
-        <div class="pkg-desc">${p.desc}</div>
-        <div class="pkg-features">
-          ${p.features.map(f=>`<div class="pkg-feat">${f}</div>`).join('')}
-        </div>
-        <div class="pkg-time">⏱ Urgency: +₹${p.urgent} (urgent) / +₹${p.emergency} (emergency)</div>
-      </div>`).join('');
-    // Auto-select popular
-    const pop = pkgs.find(p=>p.popular) || pkgs[0];
-    selectPkg(pop.id, false);
+  // Subscription discount (optional — doesn't block booking)
+  const sp=localStorage.getItem('subscriptionPlan'),se=localStorage.getItem('subscriptionExpiry');
+  const subDiscount=(sp&&se&&new Date(se)>new Date())?(sp==='premium'?0.30:sp==='standard'?0.20:0.10):0;
+  const subDiscLabels={premium:'30%',standard:'20%',basic:'10%'};
+  if(subDiscount>0){
+    document.getElementById('proDiscountBanner').classList.add('show');
+    document.getElementById('proDiscountLabel').innerText='Saving '+subDiscLabels[sp]+' as '+sp.charAt(0).toUpperCase()+sp.slice(1)+' member';
+    document.getElementById('proDiscountBadge').innerText='−'+subDiscLabels[sp];
   }
 
-  function selectPkg(id, scroll=true) {
-    selectedPkgId = id;
-    document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
-    document.getElementById('pkg-'+id).classList.add('selected');
-    updatePrice();
-    if (scroll) document.getElementById('pkg-'+id).scrollIntoView({behavior:'smooth',block:'nearest'});
-  }
+  let selectedUrgency='normal';
 
-  function selectUrgency(u) {
-    selectedUrgencyVal = u;
-    document.querySelectorAll('.urg-card').forEach(c => { c.className='urg-card'; });
+  function selectUrgency(u){
+    selectedUrgency=u;
+    document.querySelectorAll('.urg-card').forEach(c=>c.className='urg-card');
     document.getElementById('urg-'+u).classList.add('sel-'+u);
     updatePrice();
   }
 
-  function updatePrice() {
-    const pkg = pkgs.find(p=>p.id===selectedPkgId);
-    if (!pkg) return;
-    const urgExtra = selectedUrgencyVal==='urgent' ? pkg.urgent : selectedUrgencyVal==='emergency' ? pkg.emergency : 0;
-    const subBefore = pkg.price + urgExtra + 49;
-    const discount  = Math.round(subBefore * subDiscount);
-    const total     = subBefore - discount;
-
-    document.getElementById('urgentExtra').innerText    = '+₹' + pkg.urgent;
-    document.getElementById('emergencyExtra').innerText = '+₹' + pkg.emergency;
-    document.getElementById('sumBase').innerText    = '₹' + pkg.price;
-    document.getElementById('sumUrgency').innerText = urgExtra ? '+₹'+urgExtra : '₹0';
-    if (discount > 0) {
-      document.getElementById('discountRow').style.display  = 'flex';
-      document.getElementById('discountLabel').innerText    = subPlan.charAt(0).toUpperCase()+subPlan.slice(1)+' Discount';
-      document.getElementById('discountAmt').innerText      = '−₹'+discount;
+  function updatePrice(){
+    const urgExtra=selectedUrgency==='urgent'?config.urgent:selectedUrgency==='emergency'?config.emergency:0;
+    const beforeDiscount=config.base+urgExtra+49;
+    const discount=Math.round(beforeDiscount*subDiscount);
+    const total=beforeDiscount-discount;
+    document.getElementById('sumBase').innerText='₹'+config.base;
+    document.getElementById('sumUrgency').innerText=urgExtra?'+₹'+urgExtra:'₹0';
+    if(discount>0){
+      document.getElementById('discountRow').style.display='flex';
+      document.getElementById('discountLabel').innerText=(sp.charAt(0).toUpperCase()+sp.slice(1))+' Discount';
+      document.getElementById('discountAmt').innerText='−₹'+discount;
     }
-    document.getElementById('sumTotal').innerText = '₹' + total;
-    document.getElementById('ctaPkg').innerText   = pkg.name + ' Package';
-    document.getElementById('ctaPrice').innerText = '₹' + total;
+    document.getElementById('sumTotal').innerText='₹'+total;
+    document.getElementById('ctaPrice').innerText='₹'+total;
   }
 
-  // GPS
-  function getGPS() {
-    const btn=document.getElementById('gpsBtn'), st=document.getElementById('gpsStatus');
-    if (!navigator.geolocation) { st.innerText='❌ GPS not supported'; return; }
-    btn.innerText='⏳'; st.innerText='📡 Detecting...';
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      try {
+  updatePrice();
+
+  function getGPS(){
+    const btn=document.getElementById('gpsBtn'),st=document.getElementById('gpsStatus');
+    if(!navigator.geolocation){st.innerText='❌ GPS not supported';return;}
+    btn.innerText='⏳';st.innerText='📡 Detecting your location...';
+    navigator.geolocation.getCurrentPosition(async(pos)=>{
+      try{
         const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
         const d=await r.json();
-        document.getElementById('address').value = d.display_name || (pos.coords.latitude.toFixed(4)+', '+pos.coords.longitude.toFixed(4));
+        document.getElementById('address').value=d.display_name||(pos.coords.latitude.toFixed(4)+', '+pos.coords.longitude.toFixed(4));
         st.innerText='✅ Location detected!';
         clearField('address','errAddress');
-      } catch(e) { document.getElementById('address').value = pos.coords.latitude.toFixed(5)+', '+pos.coords.longitude.toFixed(5); st.innerText='✅ Coordinates saved'; }
+      }catch(e){document.getElementById('address').value=pos.coords.latitude.toFixed(5)+', '+pos.coords.longitude.toFixed(5);st.innerText='✅ Coordinates saved';}
       btn.innerText='📍';
-    }, ()=>{ btn.innerText='📍'; st.style.color='#e74c3c'; st.innerText='❌ Location denied'; }, {timeout:10000,enableHighAccuracy:true});
+    },(err)=>{btn.innerText='📍';st.style.color='#e74c3c';st.innerText='❌ Location denied. Please enter manually.';},{timeout:10000,enableHighAccuracy:true});
   }
 
-  function clearField(id,errId) { document.getElementById(id).classList.remove('err'); document.getElementById(errId).style.display='none'; }
-
-  function findWorker() {
-    const problem = document.getElementById('problem').value.trim();
-    const address = document.getElementById('address').value.trim();
-    const pkg     = pkgs.find(p=>p.id===selectedPkgId);
-    let ok = true;
-    if (!pkg)    { alert('Please select a package'); return; }
-    if (!problem){ document.getElementById('problem').classList.add('err'); document.getElementById('errProblem').style.display='block'; ok=false; }
-    if (!address){ document.getElementById('address').classList.add('err'); document.getElementById('errAddress').style.display='block'; ok=false; }
-    if (!ok) return;
-
-    const urgExtra   = selectedUrgencyVal==='urgent' ? pkg.urgent : selectedUrgencyVal==='emergency' ? pkg.emergency : 0;
-    const subBefore  = pkg.price + urgExtra + 49;
-    const discount   = Math.round(subBefore * subDiscount);
-    const finalAmt   = subBefore - discount;
-
-    const bookDate = document.getElementById('bookDate').value;
-    const bookTime = document.getElementById('bookTime').value;
-
-    localStorage.setItem('bookingService',  service);
-    localStorage.setItem('bookingProblem',  problem);
-    localStorage.setItem('bookingAddress',  address);
-    localStorage.setItem('bookingUrgency',  selectedUrgencyVal);
-    localStorage.setItem('bookingPackage',  pkg.name);
-    localStorage.setItem('bookingAmount',   finalAmt);
-    localStorage.setItem('bookingIcon',     icons[service]||'🔧');
-    if (bookDate) {
-      localStorage.setItem('bookingDate', bookDate);
-      localStorage.setItem('bookingTime', bookTime);
-    } else {
-      localStorage.removeItem('bookingDate');
-      localStorage.removeItem('bookingTime');
-    }
-
-    window.location.href = 'finding.html';
+  function clearField(id,errId){
+    document.getElementById(id).classList.remove('err');
+    document.getElementById(errId).style.display='none';
   }
 
-  renderPkgs();
+  function findWorker(){
+    const problem=document.getElementById('problem').value.trim();
+    const address=document.getElementById('address').value.trim();
+    let ok=true;
+    if(!problem){document.getElementById('problem').classList.add('err');document.getElementById('errProblem').style.display='block';ok=false;}
+    if(!address){document.getElementById('address').classList.add('err');document.getElementById('errAddress').style.display='block';ok=false;}
+    if(!ok)return;
+
+    const urgExtra=selectedUrgency==='urgent'?config.urgent:selectedUrgency==='emergency'?config.emergency:0;
+    const beforeDiscount=config.base+urgExtra+49;
+    const discount=Math.round(beforeDiscount*subDiscount);
+    const finalAmount=beforeDiscount-discount;
+
+    localStorage.setItem('bookingService', service);
+    localStorage.setItem('bookingProblem', problem);
+    localStorage.setItem('bookingAddress', address);
+    localStorage.setItem('bookingUrgency', selectedUrgency);
+    localStorage.setItem('bookingAmount',  finalAmount);
+    localStorage.setItem('bookingIcon',    config.icon);
+    window.location.href='finding.html';
+  }
 </script>
 </body>
 </html>

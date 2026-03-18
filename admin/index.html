@@ -1,77 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>ZipFix Admin — Dashboard</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
-
-  /* Navbar */
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#111; border-bottom:1px solid #222; position:sticky; top:0; z-index:100; }
-  .nav-brand .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
-  .nav-brand .tag  { font-size:11px; color:#aaa; margin-top:2px; }
-  .logout-btn { padding:10px 20px; background-color:#f0f0f0; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
-  .logout-btn:hover { background-color:#e74c3c; color:#fff; }
-
-  .content { padding:25px; }
-
-  /* Welcome */
-  .welcome { margin-bottom:22px; }
-  .welcome h2 { font-size:24px; font-weight:900; }
-  .welcome h2 span { color:#00b894; }
-  .welcome p { font-size:13px; color:#888; margin-top:5px; }
-
-  /* Stats */
-  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
-  .stat-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px 16px; }
-  .stat-card.green  { background:linear-gradient(135deg,#e8f8f4,#d4f2ea); border-color:#00b89433; }
-  .stat-card.orange { background:linear-gradient(135deg,#fff8e6,#ffecc2); border-color:#e67e0033; }
-  .stat-card.blue   { background:linear-gradient(135deg,#eef4ff,#dce8ff); border-color:#3b82f633; }
-  .stat-card.purple { background:linear-gradient(135deg,#f5f0ff,#e8dcff); border-color:#8b5cf633; }
-  .stat-label { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:1px; font-weight:700; margin-bottom:8px; }
-  .stat-val   { font-size:30px; font-weight:900; color:#00b894; }
-  .stat-card.orange .stat-val { color:#e67e00; }
-  .stat-card.blue   .stat-val { color:#3b82f6; }
-  .stat-card.purple .stat-val { color:#8b5cf6; }
-  .stat-sub { font-size:12px; color:#888; margin-top:4px; }
-
-  /* Section title */
-  .section-title { font-size:16px; font-weight:800; color:#f0f0f0; margin-bottom:12px; }
-
-  /* Quick action nav cards */
-  .nav-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
-  .nav-card { background-color:#111; border:2px solid #222; border-radius:20px; padding:20px 16px; cursor:pointer; transition:all 0.2s; }
-  .nav-card:hover { border-color:#00b894; background-color:#0d2b24; transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,184,148,0.12); }
-  .nav-card .nc-icon { font-size:30px; margin-bottom:8px; }
-  .nav-card h4 { font-size:15px; font-weight:800; color:#f0f0f0; margin-bottom:4px; }
-  .nav-card p  { font-size:12px; color:#888; }
-  .nc-badge { display:inline-flex; align-items:center; margin-top:8px; background-color:#00b894; color:#fff; border-radius:50px; padding:3px 10px; font-size:11px; font-weight:900; }
-  .nc-badge.orange { background-color:#e67e00; }
-  .nc-badge.red    { background-color:#e74c3c; }
-  .nc-badge.blue   { background-color:#3b82f6; }
-
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100;}
+  .nav-brand .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .nav-brand .tag{font-size:11px;color:#aaa;margin-top:2px;}
+  .logout-btn{padding:9px 18px;background:#f5f5f5;color:#888;font-size:13px;font-weight:700;border:none;border-radius:50px;cursor:pointer;transition:all 0.2s;}
+  .logout-btn:hover{background:#e74c3c;color:#fff;}
+  .content{padding:22px;}
+  .welcome{margin-bottom:20px;}
+  .welcome h2{font-size:22px;font-weight:900;}
+  .welcome h2 span{color:#00b894;}
+  .welcome p{font-size:13px;color:#888;margin-top:4px;}
+  /* Stats grid */
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  .stat-card{border-radius:18px;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .stat-card.green{background:linear-gradient(135deg,#e8f8f4,#d4f2ea);border:1px solid #00b89422;}
+  .stat-card.orange{background:linear-gradient(135deg,#fff8e6,#ffecc2);border:1px solid #e67e0022;}
+  .stat-card.blue{background:linear-gradient(135deg,#eef4ff,#dce8ff);border:1px solid #3b82f622;}
+  .stat-card.purple{background:linear-gradient(135deg,#f5f0ff,#e8dcff);border:1px solid #8b5cf622;}
+  .stat-card.teal{background:linear-gradient(135deg,#e8fff8,#ccfff0);border:1px solid #00b89422;}
+  .stat-card.gold{background:linear-gradient(135deg,#fffce6,#fff3cc);border:1px solid #f59e0b22;}
+  .stat-label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:6px;}
+  .stat-val{font-size:28px;font-weight:900;color:#00b894;}
+  .stat-card.orange .stat-val{color:#e67e00;}
+  .stat-card.blue .stat-val{color:#3b82f6;}
+  .stat-card.purple .stat-val{color:#8b5cf6;}
+  .stat-card.teal .stat-val{color:#00b894;}
+  .stat-card.gold .stat-val{color:#d97706;}
+  .stat-sub{font-size:12px;color:#888;margin-top:4px;}
+  /* Nav cards */
+  .section-title{font-size:15px;font-weight:800;margin-bottom:12px;}
+  .nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  .nav-card{background:#fff;border:2px solid #e0e0e0;border-radius:18px;padding:18px 16px;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+  .nav-card:hover{border-color:#00b894;background:#f0fdf8;transform:translateY(-2px);}
+  .nc-icon{font-size:28px;margin-bottom:8px;}
+  .nav-card h4{font-size:14px;font-weight:800;margin-bottom:3px;}
+  .nav-card p{font-size:12px;color:#888;}
+  .nc-badge{display:inline-flex;align-items:center;margin-top:8px;border-radius:50px;padding:3px 10px;font-size:11px;font-weight:900;color:#fff;}
+  .nc-badge.green{background:#00b894;}
+  .nc-badge.orange{background:#e67e00;}
+  .nc-badge.red{background:#e74c3c;}
+  .nc-badge.blue{background:#3b82f6;}
+  .nc-badge.purple{background:#8b5cf6;}
+  .nc-badge.gold{background:#d97706;}
   /* Recent jobs */
-  .job-item { background-color:#111; border:1px solid #222; border-radius:16px; padding:16px 18px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; }
-  .ji-left h4 { font-size:15px; font-weight:800; }
-  .ji-left p  { font-size:12px; color:#888; margin-top:3px; }
-  .ji-right { text-align:right; }
-  .ji-amount { font-size:16px; font-weight:900; color:#00b894; }
-  .ji-status { font-size:11px; padding:4px 10px; border-radius:20px; margin-top:4px; display:inline-block; font-weight:700; }
-  .s-completed { background:#e8f8f4; color:#00b894; }
-  .s-pending   { background:#fff8e6; color:#e67e00; }
-  .s-cancelled { background:#fff0ee; color:#e74c3c; }
-  .s-accepted  { background:#eef4ff; color:#3b82f6; }
-
-  .empty-note { text-align:center; padding:30px; color:#aaa; font-size:14px; }
-  .loading-note { text-align:center; padding:30px; color:#aaa; font-size:14px; }
-  .spacer { height:30px; }
-
+  .job-item{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+  .ji-left h4{font-size:14px;font-weight:800;}
+  .ji-left p{font-size:12px;color:#888;margin-top:3px;}
+  .ji-right{text-align:right;}
+  .ji-amount{font-size:15px;font-weight:900;color:#00b894;}
+  .ji-status{font-size:11px;padding:3px 10px;border-radius:20px;margin-top:4px;display:inline-block;font-weight:700;}
+  .s-completed{background:#e8f8f4;color:#00b894;}
+  .s-pending{background:#fff8e6;color:#e67e00;}
+  .s-cancelled{background:#fff0ee;color:#e74c3c;}
+  .s-accepted{background:#eef4ff;color:#3b82f6;}
+  .empty-note{text-align:center;padding:28px;color:#aaa;font-size:14px;}
+  .loading-note{text-align:center;padding:28px;color:#aaa;font-size:14px;}
+  .spacer{height:30px;}
   /* Toast */
-  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background-color:#00b894; color:#fff; padding:14px 24px; border-radius:50px; font-size:14px; font-weight:700; z-index:9999; display:none; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#00b894;color:#fff;padding:12px 22px;border-radius:50px;font-size:14px;font-weight:700;z-index:9999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <div class="toast" id="toast"></div>
@@ -85,7 +80,6 @@
 </nav>
 
 <div class="content">
-
   <div class="welcome">
     <h2>Admin <span>Dashboard</span> 📊</h2>
     <p id="lastRefresh">Loading live data...</p>
@@ -112,6 +106,16 @@
       <div class="stat-val" id="totalRevenue">₹—</div>
       <div class="stat-sub">Completed jobs</div>
     </div>
+    <div class="stat-card purple">
+      <div class="stat-label">Subscriptions</div>
+      <div class="stat-val" id="totalSubs">—</div>
+      <div class="stat-sub" id="subRevenue">Loading...</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-label">Pending Subs</div>
+      <div class="stat-val" id="pendingSubs">—</div>
+      <div class="stat-sub">Need activation</div>
+    </div>
   </div>
 
   <div class="section-title">Quick Actions</div>
@@ -134,11 +138,23 @@
       <p>Registered users</p>
       <div class="nc-badge blue" id="badgeCustomers">— Users</div>
     </div>
+    <div class="nav-card" onclick="window.location.href='subscriptions.html'">
+      <div class="nc-icon">⭐</div>
+      <h4>Subscriptions</h4>
+      <p>Plans & billing</p>
+      <div class="nc-badge purple" id="badgeSubs">— Active</div>
+    </div>
+    <div class="nav-card" onclick="window.location.href='complaints.html'">
+      <div class="nc-icon">🔵</div>
+      <h4>Live Jobs</h4>
+      <p>Currently in progress</p>
+      <div class="nc-badge green" id="badgeLive">— Live</div>
+    </div>
     <div class="nav-card" onclick="refreshDashboard()">
       <div class="nc-icon">🔄</div>
       <h4>Refresh</h4>
-      <p>Reload live data</p>
-      <div class="nc-badge" id="badgeLive">— Live Jobs</div>
+      <p>Reload all data</p>
+      <div class="nc-badge green">Live</div>
     </div>
   </div>
 
@@ -149,99 +165,80 @@
 </div>
 
 <script>
-  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const SUPABASE_URL='https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  const SESSION_MS=8*60*60*1000;
+  if(!localStorage.getItem('adminLoggedIn')){window.location.href='login.html';}
+  if(Date.now()-parseInt(localStorage.getItem('adminLoginTime')||0)>SESSION_MS){localStorage.removeItem('adminLoggedIn');window.location.href='login.html';}
 
-  const SESSION_MS = 8 * 60 * 60 * 1000;
-  if (!localStorage.getItem('adminLoggedIn')) { window.location.href = 'login.html'; }
-  if (Date.now() - parseInt(localStorage.getItem('adminLoginTime')||0) > SESSION_MS) {
-    localStorage.removeItem('adminLoggedIn'); window.location.href = 'login.html';
-  }
+  const icons={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
 
-  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
-
-  async function loadDashboard() {
-    try {
+  async function loadDashboard(){
+    try{
       // Workers
-      const { data: workers } = await db.from('workers').select('status');
-      if (workers) {
-        const total    = workers.length;
-        const approved = workers.filter(w => w.status === 'approved').length;
-        const pending  = workers.filter(w => w.status === 'pending').length;
-        document.getElementById('totalWorkers').innerText  = total;
-        document.getElementById('subWorkers').innerText    = approved + ' approved';
-        document.getElementById('pendingWorkers').innerText = pending;
-        document.getElementById('badgePending').innerText  = pending + ' Pending';
+      const{data:workers}=await db.from('workers').select('status');
+      if(workers){
+        const total=workers.length,approved=workers.filter(w=>w.status==='approved').length,pending=workers.filter(w=>w.status==='pending').length;
+        document.getElementById('totalWorkers').innerText=total;
+        document.getElementById('subWorkers').innerText=approved+' approved';
+        document.getElementById('pendingWorkers').innerText=pending;
+        document.getElementById('badgePending').innerText=pending+' Pending';
       }
-
       // Jobs
-      const { data: jobs } = await db.from('jobs').select('*').order('created_at', { ascending:false }).limit(100);
-      if (jobs) {
-        const done      = jobs.filter(j => j.status === 'completed');
-        const live      = jobs.filter(j => j.status === 'accepted' || j.status === 'in_progress');
-        const cancelled = jobs.filter(j => j.status === 'cancelled');
-        const revenue   = done.reduce((s, j) => s + (j.amount || 0), 0);
-        document.getElementById('totalJobs').innerText    = jobs.length;
-        document.getElementById('subJobs').innerText      = done.length + ' completed';
-        document.getElementById('totalRevenue').innerText = '₹' + revenue.toLocaleString('en-IN');
-        document.getElementById('badgeLive').innerText    = live.length + ' Live';
-        document.getElementById('badgeCancelled').innerText = cancelled.length + ' Cancelled';
-
-        // Recent jobs
-        const el = document.getElementById('recentJobsList');
-        if (!jobs.length) { el.innerHTML = '<div class="empty-note">No jobs yet</div>'; }
-        else {
-          el.innerHTML = jobs.slice(0, 12).map(j => {
-            const ico  = icons[j.service] || '🔧';
-            const d    = j.created_at ? new Date(j.created_at).toLocaleString('en-IN', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) : '—';
-            const sc   = 's-' + (j.status || 'pending');
+      const{data:jobs}=await db.from('jobs').select('*').order('created_at',{ascending:false}).limit(100);
+      if(jobs){
+        const done=jobs.filter(j=>j.status==='completed');
+        const live=jobs.filter(j=>j.status==='accepted'||j.status==='in_progress');
+        const cancelled=jobs.filter(j=>j.status==='cancelled');
+        const revenue=done.reduce((s,j)=>s+(j.amount||0),0);
+        document.getElementById('totalJobs').innerText=jobs.length;
+        document.getElementById('subJobs').innerText=done.length+' completed';
+        document.getElementById('totalRevenue').innerText='₹'+revenue.toLocaleString('en-IN');
+        document.getElementById('badgeLive').innerText=live.length+' Live';
+        document.getElementById('badgeCancelled').innerText=cancelled.length+' Cancelled';
+        // Recent jobs list
+        const el=document.getElementById('recentJobsList');
+        if(!jobs.length){el.innerHTML='<div class="empty-note">No jobs yet</div>';}
+        else{
+          el.innerHTML=jobs.slice(0,12).map(j=>{
+            const ico=icons[j.service]||'🔧';
+            const d=j.created_at?new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+            const sc='s-'+(j.status||'pending');
             return `<div class="job-item">
-              <div class="ji-left">
-                <h4>${ico} ${j.service || '—'}</h4>
-                <p>${j.customer_name || '—'} · ${d}</p>
-              </div>
-              <div class="ji-right">
-                <div class="ji-amount">₹${j.amount || 0}</div>
-                <div class="ji-status ${sc}">${j.status || '—'}</div>
-              </div>
+              <div class="ji-left"><h4>${ico} ${j.service||'—'}</h4><p>${j.customer_name||'—'} · ${d}</p></div>
+              <div class="ji-right"><div class="ji-amount">₹${j.amount||0}</div><div class="ji-status ${sc}">${j.status||'—'}</div></div>
             </div>`;
           }).join('');
         }
       }
-
       // Customers
-      const { data: users } = await db.from('users').select('id');
-      if (users) document.getElementById('badgeCustomers').innerText = users.length + ' Users';
+      const{data:users}=await db.from('users').select('id');
+      if(users)document.getElementById('badgeCustomers').innerText=users.length+' Users';
+      // Subscriptions
+      try{
+        const{data:subs}=await db.from('subscriptions').select('*');
+        if(subs){
+          const active=subs.filter(s=>s.status==='active'&&new Date(s.expires_at)>new Date());
+          const pending=subs.filter(s=>s.status==='pending');
+          const subRev=subs.filter(s=>s.status==='active').reduce((t,s)=>t+(s.amount||0),0);
+          document.getElementById('totalSubs').innerText=active.length;
+          document.getElementById('pendingSubs').innerText=pending.length;
+          document.getElementById('subRevenue').innerText='₹'+subRev.toLocaleString('en-IN')+' revenue';
+          document.getElementById('badgeSubs').innerText=active.length+' Active';
+        }
+      }catch(e){document.getElementById('totalSubs').innerText='—';document.getElementById('pendingSubs').innerText='—';}
 
-      document.getElementById('lastRefresh').innerText = 'Last updated: ' + new Date().toLocaleTimeString('en-IN');
-    } catch (e) {
-      document.getElementById('lastRefresh').innerText = '⚠️ Error: ' + e.message;
-    }
+      document.getElementById('lastRefresh').innerText='Last updated: '+new Date().toLocaleTimeString('en-IN');
+    }catch(e){document.getElementById('lastRefresh').innerText='⚠️ Error: '+e.message;}
   }
 
-  function refreshDashboard() {
-    document.getElementById('lastRefresh').innerText = 'Refreshing...';
-    loadDashboard();
-    showToast('🔄 Data refreshed');
-  }
-
-  function adminLogout() {
-    if (confirm('Logout from admin panel?')) {
-      localStorage.removeItem('adminLoggedIn');
-      localStorage.removeItem('adminLoginTime');
-      window.location.href = 'login.html';
-    }
-  }
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.innerText = msg; t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 2500);
-  }
+  function refreshDashboard(){document.getElementById('lastRefresh').innerText='Refreshing...';loadDashboard();showToast('🔄 Data refreshed');}
+  function adminLogout(){if(confirm('Logout from admin panel?')){localStorage.removeItem('adminLoggedIn');localStorage.removeItem('adminLoginTime');window.location.href='login.html';}}
+  function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2500);}
 
   loadDashboard();
-  setInterval(loadDashboard, 30000);
+  setInterval(loadDashboard,30000);
 </script>
 </body>
 </html>

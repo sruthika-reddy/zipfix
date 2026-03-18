@@ -1,160 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix Worker — Earnings</title>
-</head>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>ZipFix Partner — Earnings</title></head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
-  .navbar { display:flex; align-items:center; gap:15px; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
-  .back { font-size:22px; color:#00b894; cursor:pointer; }
-  .navbar h3 { font-size:20px; font-weight:800; }
-  .content { padding:25px; }
-  .total-card { background:linear-gradient(135deg,#0d2b24,#071a15); border:1px solid #00b89433; border-radius:25px; padding:30px; text-align:center; margin-bottom:20px; }
-  .total-card .lbl { font-size:13px; color:#888; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
-  .total-amt { font-size:52px; font-weight:900; color:#00b894; margin-bottom:5px; }
-  .total-note { font-size:13px; color:#888; }
-  .period-tabs { display:flex; gap:10px; margin-bottom:20px; }
-  .tab { flex:1; padding:12px; background-color:#111; border:2px solid #222; border-radius:12px; text-align:center; cursor:pointer; font-size:14px; font-weight:700; color:#888; transition:all 0.2s; }
-  .tab.active { border-color:#00b894; color:#00b894; background-color:#0d2b24; }
-  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
-  .stat-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:20px; text-align:center; }
-  .stat-card h3 { font-size:24px; font-weight:900; color:#00b894; }
-  .stat-card p  { font-size:12px; color:#888; margin-top:5px; }
-  .section-title { font-size:17px; font-weight:800; margin-bottom:15px; }
-  .job-item { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 20px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; }
-  .job-left h4 { font-size:16px; font-weight:800; }
-  .job-left p  { font-size:13px; color:#888; margin-top:4px; }
-  .job-right h4 { font-size:18px; font-weight:900; color:#00b894; text-align:right; }
-  .job-right p  { font-size:12px; color:#00b894; margin-top:4px; text-align:right; }
-  .empty-state { text-align:center; padding:40px 20px; color:#aaa; font-size:14px; }
-  .loading { text-align:center; padding:30px; color:#aaa; font-size:14px; }
-  .btn-withdraw { width:100%; padding:20px; background-color:#00b894; color:#fff; font-size:18px; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin:10px 0 40px; transition:background-color 0.2s; }
-  .btn-withdraw:hover { background-color:#009e7f; }
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#111; display:flex; justify-content:space-around; padding:15px 0 20px; border-top:1px solid #222; }
-  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:3px; }
-  .nav-item.active { color:#00b894; }
-  .nav-icon { font-size:22px; }
-  .spacer { height:80px; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .back{font-size:22px;color:#00b894;cursor:pointer;}
+  .navbar h3{font-size:18px;font-weight:800;}
+  .content{padding:20px;}
+  .total-card{background:linear-gradient(135deg,#00b894,#009e7f);border-radius:22px;padding:28px 20px;text-align:center;margin-bottom:18px;}
+  .total-card .lbl{font-size:12px;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .total-amt{font-size:48px;font-weight:900;color:#fff;margin-bottom:4px;}
+  .total-note{font-size:13px;color:rgba(255,255,255,0.7);}
+  .period-tabs{display:flex;gap:8px;margin-bottom:18px;}
+  .tab{flex:1;padding:12px;background:#fff;border:2px solid #e0e0e0;border-radius:12px;text-align:center;cursor:pointer;font-size:13px;font-weight:700;color:#888;transition:all 0.2s;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+  .tab.active{border-color:#00b894;color:#00b894;background:#e8f8f4;}
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+  .stat-card{background:#fff;border-radius:16px;padding:18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .stat-card h3{font-size:22px;font-weight:900;color:#00b894;}
+  .stat-card p{font-size:12px;color:#888;margin-top:5px;}
+  .section-title{font-size:16px;font-weight:800;margin-bottom:14px;}
+  .job-item{background:#fff;border-radius:16px;padding:16px 18px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+  .job-left h4{font-size:15px;font-weight:800;}
+  .job-left p{font-size:12px;color:#888;margin-top:3px;}
+  .job-right h4{font-size:17px;font-weight:900;color:#00b894;text-align:right;}
+  .job-right p{font-size:11px;color:#00b894;margin-top:3px;text-align:right;}
+  .empty-state{text-align:center;padding:36px 16px;color:#aaa;font-size:14px;}
+  .loading{text-align:center;padding:28px;color:#aaa;font-size:14px;}
+  .btn-withdraw{width:100%;padding:18px;background:#00b894;color:#fff;font-size:17px;font-weight:900;border:none;border-radius:14px;cursor:pointer;margin:10px 0 36px;transition:background 0.2s;}
+  .btn-withdraw:hover{background:#009e7f;}
+  .spacer{height:80px;}
+  .bottom-nav{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:12px 0 16px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);}
+  .nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:10px;color:#aaa;gap:3px;}
+  .nav-item.active{color:#00b894;}
+  .nav-icon{font-size:22px;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <nav class="navbar">
   <div class="back" onclick="window.location.href='dashboard.html'">←</div>
   <h3>My Earnings 💰</h3>
 </nav>
-
 <div class="content">
   <div class="total-card">
     <div class="lbl">Total Earnings — This Month</div>
     <div class="total-amt" id="monthTotal">₹—</div>
     <div class="total-note" id="monthNote">Loading...</div>
   </div>
-
   <div class="period-tabs">
     <div class="tab active" onclick="setPeriod('today',this)">Today</div>
-    <div class="tab"        onclick="setPeriod('week',this)">This Week</div>
-    <div class="tab"        onclick="setPeriod('month',this)">This Month</div>
+    <div class="tab" onclick="setPeriod('week',this)">This Week</div>
+    <div class="tab" onclick="setPeriod('month',this)">This Month</div>
   </div>
-
   <div class="stats-grid">
     <div class="stat-card"><h3 id="pEarnings">₹—</h3><p>Earnings</p></div>
     <div class="stat-card"><h3 id="pJobs">—</h3><p>Jobs Done</p></div>
     <div class="stat-card"><h3 id="pRating">—</h3><p>Avg Rating</p></div>
     <div class="stat-card"><h3 id="pCompletion">—</h3><p>Completion</p></div>
   </div>
-
   <div class="section-title">Recent Jobs</div>
   <div id="jobList"><div class="loading">⏳ Loading...</div></div>
   <button class="btn-withdraw" onclick="withdraw()">💸 Withdraw Earnings</button>
   <div class="spacer"></div>
 </div>
-
 <nav class="bottom-nav">
   <div class="nav-item" onclick="window.location.href='dashboard.html'"><div class="nav-icon">🏠</div><div>Home</div></div>
   <div class="nav-item active"><div class="nav-icon">💰</div><div>Earnings</div></div>
   <div class="nav-item" onclick="logout()"><div class="nav-icon">🚪</div><div>Logout</div></div>
 </nav>
-
 <script>
-  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  const workerId = localStorage.getItem('workerId');
-  if (!workerId || !localStorage.getItem('workerName')) { window.location.href = 'login.html'; }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
-
-  const skillIcons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️' };
-  let allJobs = [];
-
-  function dateBound(period) {
-    const n = new Date();
-    if (period==='today') return new Date(n.getFullYear(),n.getMonth(),n.getDate()).toISOString();
-    if (period==='week')  { const d=new Date(n); d.setDate(n.getDate()-7); return d.toISOString(); }
-    return new Date(n.getFullYear(),n.getMonth(),1).toISOString();
-  }
-
-  async function loadJobs() {
-    try {
-      const { data } = await db.from('jobs').select('*').eq('worker_id',workerId).eq('status','completed').order('created_at',{ascending:false}).limit(50);
-      allJobs = data || [];
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  const workerId=localStorage.getItem('workerId');
+  if(!workerId||!localStorage.getItem('workerName'))window.location.href='login.html';
+  const sIcons={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
+  let allJobs=[];
+  function dateBound(p){const n=new Date();if(p==='today')return new Date(n.getFullYear(),n.getMonth(),n.getDate()).toISOString();if(p==='week'){const d=new Date(n);d.setDate(n.getDate()-7);return d.toISOString();}return new Date(n.getFullYear(),n.getMonth(),1).toISOString();}
+  async function loadJobs(){
+    try{
+      const{data}=await db.from('jobs').select('*').eq('worker_id',workerId).eq('status','completed').order('created_at',{ascending:false}).limit(50);
+      allJobs=data||[];
       renderPeriod('today');
-      // month total
-      const from = dateBound('month');
-      const mJobs = allJobs.filter(j=>j.created_at>=from);
-      document.getElementById('monthTotal').innerText = '₹' + mJobs.reduce((s,j)=>s+(j.amount||0),0).toLocaleString('en-IN');
-      document.getElementById('monthNote').innerText  = mJobs.length + ' jobs this month';
-    } catch(e) { document.getElementById('jobList').innerHTML = '<div class="empty-state">⚠️ Could not load jobs</div>'; }
+      const from=dateBound('month');
+      const mJobs=allJobs.filter(j=>j.created_at>=from);
+      document.getElementById('monthTotal').innerText='₹'+mJobs.reduce((s,j)=>s+(j.amount||0),0).toLocaleString('en-IN');
+      document.getElementById('monthNote').innerText=mJobs.length+' jobs this month';
+    }catch(e){document.getElementById('jobList').innerHTML='<div class="empty-state">⚠️ Could not load jobs</div>';}
   }
-
-  function setPeriod(period, tab) {
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    renderPeriod(period);
-  }
-
-  function renderPeriod(period) {
-    const from = dateBound(period);
-    const jobs = allJobs.filter(j => j.created_at >= from);
-    const total = jobs.reduce((s,j)=>s+(j.amount||0),0);
-    document.getElementById('pEarnings').innerText = '₹' + total.toLocaleString('en-IN');
-    document.getElementById('pJobs').innerText     = jobs.length;
-    // Real rating + completion from worker record
+  function setPeriod(p,tab){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');renderPeriod(p);}
+  function renderPeriod(p){
+    const from=dateBound(p);
+    const jobs=allJobs.filter(j=>j.created_at>=from);
+    const total=jobs.reduce((s,j)=>s+(j.amount||0),0);
+    document.getElementById('pEarnings').innerText='₹'+total.toLocaleString('en-IN');
+    document.getElementById('pJobs').innerText=jobs.length;
     db.from('workers').select('rating,total_jobs').eq('worker_id',workerId).single().then(({data:w})=>{
-      if (w) {
-        document.getElementById('pRating').innerText     = w.rating ? w.rating+'⭐' : '—';
-        const done  = allJobs.length;
-        const total2 = w.total_jobs || done;
-        document.getElementById('pCompletion').innerText = total2 > 0 ? Math.round((done/total2)*100)+'%' : '—';
-      }
+      if(w){document.getElementById('pRating').innerText=w.rating?w.rating+'⭐':'—';const done=allJobs.length,tot=w.total_jobs||done;document.getElementById('pCompletion').innerText=tot>0?Math.round((done/tot)*100)+'%':'—';}
     }).catch(()=>{});
-    const list = document.getElementById('jobList');
-    if (!jobs.length) { list.innerHTML = '<div class="empty-state">No jobs in this period yet</div>'; return; }
-    list.innerHTML = jobs.slice(0,20).map(j => {
-      const icon = skillIcons[j.service] || '🔧';
-      const date = j.created_at ? new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+    const list=document.getElementById('jobList');
+    if(!jobs.length){list.innerHTML='<div class="empty-state">No jobs in this period yet</div>';return;}
+    list.innerHTML=jobs.slice(0,20).map(j=>{
+      const icon=sIcons[j.service]||'🔧';
+      const date=j.created_at?new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
       return `<div class="job-item"><div class="job-left"><h4>${icon} ${j.service||'—'}</h4><p>${date}</p></div><div class="job-right"><h4>₹${j.amount||0}</h4><p>✅ Paid</p></div></div>`;
     }).join('');
   }
-
-  function withdraw() {
-    const from = dateBound('today');
-    const total = allJobs.filter(j=>j.created_at>=from).reduce((s,j)=>s+(j.amount||0),0);
+  function withdraw(){
+    const from=dateBound('today');
+    const total=allJobs.filter(j=>j.created_at>=from).reduce((s,j)=>s+(j.amount||0),0);
     alert('💸 Withdrawal Submitted!\n₹'+total+' will be credited within 24 hours.\n\n(Bank transfer coming soon)');
   }
-
-  function logout() {
-    if (confirm('Logout?')) {
-      ['workerName','workerSkill','workerArea','workerStatus','workerId','workerPhone','workerDbId'].forEach(k=>localStorage.removeItem(k));
-      window.location.href = 'landing.html';
-    }
-  }
-
+  function logout(){if(confirm('Logout?')){['workerName','workerSkill','workerArea','workerStatus','workerId','workerPhone','workerDbId'].forEach(k=>localStorage.removeItem(k));window.location.href='landing.html';}}
   loadJobs();
 </script>
-</body>
-</html>
+</body></html>

@@ -1,82 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix Worker — Earn Money Near You</title>
-</head>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>ZipFix Partner</title></head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
-
-  .navbar {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:20px 30px; background-color:#111; border-bottom:1px solid #222;
-  }
-  .logo { font-size:26px; font-weight:900; color:#00b894; letter-spacing:3px; }
-  .btn-login {
-    padding:12px 28px; background-color:transparent; color:#00b894;
-    font-size:15px; font-weight:800; border:2px solid #00b894;
-    border-radius:50px; cursor:pointer; transition:all 0.2s;
-  }
-  .btn-login:hover { background-color:#00b894; color:#fff; }
-
-  .hero {
-    display:flex; flex-direction:column; align-items:center;
-    justify-content:center; text-align:center;
-    padding:80px 25px;
-    min-height:calc(100vh - 72px);
-  }
-  .badge {
-    display:inline-flex; align-items:center; gap:8px;
-    background-color:#0d2b24; border:1px solid #00b89444;
-    border-radius:50px; padding:8px 18px; margin-bottom:28px;
-    font-size:13px; font-weight:700; color:#00b894;
-  }
-  .hero h1 {
-    font-size:clamp(38px, 9vw, 62px); font-weight:900;
-    line-height:1.15; margin-bottom:20px; color:#f0f0f0;
-  }
-  .hero h1 span { color:#00b894; }
-  .hero p {
-    font-size:16px; color:#888; max-width:360px;
-    line-height:1.7; margin-bottom:40px;
-  }
-  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
-  .btn-primary {
-    padding:17px 38px; background-color:#00b894; color:#fff;
-    font-size:17px; font-weight:900; border:none; border-radius:50px;
-    cursor:pointer; transition:background-color 0.2s;
-  }
-  .btn-primary:hover { background-color:#009e7f; }
-  .btn-secondary {
-    padding:17px 38px; background-color:transparent; color:#555;
-    font-size:17px; font-weight:800; border:2px solid #ccc8bc;
-    border-radius:50px; cursor:pointer; transition:all 0.2s;
-  }
-  .btn-secondary:hover { border-color:#00b894; color:#00b894; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#fff;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .logo{font-size:22px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .btn-login{padding:10px 22px;background:transparent;color:#00b894;font-size:14px;font-weight:800;border:2px solid #00b894;border-radius:50px;cursor:pointer;transition:all 0.2s;}
+  .btn-login:hover{background:#00b894;color:#fff;}
+  .hero{padding:44px 22px 32px;text-align:center;}
+  .hero-badge{display:inline-flex;align-items:center;gap:7px;background:#e8f8f4;border:1px solid #00b89433;border-radius:50px;padding:7px 16px;font-size:12px;font-weight:800;color:#00b894;margin-bottom:18px;}
+  .hero h1{font-size:clamp(30px,8vw,52px);font-weight:900;line-height:1.15;margin-bottom:14px;}
+  .hero h1 span{color:#00b894;}
+  .hero p{font-size:15px;color:#888;max-width:340px;margin:0 auto 28px;line-height:1.7;}
+  .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{padding:15px 32px;background:#00b894;color:#fff;font-size:16px;font-weight:900;border:none;border-radius:50px;cursor:pointer;transition:background 0.2s;}
+  .btn-primary:hover{background:#009e7f;}
+  .btn-secondary{padding:15px 32px;background:#fff;color:#555;font-size:16px;font-weight:800;border:2px solid #e0e0e0;border-radius:50px;cursor:pointer;transition:all 0.2s;}
+  .btn-secondary:hover{border-color:#00b894;color:#00b894;}
+  .steps-section{background:#f5f5f5;padding:30px 22px;}
+  .steps-section h2{font-size:19px;font-weight:900;text-align:center;margin-bottom:20px;}
+  .step-card{background:#fff;border-radius:18px;padding:18px 16px;display:flex;align-items:flex-start;gap:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .step-num{width:36px;height:36px;background:#00b894;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;flex-shrink:0;}
+  .step-info h4{font-size:15px;font-weight:800;margin-bottom:4px;}
+  .step-info p{font-size:13px;color:#888;line-height:1.5;}
+  .earn-wrap{padding:22px 22px 0;}
+  .earn-banner{background:linear-gradient(135deg,#00b894,#009e7f);border-radius:20px;padding:24px 20px;}
+  .earn-banner h3{font-size:18px;font-weight:900;color:#fff;margin-bottom:6px;}
+  .earn-banner p{font-size:13px;color:rgba(255,255,255,0.85);margin-bottom:16px;line-height:1.5;}
+  .earn-stats{display:flex;gap:10px;}
+  .earn-stat{flex:1;background:rgba(255,255,255,0.2);border-radius:12px;padding:14px 8px;text-align:center;}
+  .earn-stat h4{font-size:20px;font-weight:900;color:#fff;}
+  .earn-stat p{font-size:11px;color:rgba(255,255,255,0.8);margin-top:3px;}
+  .services-section{padding:26px 22px;}
+  .services-section h2{font-size:18px;font-weight:900;margin-bottom:14px;}
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .svc-chip{background:#f5f5f5;border-radius:14px;padding:14px 8px;text-align:center;}
+  .svc-icon{font-size:26px;margin-bottom:6px;}
+  .svc-chip p{font-size:12px;font-weight:700;color:#555;}
+  .cta{padding:28px 22px 40px;text-align:center;}
+  .cta h2{font-size:19px;font-weight:900;margin-bottom:8px;}
+  .cta p{font-size:14px;color:#888;margin-bottom:20px;}
 </style>
-
 <nav class="navbar">
   <div class="logo">ZIPFIX</div>
-  <button class="btn-login" onclick="window.location.href='login.html'">Worker Login</button>
+  <button class="btn-login" onclick="window.location.href='login.html'">Partner Login</button>
 </nav>
-
-<section class="hero">
-  <div class="badge">👷 Worker Portal</div>
-  <h1>Earn Money<br/><span>Near You.</span></h1>
-  <p>Join ZipFix as a verified worker — get job requests from nearby customers. Plumber, Electrician, Locksmith and more.</p>
+<div class="hero">
+  <div class="hero-badge">👷 ZipFix Partner Portal</div>
+  <h1>Earn Money<br/><span>On Your Terms.</span></h1>
+  <p>Join verified professionals earning steady income through ZipFix job requests near you.</p>
   <div class="hero-btns">
-    <button class="btn-primary" onclick="window.location.href='register.html'">🚀 Join as a Worker</button>
+    <button class="btn-primary" onclick="window.location.href='register.html'">🚀 Join as Partner</button>
     <button class="btn-secondary" onclick="window.location.href='login.html'">Already Registered</button>
   </div>
-</section>
-
-<script>
-  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
-    window.location.href = 'dashboard.html';
-  }
-</script>
-</body>
-</html>
+</div>
+<div class="steps-section">
+  <h2>How It Works</h2>
+  <div class="step-card"><div class="step-num">1</div><div class="step-info"><h4>Apply & Get Verified</h4><p>Submit your details and ID proof. Our team verifies within 24 hours.</p></div></div>
+  <div class="step-card"><div class="step-num">2</div><div class="step-info"><h4>Go Online & Accept Jobs</h4><p>Toggle online when ready. Job requests from nearby customers arrive instantly.</p></div></div>
+  <div class="step-card"><div class="step-num">3</div><div class="step-info"><h4>Complete & Earn</h4><p>Finish the job, get rated by customer, withdraw earnings to your bank anytime.</p></div></div>
+</div>
+<div class="earn-wrap">
+  <div class="earn-banner">
+    <h3>💰 Top Partners Earn</h3>
+    <p>Work flexible hours, choose your jobs, earn more than traditional employment.</p>
+    <div class="earn-stats">
+      <div class="earn-stat"><h4>₹800+</h4><p>Per Day</p></div>
+      <div class="earn-stat"><h4>₹25K+</h4><p>Per Month</p></div>
+      <div class="earn-stat"><h4>4.8⭐</h4><p>Avg Rating</p></div>
+    </div>
+  </div>
+</div>
+<div class="services-section">
+  <h2>Skills We Need</h2>
+  <div class="services-grid">
+    <div class="svc-chip"><div class="svc-icon">🔧</div><p>Plumber</p></div>
+    <div class="svc-chip"><div class="svc-icon">⚡</div><p>Electrician</p></div>
+    <div class="svc-chip"><div class="svc-icon">❄️</div><p>AC Repair</p></div>
+    <div class="svc-chip"><div class="svc-icon">🧹</div><p>Cleaning</p></div>
+    <div class="svc-chip"><div class="svc-icon">🪛</div><p>Carpenter</p></div>
+    <div class="svc-chip"><div class="svc-icon">🔑</div><p>Locksmith</p></div>
+    <div class="svc-chip"><div class="svc-icon">🐛</div><p>Pest Control</p></div>
+    <div class="svc-chip"><div class="svc-icon">📺</div><p>TV Repair</p></div>
+    <div class="svc-chip"><div class="svc-icon">🔒</div><p>CCTV</p></div>
+  </div>
+</div>
+<div class="cta">
+  <h2>Ready to start earning?</h2>
+  <p>Join ZipFix Partner Network today — free to apply</p>
+  <button class="btn-primary" onclick="window.location.href='register.html'" style="width:100%;max-width:340px;">Apply Now — It's Free →</button>
+</div>
+<script>if(localStorage.getItem('workerName')&&localStorage.getItem('workerId'))window.location.href='dashboard.html';</script>
+</body></html>

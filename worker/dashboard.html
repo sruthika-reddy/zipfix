@@ -1,258 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix Worker — Dashboard</title>
-</head>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>ZipFix Partner — Dashboard</title></head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:20px 25px; background-color:#111; border-bottom:1px solid #222; }
-  .logo { font-size:22px; font-weight:900; color:#00b894; letter-spacing:2px; }
-  .profile-circle { width:40px; height:40px; background-color:#00b894; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:16px; cursor:pointer; }
-  .content { padding:25px; }
-  .welcome { margin-bottom:20px; }
-  .welcome h2 { font-size:24px; font-weight:900; }
-  .welcome h2 span { color:#00b894; }
-  .welcome p { color:#888; margin-top:5px; font-size:14px; }
-
-  /* Worker ID badge */
-  .wid-badge { display:inline-flex; align-items:center; gap:8px; background-color:#0d2b24; border:1px solid #00b89444; border-radius:50px; padding:6px 16px; margin-bottom:20px; font-size:13px; font-weight:700; color:#00b894; }
-
-  /* Toggle */
-  .toggle-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px 25px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-  .toggle-info h4 { font-size:17px; font-weight:800; }
-  .toggle-info p { font-size:13px; color:#888; margin-top:4px; }
-  .toggle-switch { width:60px; height:32px; background-color:#444; border-radius:50px; cursor:pointer; position:relative; transition:background-color 0.3s; flex-shrink:0; }
-  .toggle-switch.on { background-color:#00b894; }
-  .toggle-knob { width:26px; height:26px; background:#fff; border-radius:50%; position:absolute; top:3px; left:3px; transition:left 0.3s; box-shadow:0 1px 4px rgba(0,0,0,0.2); }
-  .toggle-switch.on .toggle-knob { left:31px; }
-
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100;}
+  .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .profile-circle{width:38px;height:38px;background:#00b894;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:15px;cursor:pointer;}
+  .content{padding:20px;}
+  /* Welcome */
+  .welcome{margin-bottom:18px;}
+  .welcome h2{font-size:22px;font-weight:900;}
+  .welcome h2 span{color:#00b894;}
+  .welcome p{color:#888;margin-top:4px;font-size:13px;}
+  /* Worker ID */
+  .wid-badge{display:inline-flex;align-items:center;gap:8px;background:#e8f8f4;border:1px solid #00b89433;border-radius:50px;padding:6px 16px;margin-bottom:18px;font-size:13px;font-weight:700;color:#00b894;}
+  /* Online toggle */
+  .toggle-card{background:#fff;border-radius:18px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .toggle-info h4{font-size:16px;font-weight:800;}
+  .toggle-info p{font-size:12px;color:#888;margin-top:4px;}
+  .toggle-switch{width:56px;height:30px;background:#ddd;border-radius:50px;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0;}
+  .toggle-switch.on{background:#00b894;}
+  .toggle-knob{width:24px;height:24px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+  .toggle-switch.on .toggle-knob{left:29px;}
   /* Stats */
-  .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
-  .stat-card { background-color:#111; border:1px solid #222; border-radius:18px; padding:18px 10px; text-align:center; }
-  .stat-card h3 { font-size:20px; font-weight:900; color:#00b894; }
-  .stat-card p { font-size:11px; color:#888; margin-top:4px; }
-
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  .stat-card{background:#fff;border-radius:16px;padding:16px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .stat-card h3{font-size:19px;font-weight:900;color:#00b894;}
+  .stat-card p{font-size:11px;color:#888;margin-top:4px;}
   /* Job request */
-  .section-title { font-size:17px; font-weight:800; margin-bottom:12px; }
-  .job-card { background-color:#111; border:2px solid #00b894; border-radius:20px; padding:20px; margin-bottom:15px; animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{border-color:#00b894} 50%{border-color:#b2ece1} }
-  .timer-bar { height:4px; background-color:#1a1a1a; border-radius:10px; margin-bottom:15px; overflow:hidden; }
-  .timer-fill { height:100%; background-color:#00b894; border-radius:10px; width:100%; transition:width 1s linear; }
-  .job-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .job-service { font-size:18px; font-weight:900; }
-  .urgency-tag { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:800; }
-  .urgency-tag.normal    { background-color:#0d2b24; color:#00b894; }
-  .urgency-tag.urgent    { background-color:#2b1d00; color:#e67e00; }
-  .urgency-tag.emergency { background-color:#2b0d0d; color:#e74c3c; }
-  .job-problem { font-size:14px; color:#888; line-height:1.6; margin-bottom:12px; }
-  .job-meta { display:flex; gap:15px; font-size:13px; color:#888; margin-bottom:15px; flex-wrap:wrap; }
-  .job-actions { display:flex; gap:12px; }
-  .btn-accept { flex:2; padding:15px; background-color:#00b894; color:#fff; font-size:16px; font-weight:800; border:none; border-radius:12px; cursor:pointer; transition:background-color 0.2s; }
-  .btn-accept:hover { background-color:#009e7f; }
-  .btn-decline { flex:1; padding:15px; background-color:#1a1a1a; color:#555; font-size:15px; font-weight:800; border:2px solid #222; border-radius:12px; cursor:pointer; }
-
-  .no-jobs { background-color:#111; border:1px solid #222; border-radius:20px; padding:40px 20px; text-align:center; color:#aaa; }
-  .no-jobs .icon { font-size:48px; margin-bottom:12px; }
-  .no-jobs p { font-size:14px; line-height:1.6; }
-
-  .offline-notice { background-color:#111; border:1px solid #222; border-radius:20px; padding:30px 20px; text-align:center; color:#aaa; font-size:14px; }
-
-  /* Bottom nav */
-  .bottom-nav { position:fixed; bottom:0; width:100%; background-color:#111; display:flex; justify-content:space-around; padding:15px 0 20px; border-top:1px solid #222; }
-  .nav-item { display:flex; flex-direction:column; align-items:center; cursor:pointer; font-size:11px; color:#aaa; gap:3px; }
-  .nav-item.active { color:#00b894; }
-  .nav-icon { font-size:22px; }
-  .spacer { height:80px; }
+  .section-title{font-size:16px;font-weight:800;margin-bottom:12px;color:#1a1a1a;}
+  .job-card{background:#fff;border:2px solid #00b894;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,184,148,0.1);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{border-color:#00b894}50%{border-color:#b2ece1}}
+  .timer-bar{height:4px;background:#f0f0f0;border-radius:10px;margin-bottom:14px;overflow:hidden;}
+  .timer-fill{height:100%;background:#00b894;border-radius:10px;width:100%;transition:width 1s linear;}
+  .job-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .job-service{font-size:17px;font-weight:900;}
+  .urgency-tag{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:800;}
+  .urg-normal{background:#e8f8f4;color:#00b894;}
+  .urg-urgent{background:#fff8e6;color:#e67e00;}
+  .urg-emergency{background:#fff0ee;color:#e74c3c;}
+  .job-problem{font-size:13px;color:#888;line-height:1.6;margin-bottom:10px;}
+  .job-meta{display:flex;gap:14px;font-size:12px;color:#aaa;margin-bottom:14px;flex-wrap:wrap;}
+  .job-actions{display:flex;gap:10px;}
+  .btn-accept{flex:2;padding:14px;background:#00b894;color:#fff;font-size:15px;font-weight:800;border:none;border-radius:12px;cursor:pointer;transition:background 0.2s;}
+  .btn-accept:hover{background:#009e7f;}
+  .btn-decline{flex:1;padding:14px;background:#f5f5f5;color:#888;font-size:14px;font-weight:800;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;}
+  .no-jobs{background:#fff;border-radius:18px;padding:36px 16px;text-align:center;color:#aaa;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .no-jobs .icon{font-size:44px;margin-bottom:12px;}
+  .no-jobs p{font-size:14px;line-height:1.6;}
+  .offline-notice{background:#fff;border-radius:18px;padding:28px 16px;text-align:center;color:#aaa;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .offline-notice .icon{font-size:36px;margin-bottom:10px;}
+  .spacer{height:80px;}
+  .bottom-nav{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:12px 0 16px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);z-index:100;}
+  .nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:10px;color:#aaa;gap:3px;}
+  .nav-item.active{color:#00b894;}
+  .nav-icon{font-size:22px;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <nav class="navbar">
   <div class="logo">ZIPFIX</div>
   <div class="profile-circle" id="workerInitial" onclick="logout()">?</div>
 </nav>
-
 <div class="content">
   <div class="welcome">
-    <h2>Hello, <span id="workerNameEl">Worker</span> 👷</h2>
+    <h2>Hello, <span id="workerNameEl">Partner</span> 👷</h2>
     <p id="workerMeta">Loading...</p>
   </div>
-
   <div class="wid-badge">🪪 Worker ID: <strong id="workerIdEl">—</strong></div>
-
   <div class="toggle-card">
     <div class="toggle-info">
       <h4 id="toggleTitle">You are Offline</h4>
-      <p id="toggleSub">Toggle to receive job requests</p>
+      <p id="toggleSub">Toggle to start receiving job requests</p>
     </div>
     <div class="toggle-switch" id="toggleSwitch" onclick="toggleOnline()">
       <div class="toggle-knob"></div>
     </div>
   </div>
-
   <div class="stats-grid">
     <div class="stat-card"><h3 id="todayEarnings">₹0</h3><p>Today Earned</p></div>
     <div class="stat-card"><h3 id="todayJobs">0</h3><p>Jobs Today</p></div>
     <div class="stat-card"><h3 id="myRating">—⭐</h3><p>My Rating</p></div>
   </div>
-
   <div class="section-title" id="sectionTitle">Job Requests</div>
-  <div id="jobArea"><div class="offline-notice">Go online to start receiving job requests 👆</div></div>
-
+  <div id="jobArea"><div class="offline-notice"><div class="icon">💤</div>Go online to start receiving job requests</div></div>
   <div class="spacer"></div>
 </div>
-
 <nav class="bottom-nav">
   <div class="nav-item active"><div class="nav-icon">🏠</div><div>Home</div></div>
   <div class="nav-item" onclick="window.location.href='earnings.html'"><div class="nav-icon">💰</div><div>Earnings</div></div>
   <div class="nav-item" onclick="logout()"><div class="nav-icon">🚪</div><div>Logout</div></div>
 </nav>
-
 <script>
-  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  if(!localStorage.getItem('workerName')||!localStorage.getItem('workerId'))window.location.href='login.html';
+  if(localStorage.getItem('adminLoggedIn'))window.location.href='../admin/index.html';
+  const workerName=localStorage.getItem('workerName')||'';
+  const workerSkill=localStorage.getItem('workerSkill')||'';
+  const workerArea=localStorage.getItem('workerArea')||'';
+  const workerId=localStorage.getItem('workerId')||'';
+  document.getElementById('workerNameEl').innerText=workerName.split(' ')[0];
+  document.getElementById('workerInitial').innerText=workerName.charAt(0).toUpperCase();
+  document.getElementById('workerMeta').innerText=workerSkill+' · '+workerArea;
+  document.getElementById('workerIdEl').innerText=workerId;
+  const sIcons={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
 
-  if (!localStorage.getItem('workerName') || !localStorage.getItem('workerId')) { window.location.href = 'login.html'; }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
-
-  const workerName  = localStorage.getItem('workerName')  || '';
-  const workerSkill = localStorage.getItem('workerSkill') || '';
-  const workerArea  = localStorage.getItem('workerArea')  || '';
-  const workerId    = localStorage.getItem('workerId')    || '';
-
-  document.getElementById('workerNameEl').innerText  = workerName.split(' ')[0];
-  document.getElementById('workerInitial').innerText = workerName.charAt(0).toUpperCase();
-  document.getElementById('workerMeta').innerText    = workerSkill + ' • ' + workerArea;
-  document.getElementById('workerIdEl').innerText    = workerId;
-
-  const skillIcons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️' };
-
-  async function loadStats() {
-    try {
-      const today = new Date().toISOString().split('T')[0];
-      const { data } = await db.from('jobs').select('amount,rating').eq('worker_id', workerId).eq('status','completed').gte('created_at', today);
-      if (data) {
-        document.getElementById('todayEarnings').innerText = '₹' + data.reduce((s,j)=>s+(j.amount||0),0);
-        document.getElementById('todayJobs').innerText     = data.length;
-      }
-      const { data: wData } = await db.from('workers').select('rating').eq('worker_id', workerId).single();
-      if (wData) document.getElementById('myRating').innerText = (wData.rating||'—') + '⭐';
-    } catch(e) {}
+  async function loadStats(){
+    try{
+      const today=new Date().toISOString().split('T')[0];
+      const{data}=await db.from('jobs').select('amount').eq('worker_id',workerId).eq('status','completed').gte('created_at',today);
+      if(data){document.getElementById('todayEarnings').innerText='₹'+data.reduce((s,j)=>s+(j.amount||0),0);document.getElementById('todayJobs').innerText=data.length;}
+      const{data:w}=await db.from('workers').select('rating').eq('worker_id',workerId).single();
+      if(w)document.getElementById('myRating').innerText=(w.rating||'—')+'⭐';
+    }catch(e){}
   }
   loadStats();
 
-  let isOnline=false, pollTimer=null, countdownTimer=null, currentJobId=null;
+  let isOnline=false,pollTimer=null,countdownTimer=null,currentJobId=null,timeLeft=30;
 
-  function toggleOnline() {
-    isOnline = !isOnline;
-    const sw = document.getElementById('toggleSwitch');
-    if (isOnline) {
+  function toggleOnline(){
+    isOnline=!isOnline;
+    const sw=document.getElementById('toggleSwitch');
+    if(isOnline){
       sw.classList.add('on');
-      document.getElementById('toggleTitle').innerText = 'You are Online ✅';
-      document.getElementById('toggleSub').innerText   = 'Receiving job requests';
+      document.getElementById('toggleTitle').innerText='You are Online ✅';
+      document.getElementById('toggleSub').innerText='Receiving job requests';
       startPolling();
-    } else {
+    }else{
       sw.classList.remove('on');
-      document.getElementById('toggleTitle').innerText = 'You are Offline';
-      document.getElementById('toggleSub').innerText   = 'Toggle to receive job requests';
-      stopPolling();
-      currentJobId = null;
-      document.getElementById('sectionTitle').innerText = 'Job Requests';
-      document.getElementById('jobArea').innerHTML = '<div class="offline-notice">Go online to start receiving job requests 👆</div>';
+      document.getElementById('toggleTitle').innerText='You are Offline';
+      document.getElementById('toggleSub').innerText='Toggle to start receiving job requests';
+      stopPolling();currentJobId=null;
+      document.getElementById('sectionTitle').innerText='Job Requests';
+      document.getElementById('jobArea').innerHTML='<div class="offline-notice"><div class="icon">💤</div>Go online to start receiving job requests</div>';
     }
   }
 
-  function startPolling() { pollJobs(); pollTimer = setInterval(pollJobs, 5000); }
-  function stopPolling()  { clearInterval(pollTimer); clearInterval(countdownTimer); }
+  function startPolling(){pollJobs();pollTimer=setInterval(pollJobs,5000);}
+  function stopPolling(){clearInterval(pollTimer);clearInterval(countdownTimer);}
 
-  async function pollJobs() {
-    if (!isOnline) return;
-    try {
-      const { data } = await db.from('jobs').select('*').eq('service', workerSkill).eq('status','pending').is('worker_id',null).order('created_at',{ascending:false}).limit(1);
-      if (data && data.length > 0) {
-        if (data[0].id !== currentJobId) { currentJobId = data[0].id; showJob(data[0]); }
-      } else if (!currentJobId) { showNoJobs(); }
-    } catch(e) {}
+  async function pollJobs(){
+    if(!isOnline)return;
+    try{
+      const{data}=await db.from('jobs').select('*').eq('service',workerSkill).eq('status','pending').is('worker_id',null).order('created_at',{ascending:false}).limit(1);
+      if(data&&data.length>0){if(data[0].id!==currentJobId){currentJobId=data[0].id;showJob(data[0]);}}
+      else if(!currentJobId)showNoJobs();
+    }catch(e){}
   }
 
-  function showNoJobs() {
-    currentJobId = null;
-    document.getElementById('sectionTitle').innerText = 'Job Requests';
-    document.getElementById('jobArea').innerHTML = '<div class="no-jobs"><div class="icon">😴</div><p>No requests right now.<br/>Stay online — jobs will appear here!</p></div>';
+  function showNoJobs(){
+    currentJobId=null;
+    document.getElementById('sectionTitle').innerText='Job Requests';
+    document.getElementById('jobArea').innerHTML='<div class="no-jobs"><div class="icon">😴</div><p>No requests right now.<br/>Stay online — new jobs appear here!</p></div>';
   }
 
-  function showJob(job) {
-    const icon    = skillIcons[job.service] || '🔧';
-    const urgency = job.urgency || 'normal';
-    const urgLabel = urgency==='emergency'?'🚨 Emergency': urgency==='urgent'?'⚡ Urgent':'🕐 Normal';
-    document.getElementById('sectionTitle').innerText = 'New Job Request 🔔';
-    document.getElementById('jobArea').innerHTML = `
+  function showJob(job){
+    const icon=sIcons[job.service]||'🔧';
+    const urg=job.urgency||'normal';
+    const urgLabel=urg==='emergency'?'🚨 Emergency':urg==='urgent'?'⚡ Urgent':'🕐 Normal';
+    const urgClass='urg-'+urg;
+    document.getElementById('sectionTitle').innerText='🔔 New Job Request';
+    document.getElementById('jobArea').innerHTML=`
       <div class="job-card">
         <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
         <div class="job-header">
           <div class="job-service">${icon} ${job.service}</div>
-          <div class="urgency-tag ${urgency}">${urgLabel}</div>
+          <div class="urgency-tag ${urgClass}">${urgLabel}</div>
         </div>
-        <div class="job-problem">"${job.problem||'No description'}"</div>
+        <div class="job-problem">"${job.problem||'No description provided'}"</div>
         <div class="job-meta"><span>📍 ${job.customer_address||'—'}</span><span>💰 ₹${job.amount||0}</span></div>
         <div class="job-actions">
-          <button class="btn-accept" onclick="acceptJob(${job.id})">✅ Accept</button>
-          <button class="btn-decline" onclick="declineJob()">✗ Skip</button>
+          <button class="btn-accept" onclick="acceptJob(${job.id})">✅ Accept Job</button>
+          <button class="btn-decline" onclick="declineJob()">Skip</button>
         </div>
       </div>`;
     startCountdown();
   }
 
-  let timeLeft = 30;
-  function startCountdown() {
-    clearInterval(countdownTimer); timeLeft = 30;
-    countdownTimer = setInterval(() => {
+  function startCountdown(){
+    clearInterval(countdownTimer);timeLeft=30;
+    countdownTimer=setInterval(()=>{
       timeLeft--;
-      const fill = document.getElementById('timerFill');
-      if (fill) fill.style.width = ((timeLeft/30)*100)+'%';
-      if (timeLeft <= 0) { clearInterval(countdownTimer); declineJob(); }
-    }, 1000);
+      const fill=document.getElementById('timerFill');
+      if(fill)fill.style.width=((timeLeft/30)*100)+'%';
+      if(timeLeft<=0){clearInterval(countdownTimer);declineJob();}
+    },1000);
   }
 
-  async function acceptJob(jobId) {
-    clearInterval(pollTimer); clearInterval(countdownTimer);
-    try {
-      const { data, error } = await db.from('jobs').update({status:'accepted',worker_id:workerId}).eq('id',jobId).eq('status','pending').select().single();
-      if (error||!data) { alert('⚠️ Job already taken!'); currentJobId=null; startPolling(); return; }
-      localStorage.setItem('activeJobId',    data.id);
-      localStorage.setItem('bookingService', data.service);
-      localStorage.setItem('bookingProblem', data.problem);
-      localStorage.setItem('bookingAddress', data.customer_address);
-      localStorage.setItem('bookingUrgency', data.urgency);
-      localStorage.setItem('bookingAmount',  data.amount);
-      localStorage.setItem('customerName',   data.customer_name);
-      localStorage.setItem('customerPhone',  data.customer_phone);
-      window.location.href = 'job.html';
-    } catch(e) { alert('Error: '+e.message); }
+  async function acceptJob(jobId){
+    clearInterval(pollTimer);clearInterval(countdownTimer);
+    try{
+      const{data,error}=await db.from('jobs').update({status:'accepted',worker_id:workerId}).eq('id',jobId).eq('status','pending').select().single();
+      if(error||!data){alert('⚠️ Job already taken!');currentJobId=null;startPolling();return;}
+      localStorage.setItem('activeJobId',data.id);localStorage.setItem('bookingService',data.service);
+      localStorage.setItem('bookingProblem',data.problem);localStorage.setItem('bookingAddress',data.customer_address);
+      localStorage.setItem('bookingUrgency',data.urgency);localStorage.setItem('bookingAmount',data.amount);
+      localStorage.setItem('customerName',data.customer_name);localStorage.setItem('customerPhone',data.customer_phone);
+      window.location.href='job.html';
+    }catch(e){alert('Error: '+e.message);}
   }
 
-  function declineJob() {
-    clearInterval(countdownTimer);
-    currentJobId = null;
-    showNoJobs();
-  }
+  function declineJob(){clearInterval(countdownTimer);currentJobId=null;showNoJobs();}
 
-  function logout() {
-    if (confirm('Logout from ZipFix Worker?')) {
-      localStorage.removeItem('workerName');
-      localStorage.removeItem('workerSkill');
-      localStorage.removeItem('workerArea');
-      localStorage.removeItem('workerStatus');
-      localStorage.removeItem('workerId');
-      localStorage.removeItem('workerPhone');
-      localStorage.removeItem('workerDbId');
-      window.location.href = 'landing.html';
+  function logout(){
+    if(confirm('Logout from ZipFix Partner?')){
+      ['workerName','workerSkill','workerArea','workerStatus','workerId','workerPhone','workerDbId'].forEach(k=>localStorage.removeItem(k));
+      window.location.href='landing.html';
     }
   }
 </script>
-</body>
-</html>
+</body></html>

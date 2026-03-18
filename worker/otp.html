@@ -1,95 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix Worker — Verify OTP</title>
-</head>
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>ZipFix Partner — Verify OTP</title></head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .login-box { background-color:#111; border:1px solid #222; border-radius:30px; padding:50px 40px; width:100%; max-width:420px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.06); }
-  .logo { font-size:28px; font-weight:900; color:#00b894; letter-spacing:3px; margin-bottom:10px; }
-  .tagline { font-size:14px; color:#aaa; margin-bottom:40px; }
-  h2 { font-size:24px; font-weight:800; margin-bottom:10px; color:#f0f0f0; }
-  .subtitle { font-size:14px; color:#888; margin-bottom:5px; }
-  .phone-display { font-size:16px; font-weight:800; color:#00b894; margin-bottom:30px; }
-  .otp-inputs { display:flex; justify-content:center; gap:12px; margin-bottom:15px; }
-  .otp-inputs input { width:52px; height:52px; background-color:#f0f0f0; border:2px solid #222; border-radius:15px; color:#f0f0f0; font-size:24px; font-weight:800; text-align:center; outline:none; transition:border-color 0.2s; }
-  .otp-inputs input:focus { border-color:#00b894; }
-  .otp-inputs input.err { border-color:#e74c3c; }
-  .field-err { color:#e74c3c; font-size:13px; margin-bottom:20px; display:none; }
-  .btn-main { width:100%; padding:18px; background-color:#00b894; color:#fff; font-size:18px; font-weight:800; border:none; border-radius:15px; cursor:pointer; margin-bottom:20px; transition:background-color 0.2s; }
-  .btn-main:hover { background-color:#009e7f; }
-  .btn-main:disabled { background-color:#ccc; cursor:not-allowed; }
-  .resend { font-size:14px; color:#888; }
-  .resend span { color:#00b894; cursor:pointer; font-weight:700; }
-  .resend-msg { font-size:13px; color:#00b894; margin-top:8px; display:none; }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .box{background:#fff;border-radius:28px;padding:44px 32px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.08);text-align:center;}
+  .logo{font-size:26px;font-weight:900;color:#00b894;letter-spacing:2px;margin-bottom:6px;}
+  .tagline{font-size:13px;color:#aaa;margin-bottom:28px;}
+  h2{font-size:21px;font-weight:900;margin-bottom:8px;color:#1a1a1a;}
+  .sub{font-size:13px;color:#888;margin-bottom:4px;}
+  .phone-display{font-size:16px;font-weight:800;color:#00b894;margin-bottom:24px;}
+  .otp-row{display:flex;justify-content:center;gap:10px;margin-bottom:12px;}
+  .otp-row input{width:50px;height:50px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;color:#1a1a1a;font-size:22px;font-weight:800;text-align:center;outline:none;transition:border-color 0.2s;}
+  .otp-row input:focus{border-color:#00b894;}
+  .otp-row input.err{border-color:#e74c3c;}
+  .field-err{color:#e74c3c;font-size:13px;margin-bottom:14px;min-height:18px;}
+  .btn{width:100%;padding:16px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:14px;cursor:pointer;margin-bottom:18px;transition:background 0.2s;}
+  .btn:hover{background:#009e7f;}
+  .btn:disabled{background:#ccc;cursor:not-allowed;}
+  .resend-row{font-size:14px;color:#888;}
+  .resend-row span{color:#00b894;font-weight:700;cursor:pointer;}
+  .resend-msg{font-size:13px;color:#00b894;margin-top:8px;min-height:18px;}
 </style>
-
-<div class="login-box">
+<div class="box">
   <div class="logo">ZIPFIX</div>
-  <div class="tagline">Worker Portal — Earn Near You</div>
+  <div class="tagline">Partner Portal — Earn Near You</div>
   <h2>Verify your number</h2>
-  <p class="subtitle">OTP sent to</p>
+  <p class="sub">OTP sent to</p>
   <div class="phone-display" id="phoneDisplay">+91 XXXXXXXXXX</div>
-
-  <div class="otp-inputs">
-    <input type="number" id="o1" maxlength="1" />
-    <input type="number" id="o2" maxlength="1" />
-    <input type="number" id="o3" maxlength="1" />
-    <input type="number" id="o4" maxlength="1" />
-    <input type="number" id="o5" maxlength="1" />
-    <input type="number" id="o6" maxlength="1" />
+  <div class="otp-row">
+    <input type="tel" id="o1" maxlength="1"/>
+    <input type="tel" id="o2" maxlength="1"/>
+    <input type="tel" id="o3" maxlength="1"/>
+    <input type="tel" id="o4" maxlength="1"/>
+    <input type="tel" id="o5" maxlength="1"/>
+    <input type="tel" id="o6" maxlength="1"/>
   </div>
-  <div class="field-err" id="otpErr">Please enter all 6 digits</div>
-
-  <button class="btn-main" id="verifyBtn" onclick="verifyOTP()">Verify & Continue</button>
-  <p class="resend">Didn't receive OTP? <span onclick="resendOtp()">Resend</span></p>
-  <div class="resend-msg" id="resendMsg">✅ OTP resent!</div>
+  <div class="field-err" id="otpErr"></div>
+  <button class="btn" id="verifyBtn" onclick="verifyOTP()">Verify & Continue</button>
+  <p class="resend-row">Didn't receive OTP? <span onclick="resendOtp()">Resend</span></p>
+  <div class="resend-msg" id="resendMsg"></div>
 </div>
-
 <script>
-  if (!localStorage.getItem('workerPhone') && !localStorage.getItem('workerName')) {
-    window.location.href = 'login.html';
-  }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
-
-  const phone = localStorage.getItem('workerPhone') || '';
-  document.getElementById('phoneDisplay').innerText = phone || '+91 XXXXXXXXXX';
-
-  const inputs = [document.getElementById('o1'),document.getElementById('o2'),document.getElementById('o3'),document.getElementById('o4'),document.getElementById('o5'),document.getElementById('o6')];
-  inputs.forEach((inp, i) => {
-    inp.addEventListener('input', function() {
-      if (this.value.length > 1) this.value = this.value.slice(0,1);
-      document.getElementById('otpErr').style.display = 'none';
-      inputs.forEach(x => x.classList.remove('err'));
-      if (this.value && i < 5) inputs[i+1].focus();
+  if(!localStorage.getItem('workerPhone')&&!localStorage.getItem('workerName'))window.location.href='login.html';
+  if(localStorage.getItem('adminLoggedIn'))window.location.href='../admin/index.html';
+  const phone=localStorage.getItem('workerPhone')||'';
+  document.getElementById('phoneDisplay').innerText=phone||'+91 XXXXXXXXXX';
+  const inputs=[...document.querySelectorAll('.otp-row input')];
+  inputs.forEach((inp,i)=>{
+    inp.addEventListener('input',function(){
+      this.value=this.value.replace(/\D/g,'').slice(0,1);
+      document.getElementById('otpErr').innerText='';
+      inputs.forEach(x=>x.classList.remove('err'));
+      if(this.value&&i<5)inputs[i+1].focus();
     });
-    inp.addEventListener('keydown', function(e) {
-      if (e.key === 'Backspace' && !this.value && i > 0) inputs[i-1].focus();
-    });
+    inp.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!this.value&&i>0)inputs[i-1].focus();});
   });
-  setTimeout(() => inputs[0].focus(), 100);
-
-  function verifyOTP() {
-    let otp = inputs.map(i => i.value).join('');
-    if (otp.length < 6) {
-      document.getElementById('otpErr').style.display = 'block';
-      inputs.forEach(i => { if (!i.value) i.classList.add('err'); });
-      return;
-    }
-    const btn = document.getElementById('verifyBtn');
-    btn.innerText = 'Verifying...'; btn.disabled = true;
-    setTimeout(() => { window.location.href = 'dashboard.html'; }, 600);
+  setTimeout(()=>inputs[0].focus(),100);
+  function verifyOTP(){
+    const otp=inputs.map(i=>i.value).join('');
+    if(otp.length<6){document.getElementById('otpErr').innerText='Please enter all 6 digits';inputs.forEach(i=>{if(!i.value)i.classList.add('err');});return;}
+    const btn=document.getElementById('verifyBtn');btn.innerText='Verifying...';btn.disabled=true;
+    setTimeout(()=>window.location.href='dashboard.html',600);
   }
-
-  function resendOtp() {
-    document.getElementById('resendMsg').style.display = 'block';
-    setTimeout(() => document.getElementById('resendMsg').style.display = 'none', 3000);
-    inputs.forEach(i => i.value = ''); inputs[0].focus();
+  function resendOtp(){
+    document.getElementById('resendMsg').innerText='✅ OTP resent!';
+    inputs.forEach(i=>i.value='');inputs[0].focus();
+    setTimeout(()=>document.getElementById('resendMsg').innerText='',3000);
   }
 </script>
-</body>
-</html>
+</body></html>

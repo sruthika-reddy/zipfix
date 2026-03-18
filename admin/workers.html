@@ -307,7 +307,7 @@ function attachEvents() {
     if (!btn) return;
 
     const action = btn.dataset.action;
-    const id     = parseInt(btn.dataset.id);   // always integer
+    const id     = btn.dataset.id;   // UUID string — do NOT parseInt
     const name   = btn.dataset.name || '';
     const phone  = btn.dataset.phone || '';
 

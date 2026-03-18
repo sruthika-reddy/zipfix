@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ZipFix Admin — Settings</title>
+</head>
+<body>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100;}
+  .nav-left{display:flex;align-items:center;gap:14px;}
+  .back-btn{font-size:22px;color:#00b894;cursor:pointer;text-decoration:none;font-weight:700;}
+  .nav-brand .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .nav-brand .tag{font-size:11px;color:#aaa;margin-top:1px;}
+  .logout-btn{padding:9px 18px;background:#f5f5f5;color:#888;font-size:13px;font-weight:700;border:none;border-radius:50px;cursor:pointer;transition:all 0.2s;}
+  .logout-btn:hover{background:#e74c3c;color:#fff;}
+  .content{padding:22px;}
+  .section-title{font-size:16px;font-weight:900;margin-bottom:14px;color:#1a1a1a;}
+  /* Platform settings */
+  .settings-card{background:#fff;border-radius:18px;padding:20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .setting-row{display:flex;flex-direction:column;gap:6px;}
+  .setting-row label{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;}
+  .setting-row input{padding:11px 14px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:12px;font-size:15px;font-weight:700;color:#1a1a1a;outline:none;transition:border-color 0.2s;}
+  .setting-row input:focus{border-color:#00b894;}
+  .btn-save-settings{width:100%;padding:14px;background:#00b894;color:#fff;font-size:15px;font-weight:800;border:none;border-radius:12px;cursor:pointer;margin-top:14px;transition:background 0.2s;}
+  .btn-save-settings:hover{background:#009e7f;}
+  /* Services table */
+  .svc-card{background:#fff;border-radius:18px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .svc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .svc-name{display:flex;align-items:center;gap:10px;}
+  .svc-icon{font-size:28px;}
+  .svc-title{font-size:16px;font-weight:900;}
+  .svc-cat{font-size:12px;color:#888;margin-top:2px;text-transform:capitalize;}
+  .toggle-active{width:44px;height:24px;background:#ddd;border-radius:50px;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0;}
+  .toggle-active.on{background:#00b894;}
+  .toggle-knob{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+  .toggle-active.on .toggle-knob{left:22px;}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+  .price-field{display:flex;flex-direction:column;gap:5px;}
+  .price-field label{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;}
+  .price-field input{padding:10px 12px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;font-weight:800;color:#00b894;outline:none;width:100%;transition:border-color 0.2s;}
+  .price-field input:focus{border-color:#00b894;}
+  .dur-field{display:flex;flex-direction:column;gap:5px;}
+  .dur-field label{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;}
+  .dur-field input{padding:10px 12px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:10px;font-size:13px;color:#1a1a1a;outline:none;width:100%;transition:border-color 0.2s;}
+  .dur-field input:focus{border-color:#00b894;}
+  .svc-actions{display:flex;gap:8px;}
+  .btn-update{flex:1;padding:11px;background:#00b894;color:#fff;font-size:13px;font-weight:800;border:none;border-radius:10px;cursor:pointer;transition:background 0.2s;}
+  .btn-update:hover{background:#009e7f;}
+  .btn-update:disabled{background:#ccc;cursor:not-allowed;}
+  .saved-badge{font-size:12px;color:#00b894;font-weight:700;display:none;align-items:center;gap:4px;}
+  /* Add service */
+  .add-card{background:#fff;border-radius:18px;padding:20px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,0.05);border:2px dashed #e0e0e0;}
+  .add-card h3{font-size:15px;font-weight:900;margin-bottom:14px;}
+  .add-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  .add-field{display:flex;flex-direction:column;gap:5px;}
+  .add-field label{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;}
+  .add-field input,.add-field select{padding:11px 12px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;color:#1a1a1a;outline:none;transition:border-color 0.2s;}
+  .add-field input:focus,.add-field select:focus{border-color:#00b894;}
+  .btn-add{width:100%;padding:13px;background:#1a1a2e;color:#fff;font-size:14px;font-weight:800;border:none;border-radius:12px;cursor:pointer;margin-top:4px;}
+  .btn-add:hover{background:#00b894;}
+  .loading-note{text-align:center;padding:40px;color:#aaa;font-size:14px;}
+  .spacer{height:30px;}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#00b894;color:#fff;padding:12px 22px;border-radius:50px;font-size:14px;font-weight:700;z-index:9999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="toast" id="toast"></div>
+
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="back-btn" href="index.html">←</a>
+    <div class="nav-brand">
+      <div class="logo">ZIPFIX</div>
+      <div class="tag">⚙️ Settings & Pricing</div>
+    </div>
+  </div>
+  <button class="logout-btn" onclick="adminLogout()">Logout</button>
+</nav>
+
+<div class="content">
+
+  <!-- Platform Settings -->
+  <div class="section-title">⚙️ Platform Settings</div>
+  <div class="settings-card">
+    <div class="settings-grid">
+      <div class="setting-row">
+        <label>Platform Fee (₹)</label>
+        <input type="number" id="set-platform_fee" placeholder="49"/>
+      </div>
+      <div class="setting-row">
+        <label>City / Location</label>
+        <input type="text" id="set-city" placeholder="Hyderabad"/>
+      </div>
+      <div class="setting-row">
+        <label>Support Email</label>
+        <input type="text" id="set-support_email" placeholder="support@zipfix.in"/>
+      </div>
+      <div class="setting-row">
+        <label>App Name</label>
+        <input type="text" id="set-app_name" placeholder="ZipFix"/>
+      </div>
+    </div>
+    <button class="btn-save-settings" onclick="savePlatformSettings()">💾 Save Platform Settings</button>
+  </div>
+
+  <!-- Services -->
+  <div class="section-title">🔧 Service Pricing</div>
+
+  <!-- Add new service -->
+  <div class="add-card">
+    <h3>➕ Add New Service</h3>
+    <div class="add-grid">
+      <div class="add-field"><label>Service Name</label><input type="text" id="new-name" placeholder="e.g. Solar Installation"/></div>
+      <div class="add-field"><label>Icon (emoji)</label><input type="text" id="new-icon" placeholder="☀️" maxlength="4"/></div>
+      <div class="add-field"><label>Category</label>
+        <select id="new-cat">
+          <option value="plumbing">Plumbing</option>
+          <option value="electrical">Electrical</option>
+          <option value="appliance">Appliance</option>
+          <option value="cleaning">Cleaning</option>
+          <option value="home">Home</option>
+          <option value="security">Security</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="add-field"><label>Duration</label><input type="text" id="new-dur" placeholder="45–90 min"/></div>
+      <div class="add-field"><label>Base Price (₹)</label><input type="number" id="new-base" placeholder="399"/></div>
+      <div class="add-field"><label>Urgent Extra (₹)</label><input type="number" id="new-urgent" placeholder="150"/></div>
+      <div class="add-field"><label>Emergency Extra (₹)</label><input type="number" id="new-emergency" placeholder="300"/></div>
+    </div>
+    <button class="btn-add" onclick="addService()">➕ Add Service</button>
+  </div>
+
+  <div id="servicesList"><div class="loading-note">⏳ Loading services...</div></div>
+  <div class="spacer"></div>
+</div>
+
+<script>
+  const SUPABASE_URL='https://wenvdgvyuhqdiktetvfj.supabase.co';
+  const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
+  const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+  const SESSION_MS=8*60*60*1000;
+  if(!localStorage.getItem('adminLoggedIn')){window.location.href='login.html';}
+  if(Date.now()-parseInt(localStorage.getItem('adminLoginTime')||0)>SESSION_MS){localStorage.removeItem('adminLoggedIn');window.location.href='login.html';}
+
+  // ── Load platform settings ──────────────────────────────
+  async function loadPlatformSettings(){
+    try{
+      const{data}=await db.from('platform_settings').select('*');
+      if(data){data.forEach(s=>{const el=document.getElementById('set-'+s.key);if(el)el.value=s.value;});}
+    }catch(e){showToast('⚠️ Could not load settings');}
+  }
+
+  async function savePlatformSettings(){
+    const keys=['platform_fee','city','support_email','app_name'];
+    try{
+      for(const key of keys){
+        const val=document.getElementById('set-'+key).value.trim();
+        if(val) await db.from('platform_settings').upsert({key,value:val});
+      }
+      showToast('✅ Platform settings saved!');
+    }catch(e){showToast('⚠️ Error: '+e.message);}
+  }
+
+  // ── Load services ───────────────────────────────────────
+  async function loadServices(){
+    try{
+      const{data,error}=await db.from('services').select('*').order('id');
+      if(error)throw error;
+      renderServices(data||[]);
+    }catch(e){
+      document.getElementById('servicesList').innerHTML=`<div style="background:#fff;border-radius:18px;padding:24px;text-align:center;color:#e74c3c;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05)">
+        <div style="font-size:32px;margin-bottom:10px">⚠️</div>
+        <strong>Services table not found</strong><br/>
+        <span style="color:#888;font-size:13px">Run the SQL in SUPABASE_SETUP.sql first</span>
+      </div>`;
+    }
+  }
+
+  function renderServices(services){
+    const el=document.getElementById('servicesList');
+    if(!services.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#aaa">No services found</div>';return;}
+    el.innerHTML=services.map(s=>buildServiceCard(s)).join('');
+  }
+
+  function buildServiceCard(s){
+    const isOn=s.active!==false;
+    return `<div class="svc-card" id="svc-${s.id}">
+      <div class="svc-header">
+        <div class="svc-name">
+          <div class="svc-icon">${s.icon}</div>
+          <div>
+            <div class="svc-title">${s.name}</div>
+            <div class="svc-cat">${s.category}</div>
+          </div>
+        </div>
+        <div class="toggle-active ${isOn?'on':''}" id="tog-${s.id}" onclick="toggleService(${s.id},${isOn})">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+      <div class="price-grid">
+        <div class="price-field">
+          <label>Base Price ₹</label>
+          <input type="number" id="base-${s.id}" value="${s.base_price}"/>
+        </div>
+        <div class="price-field">
+          <label>Urgent Extra ₹</label>
+          <input type="number" id="urgent-${s.id}" value="${s.urgent_extra}"/>
+        </div>
+        <div class="price-field">
+          <label>Emergency Extra ₹</label>
+          <input type="number" id="emergency-${s.id}" value="${s.emergency_extra}"/>
+        </div>
+      </div>
+      <div class="dur-field" style="margin-bottom:12px">
+        <label>Duration / Time Estimate</label>
+        <input type="text" id="dur-${s.id}" value="${s.duration||''}"/>
+      </div>
+      <div class="svc-actions">
+        <button class="btn-update" id="upd-${s.id}" onclick="updateService(${s.id})">💾 Save Changes</button>
+        <div class="saved-badge" id="badge-${s.id}">✅ Saved</div>
+      </div>
+    </div>`;
+  }
+
+  async function updateService(id){
+    const btn=document.getElementById('upd-'+id);
+    btn.disabled=true;btn.innerText='Saving...';
+    const base=parseInt(document.getElementById('base-'+id).value)||0;
+    const urgent=parseInt(document.getElementById('urgent-'+id).value)||0;
+    const emergency=parseInt(document.getElementById('emergency-'+id).value)||0;
+    const duration=document.getElementById('dur-'+id).value.trim();
+    try{
+      await db.from('services').update({base_price:base,urgent_extra:urgent,emergency_extra:emergency,duration}).eq('id',id);
+      btn.innerText='💾 Save Changes';btn.disabled=false;
+      const badge=document.getElementById('badge-'+id);
+      badge.style.display='flex';setTimeout(()=>badge.style.display='none',2500);
+      showToast('✅ Service updated!');
+    }catch(e){btn.innerText='💾 Save Changes';btn.disabled=false;showToast('⚠️ '+e.message);}
+  }
+
+  async function toggleService(id,currentlyOn){
+    try{
+      await db.from('services').update({active:!currentlyOn}).eq('id',id);
+      const tog=document.getElementById('tog-'+id);
+      tog.classList.toggle('on',!currentlyOn);
+      tog.setAttribute('onclick',`toggleService(${id},${!currentlyOn})`);
+      showToast((currentlyOn?'🔴 Service disabled':'🟢 Service enabled'));
+    }catch(e){showToast('⚠️ '+e.message);}
+  }
+
+  async function addService(){
+    const name=document.getElementById('new-name').value.trim();
+    const icon=document.getElementById('new-icon').value.trim();
+    const category=document.getElementById('new-cat').value;
+    const duration=document.getElementById('new-dur').value.trim();
+    const base_price=parseInt(document.getElementById('new-base').value)||299;
+    const urgent_extra=parseInt(document.getElementById('new-urgent').value)||150;
+    const emergency_extra=parseInt(document.getElementById('new-emergency').value)||300;
+    if(!name||!icon){showToast('⚠️ Name and icon are required');return;}
+    try{
+      const{error}=await db.from('services').insert([{name,icon,category,duration,base_price,urgent_extra,emergency_extra,active:true}]);
+      if(error)throw error;
+      ['new-name','new-icon','new-dur','new-base','new-urgent','new-emergency'].forEach(id=>document.getElementById(id).value='');
+      showToast('✅ Service added!');
+      loadServices();
+    }catch(e){showToast('⚠️ '+e.message);}
+  }
+
+  function adminLogout(){if(confirm('Logout?')){localStorage.removeItem('adminLoggedIn');localStorage.removeItem('adminLoginTime');window.location.href='login.html';}}
+  function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+
+  loadPlatformSettings();
+  loadServices();
+</script>
+</body>
+</html>

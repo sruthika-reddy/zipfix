@@ -173,24 +173,46 @@
   const urlParams=new URLSearchParams(window.location.search);
   const service=urlParams.get('service')||localStorage.getItem('bookingService')||'Plumber';
 
-  const SERVICE_CONFIG={
-    'Plumber':               {icon:'🔧',bg:'bg-blue',   base:349,urgent:150,emergency:300},
-    'Electrician':           {icon:'⚡',bg:'bg-yellow', base:299,urgent:150,emergency:300},
-    'Locksmith':             {icon:'🔑',bg:'bg-orange', base:249,urgent:100,emergency:200},
-    'AC Repair':             {icon:'❄️',bg:'bg-blue',   base:499,urgent:200,emergency:400},
-    'Carpenter':             {icon:'🪛',bg:'bg-purple', base:399,urgent:150,emergency:300},
-    'Painter':               {icon:'🖌️',bg:'bg-orange', base:549,urgent:200,emergency:400},
-    'Pest Control':          {icon:'🐛',bg:'bg-red',    base:799,urgent:300,emergency:600},
-    'Home Cleaning':         {icon:'🧹',bg:'bg-teal',   base:499,urgent:200,emergency:400},
+  // Static fallback (used if Supabase table not ready)
+  const STATIC_CONFIG={
+    'Plumber':{icon:'🔧',bg:'bg-blue',base:349,urgent:150,emergency:300},
+    'Electrician':{icon:'⚡',bg:'bg-yellow',base:299,urgent:150,emergency:300},
+    'Locksmith':{icon:'🔑',bg:'bg-orange',base:249,urgent:100,emergency:200},
+    'AC Repair':{icon:'❄️',bg:'bg-blue',base:499,urgent:200,emergency:400},
+    'Carpenter':{icon:'🪛',bg:'bg-purple',base:399,urgent:150,emergency:300},
+    'Painter':{icon:'🖌️',bg:'bg-orange',base:549,urgent:200,emergency:400},
+    'Pest Control':{icon:'🐛',bg:'bg-red',base:799,urgent:300,emergency:600},
+    'Home Cleaning':{icon:'🧹',bg:'bg-teal',base:499,urgent:200,emergency:400},
     'TV / Electronics Repair':{icon:'📺',bg:'bg-purple',base:349,urgent:150,emergency:300},
-    'Water Purifier Service':{icon:'🫧',bg:'bg-teal',   base:299,urgent:100,emergency:200},
-    'Appliance Repair':      {icon:'🔩',bg:'bg-orange', base:399,urgent:150,emergency:300},
-    'Bathroom Renovation':   {icon:'🛁',bg:'bg-blue',   base:999,urgent:400,emergency:800},
-    'Packers & Movers':      {icon:'📦',bg:'bg-yellow', base:1499,urgent:500,emergency:1000},
-    'CCTV Installation':     {icon:'🔒',bg:'bg-red',    base:699,urgent:300,emergency:600},
+    'Water Purifier Service':{icon:'🫧',bg:'bg-teal',base:299,urgent:100,emergency:200},
+    'Appliance Repair':{icon:'🔩',bg:'bg-orange',base:399,urgent:150,emergency:300},
+    'Bathroom Renovation':{icon:'🛁',bg:'bg-blue',base:999,urgent:400,emergency:800},
+    'Packers & Movers':{icon:'📦',bg:'bg-yellow',base:1499,urgent:500,emergency:1000},
+    'CCTV Installation':{icon:'🔒',bg:'bg-red',base:699,urgent:300,emergency:600},
   };
+  const catBg={plumbing:'bg-blue',electrical:'bg-yellow',security:'bg-orange',appliance:'bg-orange',cleaning:'bg-teal',home:'bg-purple',other:'bg-green'};
+  let config=STATIC_CONFIG[service]||{icon:'🔧',bg:'bg-green',base:349,urgent:150,emergency:300};
+  let platformFee=49;
 
-  const config=SERVICE_CONFIG[service]||SERVICE_CONFIG['Plumber'];
+  async function loadServiceConfig(){
+    try{
+      const{data:svcData}=await db.from('services').select('*').eq('name',service).single();
+      const{data:settings}=await db.from('platform_settings').select('key,value').eq('key','platform_fee').single();
+      if(svcData){
+        config={icon:svcData.icon,bg:catBg[svcData.category]||'bg-green',base:svcData.base_price,urgent:svcData.urgent_extra,emergency:svcData.emergency_extra};
+      }
+      if(settings)platformFee=parseInt(settings.value)||49;
+    }catch(e){/* use static fallback */}
+    // Init UI with loaded (or fallback) config
+    document.getElementById('svcIcon').innerText   = config.icon;
+    document.getElementById('svcIconBox').className = 'svc-icon-box '+config.bg;
+    document.getElementById('svcName').innerText   = service;
+    document.getElementById('navTitle').innerText  = service;
+    document.getElementById('price-normal').innerText    = '₹'+config.base;
+    document.getElementById('price-urgent').innerText    = '₹'+(config.base+config.urgent);
+    document.getElementById('price-emergency').innerText = '₹'+(config.base+config.emergency);
+    updatePrice();
+  }
 
   document.getElementById('svcIcon').innerText   = config.icon;
   document.getElementById('svcIconBox').className = 'svc-icon-box '+config.bg;
@@ -221,7 +243,7 @@
 
   function updatePrice(){
     const urgExtra=selectedUrgency==='urgent'?config.urgent:selectedUrgency==='emergency'?config.emergency:0;
-    const beforeDiscount=config.base+urgExtra+49;
+    const beforeDiscount=config.base+urgExtra+platformFee;
     const discount=Math.round(beforeDiscount*subDiscount);
     const total=beforeDiscount-discount;
     document.getElementById('sumBase').innerText='₹'+config.base;
@@ -235,6 +257,7 @@
     document.getElementById('ctaPrice').innerText='₹'+total;
   }
 
+  loadServiceConfig();
   updatePrice();
 
   function getGPS(){
@@ -267,7 +290,7 @@
     if(!ok)return;
 
     const urgExtra=selectedUrgency==='urgent'?config.urgent:selectedUrgency==='emergency'?config.emergency:0;
-    const beforeDiscount=config.base+urgExtra+49;
+    const beforeDiscount=config.base+urgExtra+platformFee;
     const discount=Math.round(beforeDiscount*subDiscount);
     const finalAmount=beforeDiscount-discount;
 

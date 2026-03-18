@@ -104,7 +104,16 @@
   document.getElementById('workerInitial').innerText=workerName.charAt(0).toUpperCase();
   document.getElementById('workerMeta').innerText=workerSkill+' · '+workerArea;
   document.getElementById('workerIdEl').innerText=workerId;
-  const sIcons={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
+  let sIcons={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
+
+  // Load live service icons from Supabase (admin can update)
+  async function loadServiceIcons(){
+    try{
+      const{data}=await db.from('services').select('name,icon');
+      if(data&&data.length){data.forEach(s=>{sIcons[s.name]=s.icon;});}
+    }catch(e){}
+  }
+  loadServiceIcons();
 
   async function loadStats(){
     try{

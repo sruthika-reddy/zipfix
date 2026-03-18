@@ -44,7 +44,6 @@
 </div>
 <script>
   if(!localStorage.getItem('workerPhone')&&!localStorage.getItem('workerName'))window.location.href='login.html';
-  if(localStorage.getItem('adminLoggedIn'))window.location.href='../admin/index.html';
   const phone=localStorage.getItem('workerPhone')||'';
   document.getElementById('phoneDisplay').innerText=phone||'+91 XXXXXXXXXX';
   const inputs=[...document.querySelectorAll('.otp-row input')];

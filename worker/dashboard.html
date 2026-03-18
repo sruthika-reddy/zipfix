@@ -96,7 +96,6 @@
 <script>
   const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
   if(!localStorage.getItem('workerName')||!localStorage.getItem('workerId'))window.location.href='login.html';
-  if(localStorage.getItem('adminLoggedIn'))window.location.href='../admin/index.html';
   const workerName=localStorage.getItem('workerName')||'';
   const workerSkill=localStorage.getItem('workerSkill')||'';
   const workerArea=localStorage.getItem('workerArea')||'';

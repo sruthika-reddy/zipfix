@@ -59,7 +59,7 @@
   </div>
   <div class="status-card sc-rejected" id="scRejected">
     <div class="s-icon">❌</div><h3>Application Not Approved</h3>
-    <p>Contact <strong>help@zipfix.com</strong> for details or apply again with updated information.</p>
+    <p>Contact <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb3beb7ab9ba1b2abbdb2a3f5b8b4b6">[email&#160;protected]</a></strong> for details or apply again with updated information.</p>
     <button class="btn-go" onclick="window.location.href='register.html'">Apply Again</button>
     <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
@@ -72,14 +72,13 @@
   </div>
   <div class="status-card sc-banned" id="scBanned">
     <div class="s-icon">🚫</div><h3>Account Suspended</h3>
-    <p>Contact <strong>help@zipfix.com</strong> if you believe this is a mistake.</p>
+    <p>Contact <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ec8489809cac96859c8a8594c28f8381">[email&#160;protected]</a></strong> if you believe this is a mistake.</p>
     <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
   if(localStorage.getItem('workerName')&&localStorage.getItem('workerId'))window.location.href='dashboard.html';
-  if(localStorage.getItem('adminLoggedIn'))window.location.href='../admin/index.html';
   let approved=null;
   function clearErr(){document.getElementById('phoneWrap').classList.remove('err');document.getElementById('phoneErr').style.display='none';}
   async function checkStatus(){
@@ -93,7 +92,14 @@
       document.getElementById('phoneSection').style.display='none';
       const s=data.status;
       if(s==='pending')document.getElementById('scPending').style.display='block';
-      else if(s==='rejected')document.getElementById('scRejected').style.display='block';
+      else if(s==='rejected'){
+        document.getElementById('scRejected').style.display='block';
+        if(data.rejection_reason){
+          document.getElementById('rejectionReasonBox').style.display='block';
+          document.getElementById('rejectionReasonText').innerText='💬 '+data.rejection_reason;
+          document.getElementById('rejectionNote').style.display='none';
+        }
+      }
       else if(s==='banned')document.getElementById('scBanned').style.display='block';
       else if(s==='approved'){approved=data;document.getElementById('widDisplay').innerText=data.worker_id||'ZF-0000';document.getElementById('scApproved').style.display='block';}
     }catch(e){btn.innerText='Check Status';btn.disabled=false;alert('Error: '+e.message);}
@@ -105,10 +111,4 @@
   }
   function resetForm(){
     approved=null;document.getElementById('phoneSection').style.display='block';
-    ['scPending','scRejected','scApproved','scBanned'].forEach(id=>document.getElementById(id).style.display='none');
-    document.getElementById('phoneNumber').value='';clearErr();
-    document.getElementById('phoneErr').innerText='Please enter a valid 10-digit number';
-  }
-  document.getElementById('phoneNumber').addEventListener('keydown',e=>{if(e.key==='Enter')checkStatus();});
-</script>
-</body></html>
+    ['scPending','scRejected','scApproved','scBanned'].forEach(id=

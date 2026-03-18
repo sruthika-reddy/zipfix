@@ -83,6 +83,21 @@
   /* Spinner overlay */
   .card-loading{opacity:0.6;pointer-events:none;}
   .spacer{height:30px;}
+  /* Rejection modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:999;display:none;align-items:flex-end;justify-content:center;}
+  .modal-overlay.show{display:flex;}
+  .modal-sheet{background:#fff;border-radius:28px 28px 0 0;padding:28px 22px 40px;width:100%;max-width:480px;}
+  .modal-sheet h3{font-size:18px;font-weight:900;margin-bottom:6px;}
+  .modal-sheet p{font-size:13px;color:#888;margin-bottom:18px;}
+  .reason-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+  .reason-chip{padding:11px 12px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;color:#555;}
+  .reason-chip.sel{border-color:#e74c3c;background:#fff0ee;color:#e74c3c;}
+  .reason-other{width:100%;padding:12px 14px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:12px;font-size:14px;color:#1a1a1a;outline:none;resize:none;font-family:'Segoe UI',sans-serif;margin-bottom:14px;transition:border-color 0.2s;}
+  .reason-other:focus{border-color:#e74c3c;}
+  .btn-confirm-reject{width:100%;padding:15px;background:#e74c3c;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:13px;cursor:pointer;}
+  .btn-confirm-reject:hover{background:#c0392b;}
+  .btn-cancel-modal{width:100%;padding:13px;background:#f5f5f5;color:#888;font-size:14px;font-weight:700;border:none;border-radius:13px;cursor:pointer;margin-top:8px;}
+  .reason-badge{display:inline-flex;align-items:center;gap:6px;background:#fff0ee;border:1px solid #e74c3c22;color:#e74c3c;border-radius:50px;padding:5px 12px;font-size:12px;font-weight:700;margin-top:8px;}
   /* Toast */
   .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:13px 24px;border-radius:50px;font-size:14px;font-weight:700;z-index:9999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.2);transition:opacity 0.3s;}
   .tg{background:#00b894;color:#fff;}
@@ -92,6 +107,25 @@
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <div class="toast" id="toast"></div>
+
+<!-- Rejection Reason Modal -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal-sheet">
+    <h3>❌ Reject Application</h3>
+    <p>Select a reason — this will be shown to the worker.</p>
+    <div class="reason-grid">
+      <div class="reason-chip" onclick="selectReason(this)">📷 Photo unclear</div>
+      <div class="reason-chip" onclick="selectReason(this)">📄 Invalid ID document</div>
+      <div class="reason-chip" onclick="selectReason(this)">📍 Area not covered</div>
+      <div class="reason-chip" onclick="selectReason(this)">🔧 Skill not needed</div>
+      <div class="reason-chip" onclick="selectReason(this)">⚠️ Incomplete information</div>
+      <div class="reason-chip" onclick="selectReason(this)">🔄 Duplicate application</div>
+    </div>
+    <textarea class="reason-other" id="otherReason" rows="2" placeholder="Or write a custom reason..."></textarea>
+    <button class="btn-confirm-reject" onclick="confirmReject()">Confirm Rejection</button>
+    <button class="btn-cancel-modal" onclick="closeRejectModal()">Cancel</button>
+  </div>
+</div>
 
 <nav class="navbar">
   <div class="nav-left">
@@ -285,8 +319,11 @@ function buildCard(w) {
       <div class="wc-grid">
         <div class="di">📞 Phone<strong>${esc(w.phone)}</strong></div>
         <div class="di">📍 Area<strong>${esc(w.area)}</strong></div>
+        <div class="di">💼 Experience<strong>${esc(w.experience)}</strong></div>
+        <div class="di">🪪 ${esc(w.id_type||'ID')}<strong>${esc(w.id_number)}</strong></div>
       </div>
-      <div class="sub-actions">
+      ${w.rejection_reason ? `<div class="reason-badge">💬 Reason: ${esc(w.rejection_reason)}</div>` : ''}
+      <div class="sub-actions" style="margin-top:12px">
         <div class="sb sb-rj">❌ Rejected</div>
         <button class="sm sm-reap" data-action="reapprove" data-id="${w.id}" data-name="${esc(w.name)}">↩ Re-Approve</button>
       </div>
@@ -333,7 +370,7 @@ function attachEvents() {
     }
 
     if (action === 'reject') {
-      await doReject(id, name, btn);
+      openRejectModal(id, name, phone);
       return;
     }
 
@@ -385,18 +422,56 @@ async function doApprove(id, name, phone, btn) {
   }
 }
 
-async function doReject(id, name, btn) {
+// Rejection modal state
+let rejectTarget = { id: null, name: '', phone: '' };
+let selectedReason = '';
+
+function openRejectModal(id, name, phone) {
+  rejectTarget = { id, name, phone };
+  selectedReason = '';
+  document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('sel'));
+  document.getElementById('otherReason').value = '';
+  document.getElementById('rejectModal').classList.add('show');
+}
+
+function closeRejectModal() {
+  document.getElementById('rejectModal').classList.remove('show');
+  rejectTarget = { id: null, name: '', phone: '' };
+}
+
+function selectReason(el) {
+  document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedReason = el.innerText.replace(/^[^\w]+/, '').trim();
+  document.getElementById('otherReason').value = '';
+}
+
+async function confirmReject() {
+  const customReason = document.getElementById('otherReason').value.trim();
+  const reason = customReason || selectedReason;
+  if (!reason) { toast('⚠️ Please select or enter a reason', 'to'); return; }
+
+  const { id, name } = rejectTarget;
+  closeRejectModal();
   setCardLoading(id, true);
   try {
-    const { error } = await db.from('workers').update({ status: 'rejected' }).eq('id', id);
+    const { error } = await db.from('workers')
+      .update({ status: 'rejected', rejection_reason: reason })
+      .eq('id', id);
     if (error) throw error;
-    toast('❌ ' + name + ' rejected', 'tr');
+    toast('❌ ' + name + ' rejected: ' + reason, 'tr');
     await load();
   } catch (e) {
     setCardLoading(id, false);
     toast('⚠️ Error: ' + e.message, 'tr');
   }
 }
+
+// Close modal on outside click
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('rejectModal');
+  if (e.target === modal) closeRejectModal();
+});
 
 async function doRevoke(id, name, btn) {
   setCardLoading(id, true);

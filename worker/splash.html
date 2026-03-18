@@ -20,7 +20,6 @@
 <div class="loader"><div class="lf"></div></div>
 <script>
   setTimeout(()=>{
-    if(localStorage.getItem('adminLoggedIn'))window.location.href='../admin/index.html';
     else if(localStorage.getItem('workerName')&&localStorage.getItem('workerId'))window.location.href='dashboard.html';
     else window.location.href='landing.html';
   },2400);

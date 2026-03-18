@@ -126,6 +126,7 @@
     }catch(e){}
   }
   loadStats();
+  checkDocRequest();
 
   let isOnline=false,pollTimer=null,countdownTimer=null,currentJobId=null,timeLeft=30;
 
@@ -219,5 +220,35 @@
       window.location.href='landing.html';
     }
   }
+  // Check if admin has requested document upload
+  async function checkDocRequest(){
+    try{
+      const{data}=await db.from('workers').select('doc_requested,doc_requested_at').eq('worker_id',workerId).single();
+      if(data&&data.doc_requested){
+        showDocAlert();
+      }
+    }catch(e){}
+  }
+
+  function showDocAlert(){
+    // Remove existing alert if any
+    const existing=document.getElementById('docAlertBanner');
+    if(existing)return;
+    const banner=document.createElement('div');
+    banner.id='docAlertBanner';
+    banner.style.cssText='background:#fff8e6;border:2px solid #f0c040;border-radius:16px;padding:16px 18px;margin:0 0 16px;display:flex;align-items:flex-start;gap:12px;';
+    banner.innerHTML=`
+      <div style="font-size:28px;flex-shrink:0">⚠️</div>
+      <div style="flex:1">
+        <div style="font-size:15px;font-weight:800;color:#886600;margin-bottom:4px">Action Required</div>
+        <div style="font-size:13px;color:#886600;line-height:1.6;margin-bottom:10px">Admin has requested you to upload your <strong>profile photo</strong> and <strong>ID document</strong> to complete verification.</div>
+        <button onclick="window.location.href='../worker/register.html'" style="padding:10px 20px;background:#e67e00;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;">📷 Upload Documents →</button>
+      </div>
+      <div style="font-size:20px;cursor:pointer;color:#aaa" onclick="this.parentElement.remove()">✕</div>
+    `;
+    const content=document.querySelector('.content');
+    if(content)content.insertBefore(banner,content.firstChild);
+  }
+
 </script>
 </body></html>

@@ -137,7 +137,7 @@
     <h3>🆘 Partner Support</h3>
     <div class="loc-opt" onclick="window.location.href='mailto:partners@zipfix.in'">
       <div class="lo-icon">✉️</div>
-      <div><div class="lo-title">Email Partner Support</div><div class="lo-sub">partners@zipfix.in</div></div>
+      <div><div class="lo-title">Email Partner Support</div><div class="lo-sub"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="176776656379726564576d7e67717e6f397e79">[email&#160;protected]</a></div></div>
     </div>
     <div class="loc-opt" onclick="openWA()">
       <div class="lo-icon">💬</div>
@@ -296,11 +296,13 @@
 
 <div class="spacer"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
 
   const wname=localStorage.getItem('workerName')||'';
+  // Read online state
+  const isOnline=localStorage.getItem('workerOnline')==='true';
   const wskill=localStorage.getItem('workerSkill')||'';
   const warea=localStorage.getItem('workerArea')||'';
   const wid=localStorage.getItem('workerId')||'';
@@ -309,6 +311,14 @@
   if(!wname||!wid){window.location.href='login.html';}
 
   // Init UI
+  // Update online/offline status display
+  if(isOnline){
+    document.getElementById('statusIcon').innerText='🟢';
+    document.getElementById('statusIcon').className='sc-icon online-icon';
+    document.getElementById('statusDot').className='status-dot dot-online';
+    document.getElementById('statusTitle').innerText='Currently Online';
+    document.getElementById('statusSub').innerText='You are receiving job requests';
+  }
   document.getElementById('avInit').innerText=wname?wname.charAt(0).toUpperCase():'?';
   document.getElementById('avName').innerText=wname||'—';
   document.getElementById('avSkill').innerText=(wskill||'—')+' · '+(warea||'—');
@@ -423,11 +433,4 @@
   function cm(id,e){if(e.target.id===id)document.getElementById(id).classList.remove('show');}
   function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
   function logoutWorker(){
-    if(confirm('Logout from ZipFix Partner?')){
-      ['workerName','workerSkill','workerArea','workerStatus','workerId','workerPhone','workerDbId'].forEach(k=>localStorage.removeItem(k));
-      window.location.href='landing.html';
-    }
-  }
-</script>
-</body>
-</html>
+    if(confirm('Logout from ZipFix Part

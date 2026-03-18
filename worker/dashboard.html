@@ -164,9 +164,17 @@
   checkDocRequest();
 
   let isOnline=false,pollTimer=null,countdownTimer=null,currentJobId=null,timeLeft=30;
+  // Restore online state from last session
+  if(localStorage.getItem('workerOnline')==='true'){
+    isOnline=true;
+    const sw=document.getElementById('toggleSwitch');
+    if(sw){sw.classList.add('on');document.getElementById('toggleTitle').innerText='You are Online ✅';document.getElementById('toggleSub').innerText='Receiving job requests';}
+    startPolling();
+  }
 
   function toggleOnline(){
     isOnline=!isOnline;
+    localStorage.setItem('workerOnline', isOnline?'true':'false');
     const sw=document.getElementById('toggleSwitch');
     if(isOnline){
       sw.classList.add('on');

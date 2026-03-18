@@ -1,435 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix — Subscription Plans</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ZipFix — Pro Plans</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background:#f5f5f5; color:#1a1a1a; min-height:100vh; }
-
-  .navbar { display:flex; align-items:center; gap:14px; padding:16px 20px; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.06); position:sticky; top:0; z-index:10; }
-  .back-btn { font-size:22px; color:#00b894; cursor:pointer; background:none; border:none; }
-  .navbar h3 { font-size:18px; font-weight:900; }
-
-  /* Hero */
-  .hero { background:linear-gradient(135deg,#1a1a2e,#16213e); padding:28px 22px 32px; text-align:center; }
-  .hero-badge { display:inline-block; background:rgba(0,184,148,0.2); color:#00b894; border:1px solid #00b89444; border-radius:50px; padding:6px 16px; font-size:12px; font-weight:800; margin-bottom:14px; }
-  .hero h1 { font-size:26px; font-weight:900; color:#fff; margin-bottom:8px; line-height:1.3; }
-  .hero h1 span { color:#00b894; }
-  .hero p { font-size:13px; color:#aaa; line-height:1.6; }
-
-  /* Active subscription card */
-  .active-sub { margin:20px; background:linear-gradient(135deg,#00b894,#009e7f); border-radius:20px; padding:20px 22px; display:none; }
-  .active-sub.show { display:block; }
-  .as-label { font-size:12px; color:rgba(255,255,255,0.7); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-  .as-plan  { font-size:22px; font-weight:900; color:#fff; margin-bottom:4px; }
-  .as-exp   { font-size:13px; color:rgba(255,255,255,0.8); margin-bottom:16px; }
-  .as-row   { display:flex; justify-content:space-between; align-items:center; }
-  .as-manage { background:rgba(255,255,255,0.2); color:#fff; border:1.5px solid rgba(255,255,255,0.4); padding:9px 18px; border-radius:10px; font-size:13px; font-weight:800; cursor:pointer; }
-  .as-cancel { color:rgba(255,255,255,0.6); font-size:12px; cursor:pointer; }
-
-  /* Billing toggle */
-  .billing-toggle { display:flex; align-items:center; justify-content:center; gap:0; margin:22px 20px 6px; background:#fff; border-radius:14px; padding:5px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .billing-btn { flex:1; padding:12px; border:none; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; background:transparent; color:#888; transition:all 0.2s; }
-  .billing-btn.active { background:#00b894; color:#fff; }
-  .save-badge { background:#e74c3c; color:#fff; font-size:10px; font-weight:900; padding:2px 7px; border-radius:50px; margin-left:6px; }
-
-  /* Plan cards */
-  .plans-wrap { padding:16px 20px 10px; display:flex; flex-direction:column; gap:14px; }
-
-  .plan-card { background:#fff; border-radius:20px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); border:2px solid transparent; position:relative; transition:border-color 0.2s; }
-  .plan-card.popular { border-color:#00b894; }
-  .popular-tag { position:absolute; top:0; right:0; background:#00b894; color:#fff; font-size:11px; font-weight:900; padding:6px 14px; border-radius:0 18px 0 14px; letter-spacing:0.5px; }
-
-  .plan-head { padding:20px 20px 16px; }
-  .plan-name  { font-size:20px; font-weight:900; margin-bottom:4px; }
-  .plan-tagline { font-size:12px; color:#888; margin-bottom:14px; }
-
-  .plan-price { display:flex; align-items:flex-end; gap:4px; margin-bottom:4px; }
-  .price-amt  { font-size:34px; font-weight:900; color:#00b894; line-height:1; }
-  .price-unit { font-size:13px; color:#888; margin-bottom:6px; }
-  .price-orig { font-size:13px; color:#aaa; text-decoration:line-through; margin-left:4px; margin-bottom:6px; }
-  .price-save { font-size:12px; color:#e74c3c; font-weight:800; margin-top:2px; }
-
-  .plan-divider { height:1px; background:#f0f0f0; margin:0 20px; }
-
-  .plan-features { padding:16px 20px 20px; }
-  .feat { display:flex; align-items:center; gap:10px; padding:7px 0; font-size:14px; color:#444; border-bottom:1px solid #f8f8f8; }
-  .feat:last-child { border-bottom:none; }
-  .feat-icon { width:22px; text-align:center; font-size:14px; flex-shrink:0; }
-  .feat .x { color:#e74c3c; }
-
-  .plan-btn { display:block; width:calc(100% - 40px); margin:0 20px 20px; padding:16px; font-size:15px; font-weight:900; border:none; border-radius:14px; cursor:pointer; transition:all 0.2s; }
-  .plan-btn.primary   { background:#00b894; color:#fff; }
-  .plan-btn.primary:hover { background:#009e7f; }
-  .plan-btn.outline   { background:#fff; color:#00b894; border:2px solid #00b894; }
-  .plan-btn.outline:hover { background:#e8f8f4; }
-  .plan-btn.disabled  { background:#f0f0f0; color:#aaa; cursor:not-allowed; }
-
-  /* Compare table */
-  .compare-section { padding:24px 20px 10px; }
-  .compare-section h3 { font-size:17px; font-weight:900; margin-bottom:14px; }
-  .compare-table { background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .ct-head { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; background:#1a1a2e; padding:12px 14px; }
-  .ct-head span { font-size:11px; font-weight:800; color:#fff; text-align:center; }
-  .ct-head span:first-child { text-align:left; color:#aaa; }
-  .ct-row { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:12px 14px; border-bottom:1px solid #f5f5f5; align-items:center; }
-  .ct-row:last-child { border-bottom:none; }
-  .ct-row span { font-size:12px; text-align:center; }
-  .ct-row span:first-child { text-align:left; color:#555; font-weight:600; }
-  .check-g { color:#00b894; font-size:16px; }
-  .check-r { color:#e74c3c; font-size:14px; }
-
-  /* FAQ */
-  .faq-section { padding:24px 20px 10px; }
-  .faq-section h3 { font-size:17px; font-weight:900; margin-bottom:12px; }
-  .faq-item { background:#fff; border-radius:14px; padding:16px 18px; margin-bottom:10px; cursor:pointer; }
-  .faq-q { display:flex; justify-content:space-between; align-items:center; font-size:14px; font-weight:700; }
-  .faq-a { font-size:13px; color:#888; margin-top:10px; line-height:1.6; display:none; }
-  .faq-item.open .faq-a { display:block; }
-  .faq-item.open .faq-arrow { transform:rotate(180deg); }
-  .faq-arrow { transition:transform 0.2s; color:#aaa; }
-
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;align-items:center;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .back-btn{font-size:22px;color:#00b894;cursor:pointer;background:none;border:none;margin-right:14px;}
+  .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .hero{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:28px 20px;text-align:center;}
+  .hero h1{font-size:24px;font-weight:900;color:#fff;margin-bottom:8px;}
+  .hero p{font-size:13px;color:rgba(255,255,255,0.7);max-width:300px;margin:0 auto;}
+  .billing-tabs{display:flex;gap:8px;padding:18px 20px;background:#fff;justify-content:center;}
+  .btab{flex:1;max-width:160px;padding:11px;border:2px solid #e0e0e0;border-radius:12px;text-align:center;cursor:pointer;font-size:14px;font-weight:700;color:#888;transition:all 0.2s;}
+  .btab.active{border-color:#00b894;color:#00b894;background:#e8f8f4;}
+  .save-badge{font-size:11px;font-weight:900;background:#00b894;color:#fff;padding:2px 8px;border-radius:50px;margin-left:6px;}
+  .plans{padding:16px 20px;}
+  .plan-card{background:#fff;border-radius:20px;padding:22px 20px;margin-bottom:14px;border:2px solid #e0e0e0;cursor:pointer;transition:all 0.2s;position:relative;}
+  .plan-card.popular{border-color:#00b894;}
+  .plan-card.selected{border-color:#00b894;background:#f0fdf8;}
+  .popular-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#00b894;color:#fff;font-size:11px;font-weight:900;padding:4px 14px;border-radius:50px;white-space:nowrap;}
+  .plan-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .plan-name{font-size:18px;font-weight:900;}
+  .plan-price{text-align:right;}
+  .plan-price .amount{font-size:26px;font-weight:900;color:#00b894;}
+  .plan-price .period{font-size:12px;color:#888;}
+  .plan-features{list-style:none;margin-bottom:14px;}
+  .plan-features li{font-size:13px;color:#555;padding:5px 0;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f5f5;}
+  .plan-features li:last-child{border-bottom:none;}
+  .select-btn{width:100%;padding:13px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;border:2px solid #00b894;color:#00b894;background:#fff;transition:all 0.2s;}
+  .plan-card.selected .select-btn,.plan-card.popular .select-btn{background:#00b894;color:#fff;}
+  /* Active plan banner */
+  .active-banner{background:linear-gradient(135deg,#00b894,#009e7f);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin:0 20px 16px;border-radius:16px;}
+  .ab-left h4{font-size:14px;font-weight:900;color:#fff;margin-bottom:3px;}
+  .ab-left p{font-size:12px;color:rgba(255,255,255,0.8);}
+  .ab-right{background:rgba(255,255,255,0.2);color:#fff;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;}
   /* Payment modal */
-  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; display:none; align-items:flex-end; justify-content:center; }
-  .modal-overlay.show { display:flex; }
-  .modal-sheet { background:#fff; border-radius:28px 28px 0 0; padding:28px 22px 40px; width:100%; max-width:480px; }
-  .modal-sheet h3 { font-size:20px; font-weight:900; margin-bottom:6px; }
-  .modal-sheet p  { font-size:13px; color:#888; margin-bottom:20px; }
-  .modal-plan-badge { display:inline-flex; align-items:center; gap:8px; background:#e8f8f4; color:#00b894; border:1px solid #00b89433; border-radius:12px; padding:10px 16px; margin-bottom:20px; font-weight:800; font-size:14px; }
-  .method-row { display:flex; align-items:center; gap:12px; padding:14px 16px; background:#f8f8f8; border-radius:14px; margin-bottom:10px; cursor:pointer; border:2px solid transparent; transition:border-color 0.2s; }
-  .method-row.selected { border-color:#00b894; background:#e8f8f4; }
-  .method-row h5 { font-size:14px; font-weight:800; }
-  .method-row p  { font-size:12px; color:#888; }
-  .method-check { margin-left:auto; width:22px; height:22px; border-radius:50%; border:2px solid #ccc; display:flex; align-items:center; justify-content:center; font-size:11px; }
-  .method-row.selected .method-check { background:#00b894; border-color:#00b894; color:#fff; }
-  .modal-btn { width:100%; padding:18px; background:#00b894; color:#fff; font-size:17px; font-weight:900; border:none; border-radius:14px; cursor:pointer; margin-top:16px; }
-  .modal-close { width:100%; padding:14px; background:#f5f5f5; color:#888; font-size:14px; font-weight:700; border:none; border-radius:14px; cursor:pointer; margin-top:10px; }
-
-  .spacer { height:40px; }
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:none;align-items:flex-end;justify-content:center;}
+  .overlay.show{display:flex;}
+  .sheet{background:#fff;border-radius:28px 28px 0 0;padding:26px 22px 40px;width:100%;max-width:480px;}
+  .sheet h3{font-size:18px;font-weight:900;margin-bottom:4px;}
+  .sheet .sub{font-size:13px;color:#888;margin-bottom:20px;}
+  .pay-summary{background:#f5f5f5;border-radius:14px;padding:14px 16px;margin-bottom:18px;}
+  .pay-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;}
+  .pay-row.total{font-size:17px;font-weight:900;border-top:1px solid #e0e0e0;padding-top:10px;margin-top:6px;}
+  .pay-row.total span:last-child{color:#00b894;}
+  .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+  .method-card{border:2px solid #e0e0e0;border-radius:13px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 0.2s;}
+  .method-card.sel{border-color:#00b894;background:#e8f8f4;}
+  .method-card .mc-icon{font-size:22px;margin-bottom:5px;}
+  .method-card .mc-name{font-size:13px;font-weight:700;}
+  .pay-btn{width:100%;padding:16px;background:#00b894;color:#fff;font-size:16px;font-weight:800;border:none;border-radius:14px;cursor:pointer;transition:background 0.2s;}
+  .pay-btn:hover{background:#009e7f;}
+  .pay-btn:disabled{background:#ccc;cursor:not-allowed;}
+  .close-btn{width:100%;padding:13px;background:#f5f5f5;color:#888;font-size:14px;font-weight:700;border:none;border-radius:14px;cursor:pointer;margin-top:8px;}
+  .faq{padding:0 20px 20px;}
+  .faq h3{font-size:15px;font-weight:900;margin-bottom:12px;}
+  .faq-item{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;}
+  .faq-q{font-size:14px;font-weight:700;margin-bottom:4px;}
+  .faq-a{font-size:13px;color:#888;line-height:1.6;}
+  .spacer{height:30px;}
+  .bottom-nav{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:12px 0 16px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);z-index:100;}
+  .nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:10px;color:#aaa;gap:3px;}
+  .nav-item.active{color:#00b894;}
+  .nav-icon{font-size:22px;}
+  .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;display:none;white-space:nowrap;}
 </style>
 
 <!-- Payment Modal -->
-<div class="modal-overlay" id="payModal" onclick="closeModal(event)">
-  <div class="modal-sheet">
-    <h3>Subscribe to ZipFix</h3>
-    <p>Choose your payment method to activate your plan.</p>
-    <div class="modal-plan-badge" id="modalPlanBadge">⭐ Basic — ₹299/month</div>
-    <div class="method-row selected" id="m-upi" onclick="selMethod('upi')">
-      <span style="font-size:24px">📱</span>
-      <div><h5>UPI</h5><p>GPay, PhonePe, Paytm</p></div>
-      <div class="method-check">✓</div>
+<div class="overlay" id="payModal" onclick="if(event.target.id==='payModal')closeModal()">
+  <div class="sheet">
+    <h3>Complete Payment</h3>
+    <p class="sub" id="modalDesc">—</p>
+    <div class="pay-summary">
+      <div class="pay-row"><span>Plan</span><span id="modalPlan">—</span></div>
+      <div class="pay-row"><span>Billing</span><span id="modalBilling">—</span></div>
+      <div class="pay-row total"><span>Total</span><span id="modalTotal">₹—</span></div>
     </div>
-    <div class="method-row" id="m-card" onclick="selMethod('card')">
-      <span style="font-size:24px">💳</span>
-      <div><h5>Credit / Debit Card</h5><p>Visa, Mastercard, RuPay</p></div>
-      <div class="method-check"></div>
+    <div class="method-grid">
+      <div class="method-card sel" id="m-upi" onclick="selMethod('upi')">
+        <div class="mc-icon">📱</div><div class="mc-name">UPI</div>
+      </div>
+      <div class="method-card" id="m-card" onclick="selMethod('card')">
+        <div class="mc-icon">💳</div><div class="mc-name">Card</div>
+      </div>
+      <div class="method-card" id="m-nb" onclick="selMethod('nb')">
+        <div class="mc-icon">🏦</div><div class="mc-name">Net Banking</div>
+      </div>
+      <div class="method-card" id="m-manual" onclick="selMethod('manual')">
+        <div class="mc-icon">💵</div><div class="mc-name">Manual/Cash</div>
+      </div>
     </div>
-    <div class="method-row" id="m-manual" onclick="selMethod('manual')">
-      <span style="font-size:24px">🏦</span>
-      <div><h5>Manual / Bank Transfer</h5><p>Admin will verify & activate</p></div>
-      <div class="method-check"></div>
-    </div>
-    <button class="modal-btn" onclick="confirmPayment()">Activate Plan →</button>
-    <button class="modal-close" onclick="document.getElementById('payModal').classList.remove('show')">Cancel</button>
+    <button class="pay-btn" id="payBtn" onclick="processPayment()">Pay Now</button>
+    <button class="close-btn" onclick="closeModal()">Cancel</button>
   </div>
 </div>
 
-<!-- Navbar -->
+<div class="toast" id="toast"></div>
+
 <nav class="navbar">
   <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
-  <h3>ZipFix Plans ⭐</h3>
+  <div class="logo">ZIPFIX</div>
 </nav>
 
-<!-- Hero -->
 <div class="hero">
-  <div class="hero-badge">⭐ Subscription Plans</div>
-  <h1>More savings.<br/><span>Every service.</span></h1>
-  <p>Subscribe and get priority booking, discounts, and unlimited services — all in one plan.</p>
+  <h1>⭐ ZipFix Pro Plans</h1>
+  <p>Save on every booking with a subscription. The more you book, the more you save.</p>
 </div>
 
-<!-- Active subscription -->
-<div class="active-sub" id="activeSubCard">
-  <div class="as-label">Your Current Plan</div>
-  <div class="as-plan" id="asName">Basic</div>
-  <div class="as-exp"  id="asExp">Expires —</div>
-  <div class="as-row">
-    <button class="as-manage" onclick="upgradePlan()">⬆ Upgrade</button>
-    <span class="as-cancel" onclick="cancelSub()">Cancel Plan</span>
+<div class="billing-tabs">
+  <div class="btab active" id="tab-monthly" onclick="setBilling('monthly',this)">Monthly</div>
+  <div class="btab" id="tab-quarterly" onclick="setBilling('quarterly',this)">Quarterly <span class="save-badge">Save 20%</span></div>
+</div>
+
+<!-- Active plan banner (shown if already subscribed) -->
+<div class="active-banner" id="activeBanner" style="display:none">
+  <div class="ab-left">
+    <h4 id="activePlanName">⭐ Standard Plan Active</h4>
+    <p id="activePlanExp">Valid until —</p>
   </div>
+  <div class="ab-right" onclick="showToast('Contact support to cancel your plan')">Manage</div>
 </div>
 
-<!-- Billing Toggle -->
-<div class="billing-toggle">
-  <button class="billing-btn active" id="btn-monthly" onclick="setBilling('monthly')">Monthly</button>
-  <button class="billing-btn" id="btn-quarterly" onclick="setBilling('quarterly')">Quarterly <span class="save-badge">Save 25%</span></button>
-</div>
+<div class="plans" id="plansContainer"></div>
 
-<!-- Plan Cards -->
-<div class="plans-wrap" id="plansWrap"></div>
-
-<!-- Compare Table -->
-<div class="compare-section">
-  <h3>Compare Plans</h3>
-  <div class="compare-table">
-    <div class="ct-head">
-      <span>Feature</span>
-      <span>Basic</span>
-      <span>Standard</span>
-      <span>Premium</span>
-    </div>
-    <div class="ct-row"><span>Services/month</span><span>2</span><span>5</span><span>∞</span></div>
-    <div class="ct-row"><span>Priority booking</span><span class="check-r">✕</span><span class="check-g">✓</span><span class="check-g">✓</span></div>
-    <div class="ct-row"><span>Discount on service</span><span>10%</span><span>20%</span><span>30%</span></div>
-    <div class="ct-row"><span>Schedule bookings</span><span class="check-g">✓</span><span class="check-g">✓</span><span class="check-g">✓</span></div>
-    <div class="ct-row"><span>Dedicated support</span><span class="check-r">✕</span><span class="check-r">✕</span><span class="check-g">✓</span></div>
-    <div class="ct-row"><span>Free follow-up visits</span><span class="check-r">✕</span><span>1/month</span><span>Unlimited</span></div>
-    <div class="ct-row"><span>Emergency priority</span><span class="check-r">✕</span><span class="check-g">✓</span><span class="check-g">✓</span></div>
-  </div>
-</div>
-
-<!-- FAQ -->
-<div class="faq-section">
+<div class="faq">
   <h3>Frequently Asked Questions</h3>
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-q">Can I cancel anytime? <span class="faq-arrow">▾</span></div>
-    <div class="faq-a">Yes! You can cancel your subscription anytime from your profile. Your plan remains active until the end of the billing period.</div>
-  </div>
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-q">How does the discount work? <span class="faq-arrow">▾</span></div>
-    <div class="faq-a">Your plan discount is automatically applied at checkout when you book any service. No coupon codes needed.</div>
-  </div>
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-q">What if I use more than my plan limit? <span class="faq-arrow">▾</span></div>
-    <div class="faq-a">For Basic (2/month) and Standard (5/month), additional services beyond your limit are charged at the regular rate with no discount.</div>
-  </div>
-  <div class="faq-item" onclick="toggleFaq(this)">
-    <div class="faq-q">How do I pay for quarterly plans? <span class="faq-arrow">▾</span></div>
-    <div class="faq-a">Quarterly plans are a one-time payment for 3 months. You save 25% compared to monthly billing.</div>
-  </div>
+  <div class="faq-item"><div class="faq-q">When does my plan activate?</div><div class="faq-a">Your plan activates immediately after payment is confirmed by our team (usually within 1 hour).</div></div>
+  <div class="faq-item"><div class="faq-q">Can I cancel anytime?</div><div class="faq-a">Yes. Contact support@zipfix.in to cancel. Remaining balance will not be refunded.</div></div>
+  <div class="faq-item"><div class="faq-q">How is the discount applied?</div><div class="faq-a">Your discount is automatically applied at checkout when you book any service.</div></div>
 </div>
 
 <div class="spacer"></div>
+<nav class="bottom-nav">
+  <div class="nav-item" onclick="window.location.href='dashboard.html'"><div class="nav-icon">🏠</div><div>Home</div></div>
+  <div class="nav-item" onclick="window.location.href='bookings.html'"><div class="nav-icon">📋</div><div>Bookings</div></div>
+  <div class="nav-item active"><div class="nav-icon">⭐</div><div>Plans</div></div>
+  <div class="nav-item" onclick="window.location.href='track.html'"><div class="nav-icon">📍</div><div>Track</div></div>
+  <div class="nav-item" onclick="window.location.href='profile.html'"><div class="nav-icon">👤</div><div>Profile</div></div>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  if (!localStorage.getItem('phoneNumber')) { window.location.href = 'login.html'; }
+  if(!localStorage.getItem('phoneNumber')){window.location.href='login.html';}
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
 
-  const db = supabase.createClient(
-    'https://wenvdgvyuhqdiktetvfj.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
-  );
-
-  // ── Plans data ──────────────────────────────────────────
-  const plans = {
-    basic: {
-      name:'Basic', tagline:'Perfect for occasional needs',
-      monthly:299, quarterly:799,
-      savedMonthly:0, savedQuarterly:98,
-      origQuarterly:897,
-      color:'#555',
-      services:'2 services/month',
-      features:[
-        { icon:'✅', text:'2 services per month' },
-        { icon:'✅', text:'10% discount on all bookings' },
-        { icon:'✅', text:'Schedule bookings in advance' },
-        { icon:'✅', text:'24/7 emergency booking' },
-        { icon:'❌', text:'Priority booking' },
-        { icon:'❌', text:'Dedicated support' },
-      ]
-    },
-    standard: {
-      name:'Standard', tagline:'Most popular for regular use',
-      monthly:599, quarterly:1599,
-      savedMonthly:0, savedQuarterly:198,
-      origQuarterly:1797,
-      color:'#00b894',
-      services:'5 services/month',
-      popular:true,
-      features:[
-        { icon:'✅', text:'5 services per month' },
-        { icon:'✅', text:'20% discount on all bookings' },
-        { icon:'✅', text:'Priority booking (faster match)' },
-        { icon:'✅', text:'Schedule bookings in advance' },
-        { icon:'✅', text:'1 free follow-up visit/month' },
-        { icon:'✅', text:'Emergency priority queue' },
-      ]
-    },
-    premium: {
-      name:'Premium', tagline:'Unlimited — for power users',
-      monthly:999, quarterly:2599,
-      savedMonthly:0, savedQuarterly:398,
-      origQuarterly:2997,
-      color:'#8b5cf6',
-      services:'Unlimited services',
-      features:[
-        { icon:'✅', text:'Unlimited services per month' },
-        { icon:'✅', text:'30% discount on all bookings' },
-        { icon:'✅', text:'Top priority — fastest response' },
-        { icon:'✅', text:'Dedicated customer support' },
-        { icon:'✅', text:'Unlimited free follow-up visits' },
-        { icon:'✅', text:'Emergency top priority queue' },
-      ]
-    }
+  const PLANS = {
+    basic:    { name:'Basic',    icon:'🟤', discount:'10%', monthly:299,  quarterly:799,  features:['10% off all services','Priority booking','Email support','Valid for 1 month'] },
+    standard: { name:'Standard', icon:'⭐', discount:'20%', monthly:599,  quarterly:1599, features:['20% off all services','Priority booking','WhatsApp support','1 free emergency call/month'] },
+    premium:  { name:'Premium',  icon:'💎', discount:'30%', monthly:999,  quarterly:2599, features:['30% off all services','VIP priority booking','Dedicated support line','2 free emergency calls/month','Free annual inspection'] },
   };
 
-  let billing = 'monthly';
-  let selectedPlan = null, selectedMethod = 'upi';
+  let billing='monthly', selectedPlan=null, selectedMethod='upi';
 
-  // ── Show active sub ─────────────────────────────────────
-  const subPlan = localStorage.getItem('subscriptionPlan');
-  const subExp  = localStorage.getItem('subscriptionExpiry');
-  const subBill = localStorage.getItem('subscriptionBilling');
-  if (subPlan && subExp && new Date(subExp) > new Date()) {
-    document.getElementById('activeSubCard').classList.add('show');
-    document.getElementById('asName').innerText = subPlan.charAt(0).toUpperCase() + subPlan.slice(1) + ' Plan — ' + (subBill||'Monthly');
-    document.getElementById('asExp').innerText  = 'Active until ' + new Date(subExp).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-  }
-
-  // ── Billing toggle ──────────────────────────────────────
-  function setBilling(b) {
-    billing = b;
-    document.getElementById('btn-monthly').classList.toggle('active', b==='monthly');
-    document.getElementById('btn-quarterly').classList.toggle('active', b==='quarterly');
+  function setBilling(b,el){
+    billing=b;
+    document.querySelectorAll('.btab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
     renderPlans();
   }
 
-  // ── Render plans ────────────────────────────────────────
-  function renderPlans() {
-    const currentPlan = localStorage.getItem('subscriptionPlan');
-    const html = Object.keys(plans).map(key => {
-      const p = plans[key];
-      const price = billing==='monthly' ? p.monthly : p.quarterly;
-      const unit  = billing==='monthly' ? '/month' : '/quarter';
-      const orig  = billing==='quarterly' ? `<span class="price-orig">₹${p.origQuarterly}</span>` : '';
-      const saved = billing==='quarterly' ? `<div class="price-save">💚 Save ₹${p.savedQuarterly}</div>` : '';
-      const isCurrent = currentPlan === key && subExp && new Date(subExp) > new Date();
-      const btnText = isCurrent ? '✅ Current Plan' : 'Subscribe →';
-      const btnClass = isCurrent ? 'plan-btn disabled' : key==='standard' ? 'plan-btn primary' : 'plan-btn outline';
-      const btnClick = isCurrent ? '' : `onclick="openPayModal('${key}')"`;
-
-      return `
-        <div class="plan-card${p.popular?' popular':''}">
-          ${p.popular ? '<div class="popular-tag">MOST POPULAR</div>' : ''}
-          <div class="plan-head">
-            <div class="plan-name" style="color:${p.color}">${p.name}</div>
-            <div class="plan-tagline">${p.tagline}</div>
-            <div class="plan-price">
-              <div class="price-amt">₹${price}</div>
-              <div class="price-unit">${unit}</div>
-              ${orig}
-            </div>
-            ${saved}
-          </div>
-          <div class="plan-divider"></div>
-          <div class="plan-features">
-            ${p.features.map(f=>`<div class="feat"><div class="feat-icon">${f.icon}</div>${f.text}</div>`).join('')}
-          </div>
-          <button class="${btnClass}" ${btnClick}>${btnText}</button>
-        </div>`;
+  function renderPlans(){
+    const c=document.getElementById('plansContainer');
+    c.innerHTML=Object.entries(PLANS).map(([key,p])=>{
+      const price=billing==='quarterly'?p.quarterly:p.monthly;
+      const period=billing==='quarterly'?'/quarter':'/month';
+      const isPopular=key==='standard';
+      return `<div class="plan-card${isPopular?' popular':''}" onclick="selectPlan('${key}',${price})">
+        ${isPopular?'<div class="popular-tag">⭐ Most Popular</div>':''}
+        <div class="plan-top">
+          <div class="plan-name">${p.icon} ${p.name}</div>
+          <div class="plan-price"><div class="amount">₹${price}</div><div class="period">${period}</div></div>
+        </div>
+        <ul class="plan-features">${p.features.map(f=>`<li>✅ ${f}</li>`).join('')}</ul>
+        <div style="font-size:13px;font-weight:800;color:#00b894;margin-bottom:12px">Save ${p.discount} on every booking</div>
+        <button class="select-btn">Choose ${p.name} →</button>
+      </div>`;
     }).join('');
-    document.getElementById('plansWrap').innerHTML = html;
   }
 
-  // ── Payment modal ───────────────────────────────────────
-  function openPayModal(planKey) {
-    selectedPlan = planKey;
-    const p = plans[planKey];
-    const price = billing==='monthly' ? p.monthly : p.quarterly;
-    const period = billing==='monthly' ? 'month' : 'quarter';
-    document.getElementById('modalPlanBadge').innerText = `⭐ ${p.name} — ₹${price}/${period}`;
-    selMethod('upi');
+  function selectPlan(key,price){
+    selectedPlan={key,price};
+    const p=PLANS[key];
+    document.getElementById('modalDesc').innerText=p.icon+' '+p.name+' Plan — '+p.discount+' off all services';
+    document.getElementById('modalPlan').innerText=p.name;
+    document.getElementById('modalBilling').innerText=billing==='quarterly'?'Quarterly':'Monthly';
+    document.getElementById('modalTotal').innerText='₹'+price;
     document.getElementById('payModal').classList.add('show');
   }
 
-  function closeModal(e) {
-    if (e.target === document.getElementById('payModal')) document.getElementById('payModal').classList.remove('show');
+  function selMethod(m){
+    selectedMethod=m;
+    document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('sel'));
+    document.getElementById('m-'+m).classList.add('sel');
   }
 
-  function selMethod(m) {
-    selectedMethod = m;
-    ['upi','card','manual'].forEach(id => {
-      const el = document.getElementById('m-'+id);
-      el.classList.remove('selected');
-      el.querySelector('.method-check').innerText = '';
-    });
-    const sel = document.getElementById('m-'+m);
-    sel.classList.add('selected');
-    sel.querySelector('.method-check').innerText = '✓';
-  }
+  function closeModal(){document.getElementById('payModal').classList.remove('show');}
 
-  async function confirmPayment() {
-    if (!selectedPlan) return;
-    const p = plans[selectedPlan];
-    const price  = billing==='monthly' ? p.monthly : p.quarterly;
-    const months = billing==='monthly' ? 1 : 3;
-    const expiry = new Date();
-    expiry.setMonth(expiry.getMonth() + months);
+  async function processPayment(){
+    if(!selectedPlan)return;
+    const btn=document.getElementById('payBtn');
+    btn.disabled=true;btn.innerText='Processing...';
 
-    if (selectedMethod === 'manual') {
-      // Manual payment — pending admin approval
-      try {
-        await db.from('subscriptions').insert([{
-          customer_phone: '+91' + localStorage.getItem('phoneNumber'),
-          customer_name:  localStorage.getItem('userName') || '',
-          plan:           selectedPlan,
-          billing,
-          amount:         price,
-          status:         'pending',
-          expires_at:     expiry.toISOString(),
-        }]);
-      } catch(e) { console.warn(e); }
-      document.getElementById('payModal').classList.remove('show');
-      alert('📋 Request submitted!\nOur team will verify your payment and activate your plan within 2 hours.\n\nPlease transfer ₹' + price + ' to:\nUPI: zipfix@upi\nAccount: 1234567890\nIFSC: ZIPF0001234');
-      return;
-    }
+    const phone=localStorage.getItem('phoneNumber');
+    const name=localStorage.getItem('userName');
+    const months=billing==='quarterly'?3:1;
+    const expiry=new Date();expiry.setMonth(expiry.getMonth()+months);
+    const methodLabels={upi:'UPI',card:'Credit/Debit Card',nb:'Net Banking',manual:'Manual/Cash'};
 
-    // UPI / Card — simulate payment (replace with Razorpay)
-    document.getElementById('payModal').classList.remove('show');
-    // Save subscription to localStorage
-    localStorage.setItem('subscriptionPlan',    selectedPlan);
-    localStorage.setItem('subscriptionBilling', billing);
-    localStorage.setItem('subscriptionExpiry',  expiry.toISOString());
-    localStorage.setItem('subscriptionAmount',  price);
-
-    // Save to Supabase
-    try {
+    try{
       await db.from('subscriptions').insert([{
-        customer_phone: '+91' + localStorage.getItem('phoneNumber'),
-        customer_name:  localStorage.getItem('userName') || '',
-        plan:           selectedPlan,
-        billing,
-        amount:         price,
-        status:         'active',
-        expires_at:     expiry.toISOString(),
+        customer_phone:'+91'+phone,
+        customer_name:name||'',
+        plan:selectedPlan.key,
+        billing:billing,
+        amount:selectedPlan.price,
+        status:selectedMethod==='manual'?'pending':'pending',
+        payment_method:methodLabels[selectedMethod]||selectedMethod,
+        expires_at:expiry.toISOString(),
       }]);
-    } catch(e) { console.warn('Supabase sub save:', e); }
 
-    alert(`✅ Subscribed to ZipFix ${p.name}!\n\nPlan: ${p.name} (${billing})\nAmount: ₹${price}\nValid until: ${expiry.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})}\n\nEnjoy your ${p.services}! 🎉`);
-    window.location.reload();
+      // Save to localStorage for immediate discount
+      localStorage.setItem('subscriptionPlan',selectedPlan.key);
+      localStorage.setItem('subscriptionBilling',billing);
+      localStorage.setItem('subscriptionExpiry',expiry.toISOString());
+      localStorage.setItem('subscriptionAmount',selectedPlan.price);
+
+      closeModal();
+      btn.disabled=false;btn.innerText='Pay Now';
+
+      if(selectedMethod==='manual'){
+        showToast('✅ Request submitted! Admin will activate your plan shortly.');
+      } else {
+        showToast('✅ Subscription submitted! Activating shortly...');
+      }
+
+      // Show active banner
+      showActiveBanner();
+
+    }catch(e){
+      btn.disabled=false;btn.innerText='Pay Now';
+      showToast('⚠️ Error: '+e.message);
+    }
   }
 
-  function toggleFaq(el) { el.classList.toggle('open'); }
-
-  function upgradePlan() {
-    document.getElementById('activeSubCard').classList.remove('show');
-    document.getElementById('plansWrap').scrollIntoView({ behavior:'smooth' });
+  function showActiveBanner(){
+    const sp=localStorage.getItem('subscriptionPlan');
+    const se=localStorage.getItem('subscriptionExpiry');
+    if(sp&&se){
+      const p=PLANS[sp];
+      document.getElementById('activeBanner').style.display='flex';
+      document.getElementById('activePlanName').innerText=(p?p.icon+' '+p.name:'Pro')+' Plan Active';
+      document.getElementById('activePlanExp').innerText='Until '+new Date(se).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+    }
   }
 
-  function cancelSub() {
-    if (!confirm('Cancel your subscription? Your plan stays active until expiry.')) return;
-    localStorage.removeItem('subscriptionPlan');
-    localStorage.removeItem('subscriptionBilling');
-    localStorage.removeItem('subscriptionExpiry');
-    localStorage.removeItem('subscriptionAmount');
-    alert('✅ Subscription cancelled. You can re-subscribe anytime.');
-    window.location.reload();
-  }
+  function showToast(msg){const t=document.getElementById('toast');t.innerText=msg;t.style.display='block';setTimeout(()=>t.style.display='none',4000);}
 
+  // Init
   renderPlans();
+  showActiveBanner();
 </script>
 </body>
 </html>

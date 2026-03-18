@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>ZipFix Partner — Login</title></head>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ZipFix Partner — Login</title>
+</head>
 <body>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
@@ -21,23 +25,27 @@
   .btn:disabled{background:#ccc;cursor:not-allowed;}
   .link-row{font-size:14px;color:#888;}
   .link-row span{color:#00b894;font-weight:700;cursor:pointer;}
-  .status-card{display:none;border-radius:20px;padding:26px 20px;margin-top:10px;text-align:center;}
-  .sc-pending{background:#fff8e6;border:2px solid #f0c040;}
-  .sc-rejected,.sc-banned{background:#fff0ee;border:2px solid #e74c3c;}
-  .sc-approved{background:#e8f8f4;border:2px solid #00b894;}
+  .scard{display:none;border-radius:20px;padding:26px 20px;margin-top:10px;text-align:center;}
+  .sc-p{background:#fff8e6;border:2px solid #f0c040;}
+  .sc-r{background:#fff0ee;border:2px solid #e74c3c;}
+  .sc-a{background:#e8f8f4;border:2px solid #00b894;}
+  .sc-b{background:#fff0ee;border:2px solid #e74c3c;}
   .s-icon{font-size:44px;margin-bottom:12px;}
-  .status-card h3{font-size:19px;font-weight:900;margin-bottom:8px;}
-  .sc-pending h3{color:#e67e00;}
-  .sc-rejected h3,.sc-banned h3{color:#e74c3c;}
-  .sc-approved h3{color:#00b894;}
-  .status-card p{font-size:13px;color:#888;line-height:1.6;margin-bottom:14px;}
+  .scard h3{font-size:19px;font-weight:900;margin-bottom:8px;}
+  .sc-p h3{color:#e67e00;} .sc-r h3,.sc-b h3{color:#e74c3c;} .sc-a h3{color:#00b894;}
+  .scard p{font-size:13px;color:#888;line-height:1.6;margin-bottom:14px;}
+  .reason-box{background:#fff;border-radius:12px;padding:14px 16px;margin:0 0 14px;border-left:4px solid #e74c3c;text-align:left;}
+  .reason-box .rl{font-size:11px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+  .reason-box .rv{font-size:14px;font-weight:700;color:#e74c3c;line-height:1.5;}
   .wid-box{background:#fff;border-radius:14px;padding:14px 18px;margin-bottom:16px;border:2px dashed #00b894;}
   .wid-lbl{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
   .wid-val{font-size:28px;font-weight:900;color:#00b894;letter-spacing:4px;}
-  .btn-go{width:100%;padding:15px;background:#00b894;color:#fff;font-size:15px;font-weight:900;border:none;border-radius:14px;cursor:pointer;margin-bottom:10px;}
-  .btn-back{background:none;border:none;color:#aaa;font-size:13px;cursor:pointer;}
+  .btn-go{width:100%;padding:15px;background:#00b894;color:#fff;font-size:15px;font-weight:900;border:none;border-radius:14px;cursor:pointer;margin-bottom:10px;transition:background 0.2s;}
+  .btn-go:hover{background:#009e7f;}
+  .btn-back{background:none;border:none;color:#aaa;font-size:13px;cursor:pointer;text-decoration:underline;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <div class="box">
   <div id="phoneSection">
     <div class="logo">ZIPFIX</div>
@@ -52,85 +60,153 @@
     <button class="btn" id="checkBtn" onclick="checkStatus()">Check Status</button>
     <p class="link-row">New partner? <span onclick="window.location.href='register.html'">Apply Now</span></p>
   </div>
-  <div class="status-card sc-pending" id="scPending">
-    <div class="s-icon">⏳</div><h3>Application Under Review</h3>
-    <p>Your application is being reviewed. You'll get an SMS once approved — usually within 24 hours.</p>
+
+  <div class="scard sc-p" id="scPending">
+    <div class="s-icon">⏳</div>
+    <h3>Under Review</h3>
+    <p>Your application is being reviewed by the ZipFix team. Usually approved within 24 hours.</p>
     <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
-  <div class="status-card sc-rejected" id="scRejected">
-    <div class="s-icon">❌</div><h3>Application Not Approved</h3>
-    <p>Contact <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb3beb7ab9ba1b2abbdb2a3f5b8b4b6">[email&#160;protected]</a></strong> for details or apply again with updated information.</p>
+
+  <div class="scard sc-r" id="scRejected">
+    <div class="s-icon">❌</div>
+    <h3>Application Not Approved</h3>
+    <div class="reason-box" id="reasonBox" style="display:none">
+      <div class="rl">Reason from Admin</div>
+      <div class="rv" id="reasonText"></div>
+    </div>
+    <p id="rejNote">Contact help@zipfix.com for details or apply again with updated information.</p>
     <button class="btn-go" onclick="window.location.href='register.html'">Apply Again</button>
     <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
-  <div class="status-card sc-approved" id="scApproved">
-    <div class="s-icon">🎉</div><h3>You're Approved!</h3>
+
+  <div class="scard sc-a" id="scApproved">
+    <div class="s-icon">🎉</div>
+    <h3>You're Approved!</h3>
     <p>Welcome to ZipFix Partner Network!</p>
-    <div class="wid-box"><div class="wid-lbl">Your Worker ID</div><div class="wid-val" id="widDisplay">ZF-XXXX</div></div>
+    <div class="wid-box">
+      <div class="wid-lbl">Your Worker ID</div>
+      <div class="wid-val" id="widDisplay">ZF-XXXX</div>
+    </div>
     <button class="btn-go" onclick="goToDashboard()">Go to Dashboard →</button>
-    <br/><button class="btn-back" onclick="resetForm()">← Try a different number</button>
+    <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
-  <div class="status-card sc-banned" id="scBanned">
-    <div class="s-icon">🚫</div><h3>Account Suspended</h3>
-    <p>Contact <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ec8489809cac96859c8a8594c28f8381">[email&#160;protected]</a></strong> if you believe this is a mistake.</p>
+
+  <div class="scard sc-b" id="scBanned">
+    <div class="s-icon">🚫</div>
+    <h3>Account Suspended</h3>
+    <p>Contact help@zipfix.com if you believe this is a mistake.</p>
     <button class="btn-back" onclick="resetForm()">← Try a different number</button>
   </div>
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
-  if(localStorage.getItem('workerName')&&localStorage.getItem('workerId'))window.location.href='dashboard.html';
-  let approved=null;
-  function clearErr(){document.getElementById('phoneWrap').classList.remove('err');document.getElementById('phoneErr').style.display='none';}
-  async function checkStatus(){
-    const phone=document.getElementById('phoneNumber').value.trim();
-    if(phone.length<10){document.getElementById('phoneWrap').classList.add('err');document.getElementById('phoneErr').style.display='block';return;}
-    const btn=document.getElementById('checkBtn');btn.innerText='Checking...';btn.disabled=true;
-    try{
-      const{data,error}=await db.from('workers').select('*').eq('phone','+91'+phone).single();
-      btn.innerText='Check Status';btn.disabled=false;
-      if(error||!data){
-        document.getElementById('phoneWrap').classList.add('err');
-        document.getElementById('phoneErr').innerText='No application found for this number';
-        document.getElementById('phoneErr').style.display='block';
-        return;
-      }
-      document.getElementById('phoneSection').style.display='none';
-      const s=data.status;
-      if(s==='pending')document.getElementById('scPending').style.display='block';
-      else if(s==='rejected'){
-        document.getElementById('scRejected').style.display='block';
-        if(data.rejection_reason){
-          document.getElementById('rejectionReasonBox').style.display='block';
-          document.getElementById('rejectionReasonText').innerText='💬 '+data.rejection_reason;
-          document.getElementById('rejectionNote').style.display='none';
-        }
-      }
-      else if(s==='banned')document.getElementById('scBanned').style.display='block';
-      else if(s==='approved'){
-        // ✅ Only approved workers — save to localStorage and show dashboard button
-        approved=data;
-        document.getElementById('widDisplay').innerText=data.worker_id||'—';
-        document.getElementById('scApproved').style.display='block';
-      } else {
-        // Unknown status — show pending
-        document.getElementById('scPending').style.display='block';
-      }
-    }catch(e){btn.innerText='Check Status';btn.disabled=false;alert('Error: '+e.message);}
+
+<script>
+  const db = supabase.createClient(
+    'https://wenvdgvyuhqdiktetvfj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
+  );
+
+  if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
+    window.location.href = 'dashboard.html';
   }
 
-  function goToDashboard(){
-    if(!approved||approved.status!=='approved')return;
-    // Save worker data to localStorage
-    localStorage.setItem('workerName', approved.name||'');
-    localStorage.setItem('workerSkill', approved.skill||'');
-    localStorage.setItem('workerArea', approved.area||'');
-    localStorage.setItem('workerStatus', 'approved');
-    localStorage.setItem('workerId', approved.worker_id||'');
-    localStorage.setItem('workerPhone', approved.phone||'');
-    localStorage.setItem('workerDbId', approved.id||'');
-    window.location.href='dashboard.html';
+  let approvedData = null;
+
+  function clearErr() {
+    document.getElementById('phoneWrap').classList.remove('err');
+    document.getElementById('phoneErr').style.display = 'none';
+    document.getElementById('phoneErr').innerText = 'Please enter a valid 10-digit number';
   }
-  
-  function resetForm(){
-    approved=null;document.getElementById('phoneSection').style.display='block';
-    ['scPending','scRejected','scApproved','scBanned'].forEach(id=
+
+  function hideCards() {
+    ['scPending','scRejected','scApproved','scBanned'].forEach(id =>
+      document.getElementById(id).style.display = 'none'
+    );
+  }
+
+  async function checkStatus() {
+    const phone = document.getElementById('phoneNumber').value.trim();
+    if (!phone || phone.length < 10) {
+      document.getElementById('phoneWrap').classList.add('err');
+      document.getElementById('phoneErr').style.display = 'block';
+      return;
+    }
+
+    const btn = document.getElementById('checkBtn');
+    btn.disabled = true;
+    btn.innerText = 'Checking...';
+
+    try {
+      const { data, error } = await db.from('workers').select('*').eq('phone', '+91' + phone).single();
+
+      btn.disabled = false;
+      btn.innerText = 'Check Status';
+
+      if (error || !data) {
+        document.getElementById('phoneWrap').classList.add('err');
+        document.getElementById('phoneErr').innerText = 'No application found for this number';
+        document.getElementById('phoneErr').style.display = 'block';
+        return;
+      }
+
+      hideCards();
+      document.getElementById('phoneSection').style.display = 'none';
+
+      if (data.status === 'pending') {
+        document.getElementById('scPending').style.display = 'block';
+
+      } else if (data.status === 'rejected') {
+        document.getElementById('scRejected').style.display = 'block';
+        if (data.rejection_reason) {
+          document.getElementById('reasonBox').style.display = 'block';
+          document.getElementById('reasonText').innerText = data.rejection_reason;
+          document.getElementById('rejNote').style.display = 'none';
+        }
+
+      } else if (data.status === 'banned') {
+        document.getElementById('scBanned').style.display = 'block';
+
+      } else if (data.status === 'approved') {
+        approvedData = data;
+        document.getElementById('widDisplay').innerText = data.worker_id || '—';
+        document.getElementById('scApproved').style.display = 'block';
+
+      } else {
+        document.getElementById('scPending').style.display = 'block';
+      }
+
+    } catch (e) {
+      btn.disabled = false;
+      btn.innerText = 'Check Status';
+      alert('Error connecting to server: ' + e.message);
+    }
+  }
+
+  function goToDashboard() {
+    if (!approvedData) return;
+    localStorage.setItem('workerName',  approvedData.name  || '');
+    localStorage.setItem('workerSkill', approvedData.skill || '');
+    localStorage.setItem('workerArea',  approvedData.area  || '');
+    localStorage.setItem('workerStatus','approved');
+    localStorage.setItem('workerId',    approvedData.worker_id || '');
+    localStorage.setItem('workerPhone', approvedData.phone || '');
+    localStorage.setItem('workerDbId',  approvedData.id   || '');
+    window.location.href = 'dashboard.html';
+  }
+
+  function resetForm() {
+    approvedData = null;
+    hideCards();
+    document.getElementById('phoneSection').style.display = 'block';
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('reasonBox').style.display = 'none';
+    document.getElementById('rejNote').style.display = 'block';
+    clearErr();
+  }
+
+  document.getElementById('phoneNumber').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkStatus();
+  });
+</script>
+</body>
+</html>

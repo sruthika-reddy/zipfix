@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>ZipFix</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#111; color:#fff; min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; }
-  .logo { font-size:52px; font-weight:900; color:#00b894; letter-spacing:6px; animation:fadeIn 0.8s ease; }
-  .tagline { font-size:15px; color:#aaa; margin-top:12px; letter-spacing:2px; animation:fadeIn 1.2s ease; }
-  .loader { margin-top:50px; width:40px; height:4px; background:#333; border-radius:10px; overflow:hidden; animation:fadeIn 1.5s ease; }
-  .loader-fill { height:100%; background:#00b894; border-radius:10px; animation:load 5s ease forwards; }
-  @keyframes load { 0%{width:0%} 100%{width:100%} }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .logo{font-size:48px;font-weight:900;color:#00b894;letter-spacing:5px;animation:pop 0.7s ease;}
+  .tagline{font-size:14px;color:#aaa;margin-top:12px;letter-spacing:2px;animation:fu 0.6s 0.5s both;}
+  .loader{margin-top:50px;width:160px;height:4px;background:#f0f0f0;border-radius:10px;overflow:hidden;animation:fu 0.6s 0.7s both;}
+  .lf{height:100%;background:#00b894;border-radius:10px;animation:load 2s ease forwards;}
+  @keyframes load{0%{width:0}100%{width:100%}}
+  @keyframes pop{0%{opacity:0;transform:scale(0.7)}60%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+  @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 <div class="logo">ZIPFIX</div>
 <div class="tagline">Emergency Help In Minutes</div>
-<div class="loader"><div class="loader-fill"></div></div>
+<div class="loader"><div class="lf"></div></div>
 <script>
-  setTimeout(function() {
-    if (localStorage.getItem('adminLoggedIn')) {
-      window.location.href = 'admin/index.html';
-    } else if (localStorage.getItem('workerName') && localStorage.getItem('workerId')) {
-      window.location.href = 'worker/dashboard.html';
-    } else if (localStorage.getItem('phoneNumber') && localStorage.getItem('userName')) {
-      window.location.href = 'customer/dashboard.html';
+  setTimeout(function(){
+    if(localStorage.getItem('adminLoggedIn')){
+      window.location.href='admin/index.html';
+    } else if(localStorage.getItem('phoneNumber')&&localStorage.getItem('userName')){
+      window.location.href='customer/dashboard.html';
     } else {
-      window.location.href = 'customer/landing.html';
+      window.location.href='customer/landing.html';
     }
-  }, 5000);
+  }, 2200);
 </script>
 </body>
 </html>

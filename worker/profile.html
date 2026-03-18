@@ -311,14 +311,37 @@
   if(!wname||!wid){window.location.href='login.html';}
 
   // Init UI
-  // Update online/offline status display
-  if(isOnline){
-    document.getElementById('statusIcon').innerText='🟢';
-    document.getElementById('statusIcon').className='sc-icon online-icon';
-    document.getElementById('statusDot').className='status-dot dot-online';
-    document.getElementById('statusTitle').innerText='Currently Online';
-    document.getElementById('statusSub').innerText='You are receiving job requests';
+  // Update online/offline status display - runs after DOM ready
+  function updateOnlineStatus(){
+    // Always read fresh from localStorage
+    const rawVal = localStorage.getItem('workerOnline');
+    const online = rawVal === 'true';
+    const icon  = document.getElementById('statusIcon');
+    const dot   = document.getElementById('statusDot');
+    const title = document.getElementById('statusTitle');
+    const sub   = document.getElementById('statusSub');
+    if(!icon||!dot||!title||!sub) return;
+    if(online){
+      icon.innerText='🟢';
+      icon.className='sc-icon online-icon';
+      dot.className='status-dot dot-online';
+      title.innerText='Currently Online ✅';
+      sub.innerText='You are receiving job requests';
+    } else {
+      icon.innerText='💤';
+      icon.className='sc-icon offline-icon';
+      dot.className='status-dot dot-offline';
+      title.innerText='Currently Offline';
+      sub.innerText='Go to dashboard to toggle online';
+    }
   }
+  // Run on load
+  updateOnlineStatus();
+  // Re-run when user comes back to this tab (e.g. from dashboard)
+  window.addEventListener('focus', updateOnlineStatus);
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'visible') updateOnlineStatus();
+  });
   document.getElementById('avInit').innerText=wname?wname.charAt(0).toUpperCase():'?';
   document.getElementById('avName').innerText=wname||'—';
   document.getElementById('avSkill').innerText=(wskill||'—')+' · '+(warea||'—');

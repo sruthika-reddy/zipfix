@@ -109,6 +109,25 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <div class="toast" id="toast"></div>
 
+<!-- Update Request Modal -->
+<div class="modal-overlay" id="updateModal">
+  <div class="modal-sheet">
+    <h3>📝 Request Update from Worker</h3>
+    <p>Tell the worker exactly what they need to fix or upload. They will see this message when they log in.</p>
+    <textarea class="reason-other" id="updateMessage" rows="4" placeholder="e.g. Please upload a clearer Aadhaar card photo. Your current photo is blurry and hard to read."></textarea>
+    <div style="display:flex;gap:8px;margin-bottom:0">
+      <button class="reason-chip" onclick="appendUpdate(this)" style="flex:1">📷 Clearer photo needed</button>
+      <button class="reason-chip" onclick="appendUpdate(this)" style="flex:1">📄 Better ID document</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px;margin-bottom:14px">
+      <button class="reason-chip" onclick="appendUpdate(this)" style="flex:1">📞 Update phone number</button>
+      <button class="reason-chip" onclick="appendUpdate(this)" style="flex:1">📍 Update service area</button>
+    </div>
+    <button class="btn-confirm-reject" style="background:#3b82f6" onclick="confirmUpdateRequest()">Send Request to Worker</button>
+    <button class="btn-cancel-modal" onclick="document.getElementById('updateModal').classList.remove('show')">Cancel</button>
+  </div>
+</div>
+
 <!-- Rejection Reason Modal -->
 <div class="modal-overlay" id="rejectModal">
   <div class="modal-sheet">
@@ -191,7 +210,7 @@ async function load() {
 function genId() { return 'ZF-' + Math.floor(1000 + Math.random() * 9000); }
 
 function counts() {
-  document.getElementById('cnt-pending').innerText  = ALL.filter(w => w.status === 'pending').length;
+  document.getElementById('cnt-pending').innerText  = ALL.filter(w => w.status === 'pending' || w.status === 'update_required').length;
   document.getElementById('cnt-approved').innerText = ALL.filter(w => w.status === 'approved').length;
   document.getElementById('cnt-rejected').innerText = ALL.filter(w => w.status === 'rejected').length;
 }
@@ -392,8 +411,12 @@ function attachEvents() {
     }
 
     if (action === 'rejectnow') {
-      // Reject an already-approved worker — open reason modal
       openRejectModal(id, name, phone);
+      return;
+    }
+
+    if (action === 'requestupdate') {
+      openUpdateModal(id, name, phone);
       return;
     }
   };
@@ -563,6 +586,43 @@ function setCardLoading(id, loading) {
     }
   }
 }
+
+// ── Update Request ───────────────────────────────────────
+let updateTarget = { id: null, name: '', phone: '' };
+
+function openUpdateModal(id, name, phone) {
+  updateTarget = { id, name, phone };
+  document.getElementById('updateMessage').value = '';
+  document.querySelectorAll('#updateModal .reason-chip').forEach(c => c.classList.remove('sel'));
+  document.getElementById('updateModal').classList.add('show');
+}
+
+function appendUpdate(el) {
+  const ta = document.getElementById('updateMessage');
+  const txt = el.innerText.replace(/^[^\w]+/,'').trim();
+  ta.value = ta.value ? ta.value + '. ' + txt : txt;
+  el.classList.toggle('sel');
+}
+
+async function confirmUpdateRequest() {
+  const msg = document.getElementById('updateMessage').value.trim();
+  if (!msg) { toast('⚠️ Please enter what the worker needs to update', 'to'); return; }
+  const { id, name } = updateTarget;
+  document.getElementById('updateModal').classList.remove('show');
+  try {
+    const { error } = await db.from('workers')
+      .update({ status: 'update_required', update_request: msg })
+      .eq('id', id);
+    if (error) throw error;
+    toast('📝 Update request sent to ' + name, 'td');
+    await load();
+  } catch(e) { toast('⚠️ ' + e.message, 'tr'); }
+}
+
+document.addEventListener('click', function(e) {
+  if (e.target === document.getElementById('updateModal'))
+    document.getElementById('updateModal').classList.remove('show');
+});
 
 function adminLogout() {
   localStorage.removeItem('adminLoggedIn');

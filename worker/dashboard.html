@@ -164,12 +164,20 @@
   checkDocRequest();
 
   let isOnline=false,pollTimer=null,countdownTimer=null,currentJobId=null,timeLeft=30;
-  // Restore online state from last session
-  if(localStorage.getItem('workerOnline')==='true'){
-    isOnline=true;
+  // Restore online state — always explicitly write it back so profile can read it
+  isOnline = localStorage.getItem('workerOnline') === 'true';
+  if(isOnline){
+    // Re-save to ensure it's fresh
+    localStorage.setItem('workerOnline','true');
     const sw=document.getElementById('toggleSwitch');
-    if(sw){sw.classList.add('on');document.getElementById('toggleTitle').innerText='You are Online ✅';document.getElementById('toggleSub').innerText='Receiving job requests';}
+    if(sw){
+      sw.classList.add('on');
+      document.getElementById('toggleTitle').innerText='You are Online ✅';
+      document.getElementById('toggleSub').innerText='Receiving job requests';
+    }
     startPolling();
+  } else {
+    localStorage.setItem('workerOnline','false');
   }
 
   function toggleOnline(){

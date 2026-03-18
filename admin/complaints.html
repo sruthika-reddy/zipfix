@@ -1,189 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZipFix Admin — Jobs & Complaints</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ZipFix Admin — Jobs</title>
 </head>
 <body>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-  body { background-color:#0d0d0d; color:#f0f0f0; min-height:100vh; }
-
-  /* Navbar */
-  .navbar { display:flex; justify-content:space-between; align-items:center; padding:18px 25px; background-color:#111; border-bottom:1px solid #222; position:sticky; top:0; z-index:100; }
-  .nav-left { display:flex; align-items:center; gap:14px; }
-  .back-btn { font-size:22px; color:#00b894; cursor:pointer; font-weight:700; text-decoration:none; }
-  .nav-brand .logo { font-size:20px; font-weight:900; color:#00b894; letter-spacing:2px; }
-  .nav-brand .tag  { font-size:11px; color:#aaa; margin-top:1px; }
-  .logout-btn { padding:10px 20px; background-color:#f0f0f0; color:#888; font-size:14px; font-weight:700; border:none; border-radius:50px; cursor:pointer; transition:all 0.2s; }
-  .logout-btn:hover { background-color:#e74c3c; color:#fff; }
-
-  .content { padding:25px; }
-
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100;}
+  .nav-left{display:flex;align-items:center;gap:14px;}
+  .back-btn{font-size:22px;color:#00b894;cursor:pointer;text-decoration:none;font-weight:700;}
+  .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .nav-tag{font-size:11px;color:#aaa;margin-top:2px;}
+  .logout-btn{padding:9px 18px;background:#f5f5f5;color:#888;font-size:13px;font-weight:700;border:none;border-radius:50px;cursor:pointer;}
+  .logout-btn:hover{background:#e74c3c;color:#fff;}
+  .content{padding:20px;}
+  /* Stats row */
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+  .stat{background:#fff;border-radius:16px;padding:14px 12px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.05);}
+  .stat h3{font-size:22px;font-weight:900;}
+  .stat p{font-size:11px;color:#888;margin-top:3px;}
+  .stat.green h3{color:#00b894;} .stat.orange h3{color:#e67e00;}
+  .stat.blue h3{color:#3b82f6;} .stat.red h3{color:#e74c3c;}
+  /* Search & filter */
+  .filter-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .search-bar{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid #e0e0e0;border-radius:13px;padding:10px 14px;flex:1;min-width:200px;box-shadow:0 2px 4px rgba(0,0,0,0.04);}
+  .search-bar:focus-within{border-color:#00b894;}
+  .search-bar input{background:none;border:none;outline:none;font-size:14px;color:#1a1a1a;width:100%;}
+  .filter-select{padding:11px 14px;background:#fff;border:2px solid #e0e0e0;border-radius:13px;font-size:13px;font-weight:700;color:#555;outline:none;cursor:pointer;}
+  .filter-select:focus{border-color:#00b894;}
   /* Tabs */
-  .tabs { display:flex; gap:8px; margin-bottom:20px; overflow-x:auto; }
-  .tab { flex:1; min-width:70px; padding:12px 8px; background-color:#111; border:2px solid #222; border-radius:14px; text-align:center; cursor:pointer; font-size:12px; font-weight:800; color:#888; transition:all 0.2s; white-space:nowrap; }
-  .tab.active { border-color:#00b894; color:#00b894; background-color:#0d2b24; }
-  .tab-count { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; border-radius:50px; padding:0 4px; font-size:10px; font-weight:900; margin-left:4px; background-color:#00b894; color:#fff; }
-  .tab-count.orange { background-color:#e67e00; }
-  .tab-count.red    { background-color:#e74c3c; }
-  .tab-count.blue   { background-color:#3b82f6; }
-
+  .tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:1;min-width:70px;padding:11px 8px;background:#fff;border:2px solid #e0e0e0;border-radius:13px;text-align:center;cursor:pointer;font-size:12px;font-weight:800;color:#888;white-space:nowrap;transition:all 0.2s;box-shadow:0 2px 4px rgba(0,0,0,0.04);}
+  .tab.active{border-color:#00b894;color:#00b894;background:#e8f8f4;}
+  .tc{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:50px;font-size:10px;font-weight:900;margin-left:4px;background:#00b894;color:#fff;vertical-align:middle;}
+  .tc.or{background:#e67e00;} .tc.rd{background:#e74c3c;} .tc.bl{background:#3b82f6;}
   /* Job card */
-  .job-card { background-color:#111; border:1px solid #222; border-radius:20px; padding:20px; margin-bottom:14px; }
-  .jc-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
-  .jc-service { font-size:18px; font-weight:900; }
-  .jc-status { padding:6px 13px; border-radius:50px; font-size:12px; font-weight:800; }
-  .js-completed { background:#e8f8f4; color:#00b894; }
-  .js-pending   { background:#fff8e6; color:#e67e00; }
-  .js-cancelled { background:#fff0ee; color:#e74c3c; }
-  .js-accepted  { background:#eef4ff; color:#3b82f6; }
-
-  .jc-details { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
-  .detail-item { font-size:12px; color:#888; }
-  .detail-item strong { display:block; font-size:13px; color:#f0f0f0; font-weight:700; margin-top:2px; }
-
-  .jc-problem { background-color:#f0f0f0; border-radius:12px; padding:12px 14px; font-size:14px; color:#555; line-height:1.6; margin-bottom:12px; font-style:italic; }
-
-  .jc-actions { display:flex; gap:10px; flex-wrap:wrap; }
-  .btn-complete { padding:12px 18px; background-color:#00b894; color:#fff; font-size:14px; font-weight:800; border:none; border-radius:12px; cursor:pointer; transition:background-color 0.2s; }
-  .btn-complete:hover { background-color:#009e7f; }
-  .btn-call     { padding:12px 18px; background-color:#0d2b24; color:#00b894; font-size:14px; font-weight:800; border:2px solid #00b89433; border-radius:12px; cursor:pointer; }
-  .btn-dismiss  { padding:12px 18px; background-color:#f0f0f0; color:#888; font-size:13px; font-weight:700; border:none; border-radius:12px; cursor:pointer; }
-
-  .jc-footer { display:flex; justify-content:space-between; align-items:center; margin-top:10px; }
-  .jc-date   { font-size:11px; color:#aaa; }
-  .jc-amount { font-size:15px; font-weight:900; color:#00b894; }
-
-  .empty-state { text-align:center; padding:50px 20px; color:#aaa; }
-  .empty-state .icon { font-size:48px; margin-bottom:12px; }
-  .loading-note { text-align:center; padding:40px; color:#aaa; font-size:14px; }
-  .spacer { height:30px; }
-
-  /* Toast */
-  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background-color:#00b894; color:#fff; padding:14px 24px; border-radius:50px; font-size:14px; font-weight:700; z-index:9999; display:none; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
+  .jcard{background:#fff;border-radius:18px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .jcard.live{border-left:4px solid #3b82f6;}
+  .jcard.done{border-left:4px solid #00b894;}
+  .jcard.cancelled{border-left:4px solid #e74c3c;}
+  .jc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px;}
+  .jc-service{font-size:17px;font-weight:900;}
+  .jc-id{font-size:11px;color:#aaa;margin-top:2px;}
+  .status-pill{padding:6px 12px;border-radius:50px;font-size:12px;font-weight:800;white-space:nowrap;}
+  .sp-pending{background:#fff8e6;color:#e67e00;}
+  .sp-accepted,.sp-in_progress{background:#eef4ff;color:#3b82f6;}
+  .sp-completed{background:#e8f8f4;color:#00b894;}
+  .sp-cancelled{background:#fff0ee;color:#e74c3c;}
+  .jc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  .di{font-size:12px;color:#888;}
+  .di strong{display:block;font-size:13px;color:#1a1a1a;font-weight:700;margin-top:2px;}
+  .problem-box{background:#f5f5f5;border-radius:10px;padding:10px 12px;font-size:13px;color:#555;font-style:italic;margin-bottom:12px;line-height:1.6;}
+  /* Urgency badge */
+  .urg{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:800;}
+  .urg-normal{background:#e8f8f4;color:#00b894;}
+  .urg-urgent{background:#fff8e6;color:#e67e00;}
+  .urg-emergency{background:#fff0ee;color:#e74c3c;}
+  /* Actions */
+  .jc-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .act-btn{padding:9px 14px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;border:none;transition:all 0.2s;}
+  .ab-complete{background:#00b894;color:#fff;}
+  .ab-complete:hover{background:#009e7f;}
+  .ab-cancel{background:#fff0ee;color:#e74c3c;border:2px solid #e74c3c22;}
+  .ab-cancel:hover{background:#e74c3c;color:#fff;}
+  .ab-call-c{background:#e8f8f4;color:#00b894;border:2px solid #00b89422;}
+  .ab-call-w{background:#eef4ff;color:#3b82f6;border:2px solid #3b82f622;}
+  .ab-assign{background:#f5f0ff;color:#8b5cf6;border:2px solid #8b5cf622;}
+  .jc-footer{display:flex;justify-content:space-between;align-items:center;}
+  .jc-date{font-size:11px;color:#aaa;}
+  .jc-amount{font-size:16px;font-weight:900;color:#00b894;}
+  /* Assign modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:none;align-items:flex-end;justify-content:center;}
+  .overlay.show{display:flex;}
+  .sheet{background:#fff;border-radius:28px 28px 0 0;padding:26px 22px 40px;width:100%;max-width:480px;}
+  .sheet h3{font-size:18px;font-weight:900;margin-bottom:14px;}
+  .worker-option{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;transition:background 0.1s;}
+  .worker-option:last-of-type{border-bottom:none;}
+  .worker-option:hover .wo-name{color:#00b894;}
+  .wo-av{width:40px;height:40px;background:#00b894;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:16px;flex-shrink:0;}
+  .wo-name{font-size:15px;font-weight:700;}
+  .wo-sub{font-size:12px;color:#aaa;margin-top:2px;}
+  .m-close{width:100%;padding:13px;background:#f5f5f5;color:#888;font-size:14px;font-weight:700;border:none;border-radius:13px;cursor:pointer;margin-top:14px;}
+  .empty{text-align:center;padding:50px 16px;color:#aaa;background:#fff;border-radius:18px;}
+  .empty .ei{font-size:44px;margin-bottom:12px;}
+  .spacer{height:30px;}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:12px 22px;border-radius:50px;font-size:14px;font-weight:700;z-index:9999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
+  .tg{background:#00b894;color:#fff;} .tr{background:#e74c3c;color:#fff;} .td{background:#1a1a1a;color:#fff;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <div class="toast" id="toast"></div>
 
+<!-- Assign Worker Modal -->
+<div class="overlay" id="assignModal" onclick="if(event.target.id==='assignModal')closeAssign()">
+  <div class="sheet">
+    <h3>👷 Assign Worker</h3>
+    <div id="workerOptions"><div style="text-align:center;padding:20px;color:#aaa">Loading workers...</div></div>
+    <button class="m-close" onclick="closeAssign()">Cancel</button>
+  </div>
+</div>
+
 <nav class="navbar">
   <div class="nav-left">
     <a class="back-btn" href="index.html">←</a>
-    <div class="nav-brand">
+    <div>
       <div class="logo">ZIPFIX</div>
-      <div class="tag">Jobs & Complaints</div>
+      <div class="nav-tag">📋 Jobs Management</div>
     </div>
   </div>
   <button class="logout-btn" onclick="adminLogout()">Logout</button>
 </nav>
 
 <div class="content">
-
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('all',this)">
-      All <span class="tab-count" id="cnt-all">0</span>
-    </div>
-    <div class="tab" onclick="switchTab('pending',this)">
-      Pending <span class="tab-count orange" id="cnt-pending">0</span>
-    </div>
-    <div class="tab" onclick="switchTab('accepted',this)">
-      Live <span class="tab-count blue" id="cnt-accepted">0</span>
-    </div>
-    <div class="tab" onclick="switchTab('completed',this)">
-      Done <span class="tab-count" id="cnt-completed">0</span>
-    </div>
-    <div class="tab" onclick="switchTab('cancelled',this)">
-      Cancelled <span class="tab-count red" id="cnt-cancelled">0</span>
-    </div>
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat orange"><h3 id="stPending">—</h3><p>Pending</p></div>
+    <div class="stat blue"><h3 id="stLive">—</h3><p>Live</p></div>
+    <div class="stat green"><h3 id="stDone">—</h3><p>Completed</p></div>
+    <div class="stat red"><h3 id="stCancelled">—</h3><p>Cancelled</p></div>
   </div>
 
-  <div id="jobList"><div class="loading-note">⏳ Loading jobs...</div></div>
+  <!-- Search & Filter -->
+  <div class="filter-row">
+    <div class="search-bar">
+      <span style="color:#aaa;font-size:16px">🔍</span>
+      <input type="text" id="srch" placeholder="Search customer, phone, service..." oninput="applyFilters()"/>
+    </div>
+    <select class="filter-select" id="filterService" onchange="applyFilters()">
+      <option value="">All Services</option>
+      <option>Plumber</option><option>Electrician</option><option>AC Repair</option>
+      <option>Home Cleaning</option><option>Pest Control</option><option>Carpenter</option>
+      <option>Locksmith</option><option>Painter</option><option>TV / Electronics Repair</option>
+      <option>Appliance Repair</option><option>CCTV Installation</option>
+      <option>Packers & Movers</option><option>Bathroom Renovation</option>
+      <option>Water Purifier Service</option>
+    </select>
+    <select class="filter-select" id="filterUrgency" onchange="applyFilters()">
+      <option value="">All Urgency</option>
+      <option value="normal">Normal</option>
+      <option value="urgent">Urgent</option>
+      <option value="emergency">Emergency</option>
+    </select>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('all',this)">All <span class="tc" id="cnt-all">0</span></div>
+    <div class="tab" onclick="switchTab('pending',this)">Pending <span class="tc or" id="cnt-pending">0</span></div>
+    <div class="tab" onclick="switchTab('live',this)">Live <span class="tc bl" id="cnt-live">0</span></div>
+    <div class="tab" onclick="switchTab('completed',this)">Done <span class="tc" id="cnt-done">0</span></div>
+    <div class="tab" onclick="switchTab('cancelled',this)">Cancelled <span class="tc rd" id="cnt-cancelled">0</span></div>
+  </div>
+
+  <div id="jobList"><div style="text-align:center;padding:40px;color:#aaa">⏳ Loading jobs...</div></div>
   <div class="spacer"></div>
 </div>
 
 <script>
-  const SUPABASE_URL = 'https://wenvdgvyuhqdiktetvfj.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  if(!localStorage.getItem('adminLoggedIn'))window.location.href='login.html';
+  if(Date.now()-parseInt(localStorage.getItem('adminLoginTime')||0)>8*60*60*1000){localStorage.removeItem('adminLoggedIn');window.location.href='login.html';}
 
-  const SESSION_MS = 8 * 60 * 60 * 1000;
-  if (!localStorage.getItem('adminLoggedIn')) { window.location.href = 'login.html'; }
-  if (Date.now() - parseInt(localStorage.getItem('adminLoginTime')||0) > SESSION_MS) {
-    localStorage.removeItem('adminLoggedIn'); window.location.href = 'login.html';
+  const SI={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒'};
+
+  let ALL=[],TAB='all',approvedWorkers=[];
+
+  async function load(){
+    try{
+      const{data,error}=await db.from('jobs').select('*').order('created_at',{ascending:false});
+      if(error)throw error;
+      ALL=data||[];
+      counts();applyFilters();
+    }catch(e){document.getElementById('jobList').innerHTML=`<div class="empty"><div class="ei">⚠️</div><p>${e.message}</p></div>`;}
   }
 
-  const icons = { Plumber:'🔧', Electrician:'⚡', Locksmith:'🔑', 'AC Repair':'❄️', Carpenter:'🪛', Painter:'🖌️', 'Pest Control':'🐛', 'Home Cleaning':'🧹', 'TV / Electronics Repair':'📺', 'Water Purifier Service':'🫧', 'Appliance Repair':'🔩', 'Bathroom Renovation':'🛁', 'Packers & Movers':'📦', 'CCTV Installation':'🔒' };
-
-  let allJobs = [], currentTab = 'all';
-
-  async function loadJobs() {
-    try {
-      const { data, error } = await db.from('jobs').select('*').order('created_at', { ascending:false });
-      if (error) throw error;
-      allJobs = data || [];
-      updateCounts();
-      renderTab(currentTab);
-    } catch (e) {
-      document.getElementById('jobList').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>' + e.message + '</p></div>';
-    }
+  function counts(){
+    const live=ALL.filter(j=>j.status==='accepted'||j.status==='in_progress');
+    document.getElementById('stPending').innerText=ALL.filter(j=>j.status==='pending').length;
+    document.getElementById('stLive').innerText=live.length;
+    document.getElementById('stDone').innerText=ALL.filter(j=>j.status==='completed').length;
+    document.getElementById('stCancelled').innerText=ALL.filter(j=>j.status==='cancelled').length;
+    document.getElementById('cnt-all').innerText=ALL.length;
+    document.getElementById('cnt-pending').innerText=ALL.filter(j=>j.status==='pending').length;
+    document.getElementById('cnt-live').innerText=live.length;
+    document.getElementById('cnt-done').innerText=ALL.filter(j=>j.status==='completed').length;
+    document.getElementById('cnt-cancelled').innerText=ALL.filter(j=>j.status==='cancelled').length;
   }
 
-  function updateCounts() {
-    document.getElementById('cnt-all').innerText       = allJobs.length;
-    document.getElementById('cnt-pending').innerText   = allJobs.filter(j=>j.status==='pending').length;
-    document.getElementById('cnt-accepted').innerText  = allJobs.filter(j=>j.status==='accepted'||j.status==='in_progress').length;
-    document.getElementById('cnt-completed').innerText = allJobs.filter(j=>j.status==='completed').length;
-    document.getElementById('cnt-cancelled').innerText = allJobs.filter(j=>j.status==='cancelled').length;
-  }
+  function switchTab(t,el){TAB=t;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');applyFilters();}
 
-  function switchTab(tab, el) {
-    currentTab = tab;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    renderTab(tab);
-  }
-
-  function renderTab(tab) {
-    const jobs = tab === 'all' ? allJobs : allJobs.filter(j => {
-      if (tab === 'accepted') return j.status === 'accepted' || j.status === 'in_progress';
-      return j.status === tab;
+  function applyFilters(){
+    const q=document.getElementById('srch').value.toLowerCase();
+    const svc=document.getElementById('filterService').value;
+    const urg=document.getElementById('filterUrgency').value;
+    let list=ALL.filter(j=>{
+      if(TAB==='pending')return j.status==='pending';
+      if(TAB==='live')return j.status==='accepted'||j.status==='in_progress';
+      if(TAB==='completed')return j.status==='completed';
+      if(TAB==='cancelled')return j.status==='cancelled';
+      return true;
     });
-    const el = document.getElementById('jobList');
-    if (!jobs.length) {
-      el.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>No jobs in this category</p></div>';
-      return;
-    }
-    el.innerHTML = jobs.map(j => buildCard(j)).join('');
+    if(q)list=list.filter(j=>(j.customer_name||'').toLowerCase().includes(q)||(j.customer_phone||'').includes(q)||(j.service||'').toLowerCase().includes(q));
+    if(svc)list=list.filter(j=>j.service===svc);
+    if(urg)list=list.filter(j=>j.urgency===urg);
+    renderList(list);
   }
 
-  function buildCard(j) {
-    const ico  = icons[j.service] || '🔧';
-    const date = j.created_at ? new Date(j.created_at).toLocaleString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
-    const sc   = 'js-' + (j.status === 'in_progress' ? 'accepted' : (j.status || 'pending'));
-    const sl   = { pending:'⏳ Pending', accepted:'🔵 Live', in_progress:'🔵 In Progress', completed:'✅ Done', cancelled:'❌ Cancelled' }[j.status] || j.status;
-    const phone = (j.customer_phone||'').replace('+91','');
+  function renderList(list){
+    const el=document.getElementById('jobList');
+    if(!list.length){el.innerHTML='<div class="empty"><div class="ei">📋</div><p>No jobs found</p></div>';return;}
+    el.innerHTML=list.map(j=>card(j)).join('');
+  }
 
-    const canComplete = j.status === 'accepted' || j.status === 'pending' || j.status === 'in_progress';
-
-    return `<div class="job-card" id="jcard-${j.id}">
-      <div class="jc-header">
-        <div class="jc-service">${ico} ${j.service || '—'}</div>
-        <div class="jc-status ${sc}">${sl}</div>
+  function card(j){
+    const ico=SI[j.service]||'🔧';
+    const date=j.created_at?new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+    const sClass='sp-'+(j.status||'pending');
+    const sLabel={pending:'⏳ Pending',accepted:'🔵 Live',in_progress:'🔵 In Progress',completed:'✅ Done',cancelled:'❌ Cancelled'}[j.status]||j.status;
+    const urgClass='urg-'+(j.urgency||'normal');
+    const urgLabel={normal:'🟢 Normal',urgent:'⚡ Urgent',emergency:'🚨 Emergency'}[j.urgency]||j.urgency;
+    const custPhone=(j.customer_phone||'').replace('+91','');
+    const isLive=j.status==='accepted'||j.status==='in_progress';
+    const isPending=j.status==='pending';
+    const cardClass=isLive?'jcard live':j.status==='completed'?'jcard done':j.status==='cancelled'?'jcard cancelled':'jcard';
+    return `<div class="${cardClass}" id="jc-${j.id}">
+      <div class="jc-top">
+        <div><div class="jc-service">${ico} ${j.service||'—'}</div><div class="jc-id">#${j.id} · ${date}</div></div>
+        <div class="status-pill ${sClass}">${sLabel}</div>
       </div>
-      <div class="jc-details">
-        <div class="detail-item">👤 Customer<strong>${j.customer_name||'—'}</strong></div>
-        <div class="detail-item">📞 Phone<strong>${phone||'—'}</strong></div>
-        <div class="detail-item">📍 Address<strong>${(j.customer_address||'—').substring(0,40)}</strong></div>
-        <div class="detail-item">⚡ Urgency<strong style="text-transform:capitalize">${j.urgency||'normal'}</strong></div>
-        <div class="detail-item">👷 Worker ID<strong>${j.worker_id||'Not assigned'}</strong></div>
-        <div class="detail-item">🔢 Job ID<strong>#${j.id}</strong></div>
+      <div class="jc-grid">
+        <div class="di">👤 Customer<strong>${j.customer_name||'—'}</strong></div>
+        <div class="di">📞 Phone<strong>${custPhone||'—'}</strong></div>
+        <div class="di">📍 Address<strong style="font-size:12px">${(j.customer_address||'—').substring(0,35)}${(j.customer_address||'').length>35?'...':''}</strong></div>
+        <div class="di">👷 Worker<strong>${j.worker_id||'Not assigned'}</strong></div>
+        <div class="di">⚡ Urgency<strong><span class="urg ${urgClass}">${urgLabel}</span></strong></div>
+        <div class="di">💰 Amount<strong style="color:#00b894">₹${j.amount||0}</strong></div>
       </div>
-      ${j.problem ? `<div class="jc-problem">"${j.problem}"</div>` : ''}
+      ${j.problem?`<div class="problem-box">"${j.problem}"</div>`:''}
       <div class="jc-actions">
-        ${canComplete ? `<button class="btn-complete" onclick="markComplete(${j.id})">✅ Mark Complete</button>` : ''}
-        ${phone ? `<button class="btn-call" onclick="window.location.href='tel:+91${phone}'">📞 Call</button>` : ''}
-        <button class="btn-dismiss" onclick="dismissCard(${j.id})">Dismiss</button>
+        ${isPending||isLive?`<button class="act-btn ab-complete" data-action="complete" data-id="${j.id}">✅ Mark Complete</button>`:''}
+        ${isPending?`<button class="act-btn ab-assign" data-action="assign" data-id="${j.id}" data-service="${j.service}">👷 Assign Worker</button>`:''}
+        ${isPending||isLive?`<button class="act-btn ab-cancel" data-action="cancel" data-id="${j.id}">❌ Cancel</button>`:''}
+        ${custPhone?`<button class="act-btn ab-call-c" onclick="window.location.href='tel:+91${custPhone}'">📞 Customer</button>`:''}
       </div>
       <div class="jc-footer">
         <div class="jc-date">📅 ${date}</div>
@@ -192,37 +253,73 @@
     </div>`;
   }
 
-  async function markComplete(id) {
-    try {
-      await db.from('jobs').update({ status:'completed', completed_at:new Date().toISOString() }).eq('id', id);
-      allJobs = allJobs.map(j => j.id === id ? {...j, status:'completed'} : j);
-      updateCounts();
-      renderTab(currentTab);
-      showToast('✅ Job #' + id + ' marked complete');
-    } catch (e) { showToast('⚠️ Error: ' + e.message); }
+  // Single event listener — no inline onclick for actions
+  document.getElementById('jobList').addEventListener('click',async function(e){
+    const btn=e.target.closest('[data-action]');
+    if(!btn)return;
+    const action=btn.dataset.action;
+    const id=parseInt(btn.dataset.id);
+    if(action==='complete') await doComplete(id);
+    if(action==='cancel')   await doCancel(id);
+    if(action==='assign')   openAssign(id, btn.dataset.service);
+  });
+
+  async function doComplete(id){
+    try{
+      await db.from('jobs').update({status:'completed',completed_at:new Date().toISOString()}).eq('id',id);
+      toast('✅ Job #'+id+' marked complete','tg');
+      await load();
+    }catch(e){toast('⚠️ '+e.message,'tr');}
   }
 
-  function dismissCard(id) {
-    const el = document.getElementById('jcard-'+id);
-    if (el) { el.style.opacity = '0'; el.style.transition = 'opacity 0.3s'; setTimeout(() => el.remove(), 300); }
+  async function doCancel(id){
+    try{
+      await db.from('jobs').update({status:'cancelled'}).eq('id',id);
+      toast('❌ Job #'+id+' cancelled','tr');
+      await load();
+    }catch(e){toast('⚠️ '+e.message,'tr');}
   }
 
-  function adminLogout() {
-    if (confirm('Logout?')) {
-      localStorage.removeItem('adminLoggedIn');
-      localStorage.removeItem('adminLoginTime');
-      window.location.href = 'login.html';
-    }
+  // Assign worker
+  let assignJobId=null;
+  async function openAssign(id,service){
+    assignJobId=id;
+    document.getElementById('assignModal').classList.add('show');
+    document.getElementById('workerOptions').innerHTML='<div style="text-align:center;padding:20px;color:#aaa">Loading...</div>';
+    try{
+      const{data}=await db.from('workers').select('*').eq('status','approved').eq('skill',service);
+      approvedWorkers=data||[];
+      if(!approvedWorkers.length){
+        // fallback — show all approved workers
+        const{data:all}=await db.from('workers').select('*').eq('status','approved');
+        approvedWorkers=all||[];
+      }
+      if(!approvedWorkers.length){document.getElementById('workerOptions').innerHTML='<div style="text-align:center;padding:20px;color:#aaa">No approved workers found for this service</div>';return;}
+      document.getElementById('workerOptions').innerHTML=approvedWorkers.map(w=>`
+        <div class="worker-option" onclick="assignWorker('${w.worker_id}','${w.name}')">
+          <div class="wo-av">${(w.name||'W').charAt(0).toUpperCase()}</div>
+          <div><div class="wo-name">${w.name||'—'}</div><div class="wo-sub">🔧 ${w.skill||'—'} · 📍 ${w.area||'—'} · ⭐ ${w.rating||'New'}</div></div>
+        </div>`).join('');
+    }catch(e){document.getElementById('workerOptions').innerHTML='<div style="color:#e74c3c;padding:16px">Error: '+e.message+'</div>';}
   }
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.innerText = msg; t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 3000);
+  async function assignWorker(workerId,workerName){
+    if(!assignJobId)return;
+    closeAssign();
+    try{
+      await db.from('jobs').update({status:'accepted',worker_id:workerId}).eq('id',assignJobId);
+      toast('✅ Job assigned to '+workerName,'tg');
+      await load();
+    }catch(e){toast('⚠️ '+e.message,'tr');}
+    assignJobId=null;
   }
 
-  loadJobs();
-  setInterval(loadJobs, 20000);
+  function closeAssign(){document.getElementById('assignModal').classList.remove('show');assignJobId=null;}
+  function adminLogout(){localStorage.removeItem('adminLoggedIn');localStorage.removeItem('adminLoginTime');window.location.href='login.html';}
+  function toast(msg,cls='td'){const t=document.getElementById('toast');t.innerText=msg;t.className='toast '+cls;t.style.display='block';setTimeout(()=>t.style.display='none',3500);}
+
+  load();
+  setInterval(load,15000);
 </script>
 </body>
 </html>

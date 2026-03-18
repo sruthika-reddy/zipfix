@@ -249,7 +249,6 @@
   const phone = localStorage.getItem('phoneNumber');
   const uname = localStorage.getItem('userName');
   if (!phone || !uname) { window.location.href = 'login.html'; }
-  if (localStorage.getItem('adminLoggedIn')) { window.location.href = '../admin/index.html'; }
 
   document.getElementById('welcomeName').innerText    = (uname||'').split(' ')[0];
   document.getElementById('profileInitial').innerText = (uname||'?').charAt(0).toUpperCase();

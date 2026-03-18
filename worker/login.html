@@ -88,7 +88,12 @@
     try{
       const{data,error}=await db.from('workers').select('*').eq('phone','+91'+phone).single();
       btn.innerText='Check Status';btn.disabled=false;
-      if(error||!data){document.getElementById('phoneWrap').classList.add('err');document.getElementById('phoneErr').innerText='No application found for this number';document.getElementById('phoneErr').style.display='block';return;}
+      if(error||!data){
+        document.getElementById('phoneWrap').classList.add('err');
+        document.getElementById('phoneErr').innerText='No application found for this number';
+        document.getElementById('phoneErr').style.display='block';
+        return;
+      }
       document.getElementById('phoneSection').style.display='none';
       const s=data.status;
       if(s==='pending')document.getElementById('scPending').style.display='block';
@@ -101,14 +106,31 @@
         }
       }
       else if(s==='banned')document.getElementById('scBanned').style.display='block';
-      else if(s==='approved'){approved=data;document.getElementById('widDisplay').innerText=data.worker_id||'ZF-0000';document.getElementById('scApproved').style.display='block';}
+      else if(s==='approved'){
+        // ✅ Only approved workers — save to localStorage and show dashboard button
+        approved=data;
+        document.getElementById('widDisplay').innerText=data.worker_id||'—';
+        document.getElementById('scApproved').style.display='block';
+      } else {
+        // Unknown status — show pending
+        document.getElementById('scPending').style.display='block';
+      }
     }catch(e){btn.innerText='Check Status';btn.disabled=false;alert('Error: '+e.message);}
   }
+
   function goToDashboard(){
-    if(!approved)return;
-    ['workerName','workerSkill','workerArea','workerStatus','workerId','workerPhone','workerDbId'].forEach((k,i)=>localStorage.setItem(k,[approved.name,approved.skill,approved.area,approved.status,approved.worker_id,approved.phone,approved.id][i]));
+    if(!approved||approved.status!=='approved')return;
+    // Save worker data to localStorage
+    localStorage.setItem('workerName', approved.name||'');
+    localStorage.setItem('workerSkill', approved.skill||'');
+    localStorage.setItem('workerArea', approved.area||'');
+    localStorage.setItem('workerStatus', 'approved');
+    localStorage.setItem('workerId', approved.worker_id||'');
+    localStorage.setItem('workerPhone', approved.phone||'');
+    localStorage.setItem('workerDbId', approved.id||'');
     window.location.href='dashboard.html';
   }
+  
   function resetForm(){
     approved=null;document.getElementById('phoneSection').style.display='block';
     ['scPending','scRejected','scApproved','scBanned'].forEach(id=

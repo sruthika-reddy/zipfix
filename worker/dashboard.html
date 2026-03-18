@@ -95,7 +95,43 @@
 </nav>
 <script>
   const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
-  if(!localStorage.getItem('workerName')||!localStorage.getItem('workerId'))window.location.href='login.html';
+  // Auth check
+  if(!localStorage.getItem('workerName')||!localStorage.getItem('workerId')){window.location.href='login.html';}
+
+  // Always verify status from Supabase — approved only
+  async function verifyWorkerStatus(){
+    try{
+      const wid=localStorage.getItem('workerId');
+      const{data,error}=await db.from('workers').select('status,worker_id,name,skill,area').eq('worker_id',wid).single();
+      if(error||!data){
+        // Not found — force logout
+        localStorage.removeItem('workerName');localStorage.removeItem('workerId');
+        window.location.href='login.html';return;
+      }
+      if(data.status==='pending'){
+        alert('⏳ Your application is still under review. You will be notified once approved.');
+        localStorage.removeItem('workerName');localStorage.removeItem('workerId');
+        window.location.href='login.html';return;
+      }
+      if(data.status==='rejected'){
+        alert('❌ Your application was not approved. Please check your status on the login page.');
+        localStorage.removeItem('workerName');localStorage.removeItem('workerId');
+        window.location.href='login.html';return;
+      }
+      if(data.status==='banned'){
+        alert('🚫 Your account has been suspended. Contact help@zipfix.com');
+        localStorage.removeItem('workerName');localStorage.removeItem('workerId');
+        window.location.href='login.html';return;
+      }
+      // Approved — sync latest data from Supabase into localStorage
+      localStorage.setItem('workerName',data.name||localStorage.getItem('workerName'));
+      localStorage.setItem('workerSkill',data.skill||'');
+      localStorage.setItem('workerArea',data.area||'');
+    }catch(e){
+      // Network error — allow if localStorage says approved
+    }
+  }
+  verifyWorkerStatus();
   const workerName=localStorage.getItem('workerName')||'';
   const workerSkill=localStorage.getItem('workerSkill')||'';
   const workerArea=localStorage.getItem('workerArea')||'';

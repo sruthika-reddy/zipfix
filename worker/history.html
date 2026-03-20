@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ZipFix Partner — Job History</title>
+</head>
+<body>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .back{font-size:22px;color:#00b894;cursor:pointer;}
+  .navbar h3{font-size:18px;font-weight:800;}
+  .content{padding:20px;}
+  /* Stats */
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+  .stat{background:#fff;border-radius:16px;padding:16px 10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.05);}
+  .stat h3{font-size:20px;font-weight:900;color:#00b894;}
+  .stat p{font-size:11px;color:#888;margin-top:3px;}
+  /* Achievement badges */
+  .badges-row{display:flex;gap:10px;margin-bottom:18px;overflow-x:auto;}
+  .badges-row::-webkit-scrollbar{display:none;}
+  .badge{flex-shrink:0;background:#fff;border-radius:14px;padding:12px 14px;text-align:center;min-width:90px;box-shadow:0 2px 6px rgba(0,0,0,0.05);}
+  .badge .bi{font-size:26px;margin-bottom:4px;}
+  .badge .bn{font-size:11px;font-weight:700;color:#1a1a1a;}
+  .badge .bd{font-size:10px;color:#aaa;margin-top:2px;}
+  .badge.locked{opacity:0.4;}
+  /* Filter tabs */
+  .tabs{display:flex;gap:8px;margin-bottom:14px;}
+  .tab{flex:1;padding:10px 8px;background:#fff;border:2px solid #e0e0e0;border-radius:12px;text-align:center;cursor:pointer;font-size:12px;font-weight:800;color:#888;transition:all 0.2s;}
+  .tab.active{border-color:#00b894;color:#00b894;background:#e8f8f4;}
+  .tc{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:50px;font-size:10px;font-weight:900;margin-left:4px;background:#00b894;color:#fff;vertical-align:middle;}
+  /* Job card */
+  .jcard{background:#fff;border-radius:16px;padding:16px 18px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.05);}
+  .jcard.completed{border-left:4px solid #00b894;}
+  .jcard.cancelled{border-left:4px solid #e74c3c;opacity:0.7;}
+  .jc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+  .jc-svc{font-size:15px;font-weight:800;}
+  .jc-date{font-size:11px;color:#aaa;margin-top:2px;}
+  .sp{padding:5px 11px;border-radius:50px;font-size:11px;font-weight:800;white-space:nowrap;}
+  .sp-done{background:#e8f8f4;color:#00b894;}
+  .sp-canc{background:#fff0ee;color:#e74c3c;}
+  .jc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;}
+  .di{font-size:12px;color:#888;}
+  .di strong{display:block;font-size:13px;color:#1a1a1a;font-weight:700;margin-top:1px;}
+  .rating-row{display:flex;align-items:center;gap:6px;font-size:13px;}
+  .stars{color:#f59e0b;letter-spacing:1px;}
+  .feedback{font-size:12px;color:#888;font-style:italic;margin-top:2px;}
+  .jc-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+  .jc-amount{font-size:16px;font-weight:900;color:#00b894;}
+  .empty{text-align:center;padding:50px 16px;color:#aaa;background:#fff;border-radius:18px;}
+  .empty .ei{font-size:44px;margin-bottom:12px;}
+  .spacer{height:80px;}
+  .bottom-nav{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:12px 0 16px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);z-index:100;}
+  .nav-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;font-size:10px;color:#aaa;gap:3px;}
+  .nav-item.active{color:#00b894;}
+  .nav-icon{font-size:22px;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<nav class="navbar">
+  <div class="back" onclick="window.location.href='dashboard.html'">←</div>
+  <h3>Job History 📋</h3>
+</nav>
+
+<div class="content">
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat"><h3 id="stTotal">0</h3><p>Total Jobs</p></div>
+    <div class="stat"><h3 id="stRating">—</h3><p>Avg Rating</p></div>
+    <div class="stat"><h3 id="stEarned">₹0</h3><p>Total Earned</p></div>
+  </div>
+
+  <!-- Achievement badges -->
+  <div style="font-size:13px;font-weight:800;color:#888;margin-bottom:10px;">🏆 Achievements</div>
+  <div class="badges-row" id="badgesRow">
+    <div class="badge locked"><div class="bi">🔰</div><div class="bn">First Job</div><div class="bd">Complete 1 job</div></div>
+    <div class="badge locked"><div class="bi">⭐</div><div class="bn">5-Star</div><div class="bd">Get a 5-star rating</div></div>
+    <div class="badge locked"><div class="bi">🔟</div><div class="bn">10 Jobs</div><div class="bd">Complete 10 jobs</div></div>
+    <div class="badge locked"><div class="bi">💰</div><div class="bn">₹10K Earned</div><div class="bd">Earn ₹10,000</div></div>
+    <div class="badge locked"><div class="bi">🌟</div><div class="bn">50 Jobs</div><div class="bd">Complete 50 jobs</div></div>
+    <div class="badge locked"><div class="bi">👑</div><div class="bn">Top Worker</div><div class="bd">Rating 4.8+, 20 jobs</div></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('all',this)">All <span class="tc" id="cnt-all">0</span></div>
+    <div class="tab" onclick="switchTab('completed',this)">Done <span class="tc" id="cnt-done">0</span></div>
+    <div class="tab" onclick="switchTab('cancelled',this)">Cancelled <span class="tc" id="cnt-canc" style="background:#e74c3c">0</span></div>
+  </div>
+
+  <div id="jobList"><div style="text-align:center;padding:30px;color:#aaa">⏳ Loading...</div></div>
+  <div class="spacer"></div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-item" onclick="window.location.href='dashboard.html'"><div class="nav-icon">🏠</div><div>Home</div></div>
+  <div class="nav-item" onclick="window.location.href='earnings.html'"><div class="nav-icon">💰</div><div>Earnings</div></div>
+  <div class="nav-item active"><div class="nav-icon">📋</div><div>History</div></div>
+  <div class="nav-item" onclick="window.location.href='profile.html'"><div class="nav-icon">👤</div><div>Profile</div></div>
+</nav>
+
+<script>
+  const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+  const wid=localStorage.getItem('workerId');
+  if(!wid||!localStorage.getItem('workerName')){window.location.href='login.html';}
+
+  const SI={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒','Elder Companion':'🤝','Hospital Escort':'🏥','Errand Runner':'⚡','Queue Standing':'🏦','Document Pickup':'📋','Scrap Metal Pickup':'♻️','E-Waste Pickup':'📱','Old Furniture Pickup':'🛋️','Old Clothes Pickup':'👕','Office Junk Clearance':'🏢'};
+
+  let ALL=[], TAB='all', ratingsMap={};
+
+  async function load(){
+    try{
+      const[{data:jobs},{data:ratings}]=await Promise.all([
+        db.from('jobs').select('*').eq('worker_id',wid).order('created_at',{ascending:false}),
+        db.from('ratings').select('*').eq('worker_id',wid)
+      ]);
+      ALL=jobs||[];
+      (ratings||[]).forEach(r=>{if(r.booking_id)ratingsMap[r.booking_id]=r;});
+      updateStats();
+      updateBadges();
+      renderTab(TAB);
+    }catch(e){document.getElementById('jobList').innerHTML=`<div class="empty"><div class="ei">⚠️</div><p>${e.message}</p></div>`;}
+  }
+
+  function updateStats(){
+    const done=ALL.filter(j=>j.status==='completed');
+    const earned=done.reduce((s,j)=>s+(j.amount||0),0);
+    const rList=Object.values(ratingsMap);
+    const avg=rList.length?(rList.reduce((s,r)=>s+(r.rating||0),0)/rList.length).toFixed(1):0;
+    document.getElementById('stTotal').innerText=done.length;
+    document.getElementById('stRating').innerText=avg?avg+'⭐':'—';
+    document.getElementById('stEarned').innerText='₹'+earned.toLocaleString('en-IN');
+    document.getElementById('cnt-all').innerText=ALL.length;
+    document.getElementById('cnt-done').innerText=done.length;
+    document.getElementById('cnt-canc').innerText=ALL.filter(j=>j.status==='cancelled').length;
+  }
+
+  function updateBadges(){
+    const done=ALL.filter(j=>j.status==='completed');
+    const earned=done.reduce((s,j)=>s+(j.amount||0),0);
+    const rList=Object.values(ratingsMap);
+    const has5star=rList.some(r=>r.rating===5);
+    const avg=rList.length?(rList.reduce((s,r)=>s+(r.rating||0),0)/rList.length):0;
+    const badges=document.querySelectorAll('.badge');
+    const unlock=[
+      done.length>=1,
+      has5star,
+      done.length>=10,
+      earned>=10000,
+      done.length>=50,
+      avg>=4.8&&done.length>=20
+    ];
+    badges.forEach((b,i)=>{if(unlock[i])b.classList.remove('locked');});
+  }
+
+  function switchTab(t,el){TAB=t;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderTab(t);}
+
+  function renderTab(t){
+    let list=ALL;
+    if(t==='completed')list=ALL.filter(j=>j.status==='completed');
+    if(t==='cancelled')list=ALL.filter(j=>j.status==='cancelled');
+    const el=document.getElementById('jobList');
+    if(!list.length){el.innerHTML='<div class="empty"><div class="ei">📋</div><p>No jobs here yet</p></div>';return;}
+    el.innerHTML=list.map(j=>{
+      const ico=SI[j.service]||'🔧';
+      const date=j.created_at?new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+      const isDone=j.status==='completed';
+      const rat=ratingsMap[j.id];
+      const stars=rat?'⭐'.repeat(rat.rating||0):'';
+      return `<div class="jcard ${isDone?'completed':'cancelled'}">
+        <div class="jc-top">
+          <div><div class="jc-svc">${ico} ${j.service||'—'}</div><div class="jc-date">${date}</div></div>
+          <div class="sp ${isDone?'sp-done':'sp-canc'}">${isDone?'✅ Done':'❌ Cancelled'}</div>
+        </div>
+        <div class="jc-grid">
+          <div class="di">👤 Customer<strong>${j.customer_name||'—'}</strong></div>
+          <div class="di">📍 Area<strong style="font-size:11px">${(j.customer_address||'—').substring(0,25)}${(j.customer_address||'').length>25?'...':''}</strong></div>
+        </div>
+        ${rat?`<div class="rating-row"><div class="stars">${stars}</div><div style="font-size:12px;color:#888">${rat.feedback?'"'+rat.feedback.substring(0,60)+'"':''}</div></div>`:''}
+        <div class="jc-footer">
+          <div style="font-size:11px;color:#aaa">#${j.id}</div>
+          <div class="jc-amount">${isDone?'₹'+(j.amount||0):'—'}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  load();
+</script>
+</body>
+</html>

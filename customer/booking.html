@@ -224,10 +224,25 @@ async function init(){
     document.getElementById('proLbl').innerText='Saving '+pct+' as '+sp.charAt(0).toUpperCase()+sp.slice(1)+' member';
     document.getElementById('proBadge').innerText='−'+pct;
   }
+  // Auto-fill saved address
+  const savedAddr=localStorage.getItem('userArea');
+  const addrEl=document.getElementById('address');
+  if(addrEl&&savedAddr&&!addrEl.value){
+    addrEl.value=savedAddr+', Hyderabad';
+    const note=document.getElementById('gpsNote');
+    if(note){note.innerText='📍 Using your saved area — tap GPS to update';note.style.color='#00b894';}
+  }
+  // Auto-set emergency urgency if from SOS
+  if(new URLSearchParams(window.location.search).get('urgency')==='emergency'){
+    selUrg('emergency');
+  }
+
   document.getElementById('svcIcon').innerText=cfg.icon;
   document.getElementById('svcIconBox').className='svc-icon-box '+cfg.bg;
   document.getElementById('svcName').innerText=svc;
   document.getElementById('navTitle').innerText=svc;
+
+  // Book for someone else toggle handled inline in HTML
   document.getElementById('durBadge').innerText='⏱ '+cfg.dur;
   document.getElementById('platFee').innerText='₹'+pFee;
   const today=new Date().toISOString().split('T')[0];
@@ -329,6 +344,17 @@ function findWorker(){
   const base=isElder?cfg.base*dur:cfg.base;
   const urgA=isSpec?0:(urgen==='urgent'?cfg.urg:urgen==='emergency'?cfg.eme:0);
   const total=(base+urgA+pFee)-Math.round((base+urgA+pFee)*sub);
+  // Save recipient info if booking for someone else
+  const bookingFor=document.getElementById('bookForToggle')?.checked;
+  if(bookingFor){
+    const rname=document.getElementById('recipientName')?.value.trim();
+    const rphone=document.getElementById('recipientPhone')?.value.trim();
+    if(rname)localStorage.setItem('bookingForName',rname);
+    if(rphone)localStorage.setItem('bookingForPhone',rphone);
+  } else {
+    localStorage.removeItem('bookingForName');
+    localStorage.removeItem('bookingForPhone');
+  }
   localStorage.setItem('bookingService',svc);
   localStorage.setItem('bookingProblem',prob);
   localStorage.setItem('bookingAddress',addr);

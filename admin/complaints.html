@@ -122,6 +122,13 @@
     <div class="stat green"><h3 id="stDone">—</h3><p>Completed</p></div>
     <div class="stat red"><h3 id="stCancelled">—</h3><p>Cancelled</p></div>
   </div>
+  <!-- Payment stats -->
+  <div class="stats-row" style="margin-top:-6px">
+    <div class="stat green"><h3 id="stRevenue">₹—</h3><p>Total Revenue</p></div>
+    <div class="stat green"><h3 id="stPaid">—</h3><p>UPI/Card Paid</p></div>
+    <div class="stat orange"><h3 id="stCash">—</h3><p>Cash Pending</p></div>
+    <div class="stat" style=""><h3 id="stUnpaid">—</h3><p>Unpaid</p></div>
+  </div>
 
   <!-- Search & Filter -->
   <div class="filter-row">
@@ -183,6 +190,16 @@
     document.getElementById('stLive').innerText=live.length;
     document.getElementById('stDone').innerText=ALL.filter(j=>j.status==='completed').length;
     document.getElementById('stCancelled').innerText=ALL.filter(j=>j.status==='cancelled').length;
+    // Payment stats
+    const done=ALL.filter(j=>j.status==='completed');
+    const revenue=done.reduce((s,j)=>s+(j.amount||0),0);
+    const paid=done.filter(j=>j.payment_status==='paid').length;
+    const cash=done.filter(j=>j.payment_status==='cash_pending').length;
+    const unpaid=done.filter(j=>!j.payment_status||j.payment_status==='unpaid').length;
+    document.getElementById('stRevenue').innerText='₹'+revenue.toLocaleString('en-IN');
+    document.getElementById('stPaid').innerText=paid;
+    document.getElementById('stCash').innerText=cash;
+    document.getElementById('stUnpaid').innerText=unpaid;
     document.getElementById('cnt-all').innerText=ALL.length;
     document.getElementById('cnt-pending').innerText=ALL.filter(j=>j.status==='pending').length;
     document.getElementById('cnt-live').innerText=live.length;
@@ -238,6 +255,9 @@
         <div class="di">👷 Worker<strong>${j.worker_id||'Not assigned'}</strong></div>
         <div class="di">⚡ Urgency<strong><span class="urg ${urgClass}">${urgLabel}</span></strong></div>
         <div class="di">💰 Amount<strong style="color:#00b894">₹${j.amount||0}</strong></div>
+        <div class="di">💳 Payment<strong>${j.payment_method||'—'}</strong></div>
+        <div class="di">🔖 Txn ID<strong style="font-size:11px;word-break:break-all">${j.transaction_id||'—'}</strong></div>
+        <div class="di">✅ Pay Status<strong>${j.payment_status==='paid'?'<span style="color:#00b894">✅ Paid</span>':j.payment_status==='cash_pending'?'<span style="color:#e67e00">💵 Cash Pending</span>':'<span style="color:#aaa">⏳ Unpaid</span>'}</strong></div>
       </div>
       ${j.problem?`<div class="problem-box">"${j.problem}"</div>`:''}
       <div class="jc-actions">

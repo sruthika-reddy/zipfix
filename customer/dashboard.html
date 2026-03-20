@@ -283,7 +283,7 @@
 
   // Category bg colors
   const catBg = { plumbing:'bg-blue', electrical:'bg-yellow', security:'bg-orange', appliance:'bg-orange', cleaning:'bg-teal', home:'bg-purple', other:'bg-green' };
-  const catNames = { all:'All Services', plumbing:'Plumbing', electrical:'Electrical', appliance:'Appliances', cleaning:'Cleaning', home:'Home Services', security:'Security' };
+  const catNames = { all:'All Services', plumbing:'Plumbing', electrical:'Electrical', appliance:'Appliances', cleaning:'Cleaning', home:'Home Services', security:'Security', care:'Elder Care', errands:'Errands' };
 
   let allServices = [], currentCat = 'all', searchQ = '', platformFee = 49;
 
@@ -316,6 +316,8 @@
         {name:'Bathroom Renovation',icon:'🛁',bg:'bg-blue',price:'₹999',dur:'1–3 days',cat:'home'},
         {name:'Packers & Movers',icon:'📦',bg:'bg-yellow',price:'₹1499',dur:'Half/Full day',cat:'home'},
         {name:'CCTV Installation',icon:'🔒',bg:'bg-red',price:'₹699',dur:'2–4 hrs',cat:'security'},
+        {name:'Elder Companion',icon:'🤝',bg:'bg-purple',price:'₹299',dur:'1–4 hrs',cat:'care'},
+        {name:'Personal Errand',icon:'🏃',bg:'bg-orange',price:'₹149',dur:'Per hour',cat:'errands'},
       ];
       renderServices();
     }

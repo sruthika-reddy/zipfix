@@ -11,297 +11,333 @@
   body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
   .navbar{display:flex;align-items:center;gap:14px;padding:16px 20px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:10;}
   .back-btn{font-size:22px;color:#00b894;cursor:pointer;background:none;border:none;}
-  .navbar-title{font-size:17px;font-weight:900;}
-
-  /* Service hero */
+  .nb-title{font-size:17px;font-weight:900;}
   .svc-hero{background:#fff;padding:20px 20px 0;display:flex;align-items:center;gap:16px;}
   .svc-icon-box{width:68px;height:68px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;}
   .svc-hero-info h2{font-size:20px;font-weight:900;}
   .svc-hero-info p{font-size:13px;color:#888;margin-top:3px;}
   .svc-badges{display:flex;gap:8px;padding:14px 20px 18px;background:#fff;border-bottom:8px solid #f5f5f5;flex-wrap:wrap;}
-  .svc-badge{display:flex;align-items:center;gap:5px;background:#e8f8f4;color:#00b894;border-radius:50px;padding:5px 12px;font-size:11px;font-weight:700;}
-
-  /* Pro discount banner — only shown if subscribed */
-  .pro-discount-banner{margin:14px 20px 0;background:linear-gradient(135deg,#e8f8f4,#d4f2ea);border:1.5px solid #00b89433;border-radius:14px;padding:12px 16px;display:none;align-items:center;justify-content:space-between;}
-  .pro-discount-banner.show{display:flex;}
-  .pdb-left h4{font-size:13px;font-weight:800;color:#00b894;margin-bottom:2px;}
-  .pdb-left p{font-size:11px;color:#888;}
-  .pdb-badge{background:#00b894;color:#fff;font-size:12px;font-weight:900;padding:5px 12px;border-radius:8px;white-space:nowrap;}
-
-  /* Form */
-  .section{padding:18px 20px;background:#fff;margin-top:8px;}
-  .section h3{font-size:15px;font-weight:900;margin-bottom:14px;}
-  .field-label{font-size:12px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;display:block;}
-  textarea,input[type="text"]{width:100%;padding:14px 16px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:14px;color:#1a1a1a;font-size:15px;outline:none;transition:border-color 0.2s;font-family:'Segoe UI',sans-serif;resize:none;}
-  textarea:focus,input[type="text"]:focus{border-color:#00b894;}
-  textarea.err,input.err{border-color:#e74c3c;}
-  .field-err{color:#e74c3c;font-size:12px;margin-top:6px;display:none;}
-  .location-row{display:flex;gap:10px;}
-  .location-row input{flex:1;}
-  .gps-btn{flex-shrink:0;padding:14px;background:#e8f8f4;color:#00b894;border:2px solid #00b89433;border-radius:14px;font-size:18px;cursor:pointer;}
-  .gps-status{font-size:12px;color:#00b894;margin-top:6px;min-height:16px;}
-
+  .svc-badge{background:#e8f8f4;color:#00b894;border-radius:50px;padding:5px 12px;font-size:11px;font-weight:700;}
+  .pro-banner{margin:14px 20px 0;background:linear-gradient(135deg,#e8f8f4,#d4f2ea);border:1.5px solid #00b89433;border-radius:14px;padding:12px 16px;display:none;align-items:center;justify-content:space-between;}
+  .pro-banner.show{display:flex;}
+  .pb-left h4{font-size:13px;font-weight:800;color:#00b894;margin-bottom:2px;}
+  .pb-left p{font-size:11px;color:#888;}
+  .pb-badge{background:#00b894;color:#fff;font-size:12px;font-weight:900;padding:5px 12px;border-radius:8px;}
+  .sec{padding:18px 20px;background:#fff;margin-top:8px;}
+  .sec h3{font-size:15px;font-weight:900;margin-bottom:14px;}
+  .flbl{font-size:12px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:block;}
+  textarea,input[type=text],input[type=date],input[type=time]{width:100%;padding:13px 16px;background:#f5f5f5;border:2px solid #e0e0e0;border-radius:13px;color:#1a1a1a;font-size:15px;outline:none;transition:border-color 0.2s;font-family:'Segoe UI',sans-serif;resize:none;}
+  textarea:focus,input:focus{border-color:#00b894;}
+  .eb{border-color:#e74c3c!important;}
+  .ferr{color:#e74c3c;font-size:12px;margin-top:6px;display:none;}
+  .loc-row{display:flex;gap:10px;}
+  .loc-row input{flex:1;}
+  .gps-btn{flex-shrink:0;padding:13px;background:#e8f8f4;color:#00b894;border:2px solid #00b89433;border-radius:13px;font-size:18px;cursor:pointer;}
+  .gps-note{font-size:12px;color:#00b894;margin-top:5px;min-height:16px;}
+  /* Task chips */
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+  .chip{border:2px solid #e0e0e0;border-radius:14px;padding:12px 10px;cursor:pointer;text-align:center;transition:all 0.15s;background:#fff;}
+  .chip.sel{border-color:#00b894;background:#e8f8f4;}
+  .chip .ci{font-size:24px;margin-bottom:5px;}
+  .chip .cn{font-size:13px;font-weight:700;color:#1a1a1a;}
+  .chip .cd{font-size:11px;color:#888;margin-top:3px;line-height:1.4;}
+  .chip.sel .cn{color:#00b894;}
+  /* Duration */
+  .dur-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .dc{border:2px solid #e0e0e0;border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;}
+  .dc.sel{border-color:#00b894;background:#e8f8f4;}
+  .dc .dv{font-size:15px;font-weight:900;}
+  .dc .dl{font-size:11px;color:#888;margin-top:2px;}
+  .dc.sel .dv,.dc.sel .dl{color:#00b894;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
   /* Urgency */
-  .urgency-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-  .urg-card{border:2px solid #e0e0e0;border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;}
-  .urg-card.sel-normal{border-color:#00b894;background:#e8f8f4;}
-  .urg-card.sel-urgent{border-color:#f59e0b;background:#fff8e6;}
-  .urg-card.sel-emergency{border-color:#e74c3c;background:#fff0ee;}
-  .urg-icon{font-size:24px;margin-bottom:6px;}
-  .urg-name{font-size:12px;font-weight:800;color:#1a1a1a;}
-  .urg-price{font-size:11px;color:#888;margin-top:3px;}
-
-  /* Price summary */
-  .price-card{background:#f5f5f5;border-radius:14px;padding:16px 18px;}
-  .price-row{display:flex;justify-content:space-between;font-size:14px;color:#888;margin-bottom:8px;}
-  .price-row:last-child{border-top:1px solid #e0e0e0;padding-top:10px;margin-bottom:0;margin-top:4px;font-size:17px;font-weight:900;color:#1a1a1a;}
-  .price-row:last-child span{color:#00b894;}
-  .discount-row{display:flex;justify-content:space-between;font-size:13px;color:#00b894;font-weight:700;margin-bottom:8px;}
-
-  /* Bottom CTA */
-  .bottom-cta{position:sticky;bottom:0;background:#fff;padding:14px 20px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);}
+  .urg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .uc{border:2px solid #e0e0e0;border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff;}
+  .uc.sn{border-color:#00b894;background:#e8f8f4;}
+  .uc.su{border-color:#f59e0b;background:#fff8e6;}
+  .uc.se{border-color:#e74c3c;background:#fff0ee;}
+  .ui{font-size:24px;margin-bottom:6px;}
+  .un{font-size:12px;font-weight:800;}
+  .up{font-size:11px;color:#888;margin-top:3px;}
+  /* Price */
+  .pc{background:#f5f5f5;border-radius:14px;padding:16px 18px;}
+  .pr{display:flex;justify-content:space-between;font-size:14px;color:#888;margin-bottom:8px;}
+  .pr:last-child{border-top:1px solid #e0e0e0;padding-top:10px;margin-bottom:0;font-size:17px;font-weight:900;color:#1a1a1a;}
+  .pr.disc{color:#00b894;font-weight:700;font-size:13px;}
+  /* CTA */
+  .cta{position:sticky;bottom:0;background:#fff;padding:14px 20px;box-shadow:0 -2px 12px rgba(0,0,0,0.08);}
   .cta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
   .cta-price{font-size:22px;font-weight:900;color:#00b894;}
-  .cta-label{font-size:12px;color:#888;}
-  .btn-find{width:100%;padding:17px;background:#00b894;color:#fff;font-size:17px;font-weight:900;border:none;border-radius:14px;cursor:pointer;transition:background 0.2s;}
+  .cta-lbl{font-size:12px;color:#888;}
+  .btn-find{width:100%;padding:17px;background:#00b894;color:#fff;font-size:17px;font-weight:900;border:none;border-radius:14px;cursor:pointer;}
   .btn-find:hover{background:#009e7f;}
-  .spacer{height:100px;}
-
-  /* Color helpers */
-  .bg-blue{background:#e8f4ff;} .bg-green{background:#e8f8f4;} .bg-orange{background:#fff4e6;}
-  .bg-purple{background:#f0e8ff;} .bg-red{background:#ffe8e8;} .bg-teal{background:#e8fff8;} .bg-yellow{background:#fffce6;}
+  .spacer{height:120px;}
+  .bg-blue{background:#e8f4ff;}.bg-green{background:#e8f8f4;}.bg-orange{background:#fff4e6;}
+  .bg-purple{background:#f0e8ff;}.bg-red{background:#ffe8e8;}.bg-teal{background:#e8fff8;}.bg-yellow{background:#fffce6;}
 </style>
-
 <nav class="navbar">
   <button class="back-btn" onclick="window.location.href='dashboard.html'">←</button>
-  <div class="navbar-title" id="navTitle">Book Service</div>
+  <div class="nb-title" id="navTitle">Book Service</div>
 </nav>
-
-<!-- Service Hero -->
 <div class="svc-hero">
   <div class="svc-icon-box bg-green" id="svcIconBox"><span id="svcIcon">🔧</span></div>
-  <div class="svc-hero-info">
-    <h2 id="svcName">Service</h2>
-    <p>Verified professionals · Guaranteed work</p>
-  </div>
+  <div class="svc-hero-info"><h2 id="svcName">Service</h2><p id="svcTagline">Verified professionals · Guaranteed work</p></div>
 </div>
 <div class="svc-badges">
   <div class="svc-badge">⚡ 24/7 Available</div>
-  <div class="svc-badge">✅ Verified Workers</div>
-  <div class="svc-badge">🔒 Safe & Insured</div>
-  <div class="svc-badge">⭐ 4.8+ Rated</div>
+  <div class="svc-badge">✅ Verified</div>
+  <div class="svc-badge" id="durBadge">⏱ —</div>
+</div>
+<div class="pro-banner" id="proBanner">
+  <div class="pb-left"><h4>⭐ Pro Discount Applied</h4><p id="proLbl">—</p></div>
+  <div class="pb-badge" id="proBadge">—</div>
 </div>
 
-<!-- Pro discount banner (only for subscribers) -->
-<div class="pro-discount-banner" id="proDiscountBanner">
-  <div class="pdb-left">
-    <h4>⭐ Your Pro Discount Applied</h4>
-    <p id="proDiscountLabel">Saving 20% as Standard member</p>
-  </div>
-  <div class="pdb-badge" id="proDiscountBadge">−20%</div>
-</div>
-
-<!-- Problem -->
-<div class="section">
-  <span class="field-label">Describe the Problem</span>
-  <textarea id="problem" rows="3" placeholder="e.g. Water pipe burst near kitchen, leaking..." oninput="clearField('problem','errProblem')"></textarea>
-  <div class="field-err" id="errProblem">Please describe the problem</div>
-</div>
-
-<!-- Location -->
-<div class="section">
-  <span class="field-label">Your Location</span>
-  <div class="location-row">
-    <input type="text" id="address" placeholder="Enter address or use GPS 📍" oninput="clearField('address','errAddress')"/>
-    <button class="gps-btn" id="gpsBtn" onclick="getGPS()">📍</button>
-  </div>
-  <div class="gps-status" id="gpsStatus"></div>
-  <div class="field-err" id="errAddress">Please enter your address</div>
-</div>
-
-<!-- Urgency -->
-<div class="section">
-  <span class="field-label">Urgency</span>
-  <div class="urgency-grid">
-    <div class="urg-card sel-normal" id="urg-normal" onclick="selectUrgency('normal')">
-      <div class="urg-icon">🟢</div>
-      <div class="urg-name">Normal</div>
-      <div class="urg-price" id="price-normal">₹—</div>
+<!-- ELDER COMPANION -->
+<div id="elderSec" style="display:none">
+  <div class="sec">
+    <h3>🤝 What kind of support is needed?</h3>
+    <div class="chips" id="elderChips">
+      <div class="chip sel" onclick="pickChip(this,'elderChips','Walk & Company')"><div class="ci">🚶</div><div class="cn">Walk & Company</div><div class="cd">Daily walk, fresh air & friendly talk</div></div>
+      <div class="chip" onclick="pickChip(this,'elderChips','Hospital Visit Escort')"><div class="ci">🏥</div><div class="cn">Hospital Visit</div><div class="cd">Escort to doctor, wait alongside, carry reports</div></div>
+      <div class="chip" onclick="pickChip(this,'elderChips','Grocery & Market Trip')"><div class="ci">🛒</div><div class="cn">Grocery Trip</div><div class="cd">Help at market, carry bags safely home</div></div>
+      <div class="chip" onclick="pickChip(this,'elderChips','Friendly Home Visit')"><div class="ci">💬</div><div class="cn">Friendly Visit</div><div class="cd">Sit, talk, play games — warm company at home</div></div>
     </div>
-    <div class="urg-card" id="urg-urgent" onclick="selectUrgency('urgent')">
-      <div class="urg-icon">🟡</div>
-      <div class="urg-name">Urgent</div>
-      <div class="urg-price" id="price-urgent">₹—</div>
+    <span class="flbl">Special notes / health needs</span>
+    <textarea id="elderNotes" rows="2" placeholder="e.g. Uses a walker, prefers Telugu, mild memory issues..."></textarea>
+  </div>
+  <div class="sec">
+    <span class="flbl">How long?</span>
+    <div class="dur-grid">
+      <div class="dc sel" onclick="selDur(1,this)"><div class="dv">1 hr</div><div class="dl" id="dp1">₹—</div></div>
+      <div class="dc" onclick="selDur(2,this)"><div class="dv">2 hrs</div><div class="dl" id="dp2">₹—</div></div>
+      <div class="dc" onclick="selDur(3,this)"><div class="dv">3 hrs</div><div class="dl" id="dp3">₹—</div></div>
+      <div class="dc" onclick="selDur(4,this)"><div class="dv">4 hrs</div><div class="dl" id="dp4">₹—</div></div>
     </div>
-    <div class="urg-card" id="urg-emergency" onclick="selectUrgency('emergency')">
-      <div class="urg-icon">🔴</div>
-      <div class="urg-name">Emergency</div>
-      <div class="urg-price" id="price-emergency">₹—</div>
+    <div class="two">
+      <div><span class="flbl">Date</span><input type="date" id="elderDate"/><div class="ferr" id="errElderDate">Select date</div></div>
+      <div><span class="flbl">Start Time</span><input type="time" id="elderTime"/><div class="ferr" id="errElderTime">Select time</div></div>
     </div>
   </div>
 </div>
 
-<!-- Price Summary -->
-<div class="section">
+<!-- PERSONAL ERRAND -->
+<div id="errandSec" style="display:none">
+  <div class="sec">
+    <h3>⚡ What needs to be done?</h3>
+    <div class="chips" id="errandChips">
+      <div class="chip sel" onclick="pickChip(this,'errandChips','Parcel Pickup / Drop')"><div class="ci">📦</div><div class="cn">Parcel Pickup/Drop</div><div class="cd">Collect or deliver a parcel anywhere in city</div></div>
+      <div class="chip" onclick="pickChip(this,'errandChips','Queue / Line Standing')"><div class="ci">🏦</div><div class="cn">Queue Standing</div><div class="cd">Bank, RTO, Aadhaar, GHMC — we stand, you don't</div></div>
+      <div class="chip" onclick="pickChip(this,'errandChips','Grocery from Specific Shop')"><div class="ci">🛍️</div><div class="cn">Grocery Pickup</div><div class="cd">Buy from specific shop, kirana or market</div></div>
+      <div class="chip" onclick="pickChip(this,'errandChips','Document Pickup / Submission')"><div class="ci">📋</div><div class="cn">Document Task</div><div class="cd">Collect, submit or deliver important documents</div></div>
+      <div class="chip" onclick="pickChip(this,'errandChips','Office / Business Errand')"><div class="ci">💼</div><div class="cn">Office Errand</div><div class="cd">Courier, stationery, small office tasks</div></div>
+      <div class="chip" onclick="pickChip(this,'errandChips','Custom Task')"><div class="ci">✏️</div><div class="cn">Custom Task</div><div class="cd">Describe anything else you need done</div></div>
+    </div>
+    <span class="flbl">Describe the task in detail</span>
+    <textarea id="errandDesc" rows="3" placeholder="e.g. Collect my Aadhaar from GHMC Begumpet. Token no: 1234. Call me when you reach." oninput="clr('errandDesc','errErrandDesc')"></textarea>
+    <div class="ferr" id="errErrandDesc">Please describe the task</div>
+  </div>
+  <div class="sec">
+    <span class="flbl">Pickup / Start Location</span>
+    <input type="text" id="pickupLoc" placeholder="Where should runner start?" style="margin-bottom:12px" oninput="clr('pickupLoc','errPickup')"/>
+    <div class="ferr" id="errPickup">Enter pickup location</div>
+    <span class="flbl">Destination / Drop Location</span>
+    <input type="text" id="dropLoc" placeholder="Where to go or deliver?" oninput="clr('dropLoc','errDrop')"/>
+    <div class="ferr" id="errDrop">Enter destination</div>
+    <div class="two">
+      <div><span class="flbl">Date</span><input type="date" id="errandDate"/><div class="ferr" id="errErrandDate">Select date</div></div>
+      <div><span class="flbl">Complete By</span><input type="time" id="errandTime"/><div class="ferr" id="errErrandTime">Select time</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STANDARD PROBLEM (non-special) -->
+<div class="sec" id="problemSec">
+  <span class="flbl" id="problemLbl">Describe the Problem</span>
+  <textarea id="problem" rows="3" placeholder="e.g. Water pipe burst near kitchen..." oninput="clr('problem','errProblem')"></textarea>
+  <div class="ferr" id="errProblem">Please describe the problem</div>
+</div>
+
+<!-- ADDRESS (all services) -->
+<div class="sec">
+  <span class="flbl" id="addressLbl">Your Location</span>
+  <div class="loc-row">
+    <input type="text" id="address" placeholder="Enter address or use GPS 📍" oninput="clr('address','errAddress')"/>
+    <button class="gps-btn" onclick="getGPS()">📍</button>
+  </div>
+  <div class="gps-note" id="gpsNote"></div>
+  <div class="ferr" id="errAddress">Please enter your address</div>
+</div>
+
+<!-- URGENCY (standard only) -->
+<div class="sec" id="urgSec">
+  <span class="flbl">Urgency</span>
+  <div class="urg-grid">
+    <div class="uc sn" id="urg-normal" onclick="selUrg('normal')"><div class="ui">🟢</div><div class="un">Normal</div><div class="up" id="pr-normal">₹—</div></div>
+    <div class="uc" id="urg-urgent" onclick="selUrg('urgent')"><div class="ui">🟡</div><div class="un">Urgent</div><div class="up" id="pr-urgent">₹—</div></div>
+    <div class="uc" id="urg-emergency" onclick="selUrg('emergency')"><div class="ui">🔴</div><div class="un">Emergency</div><div class="up" id="pr-emergency">₹—</div></div>
+  </div>
+</div>
+
+<!-- PRICE SUMMARY -->
+<div class="sec">
   <h3>Price Summary</h3>
-  <div class="price-card">
-    <div class="price-row"><span>Base Service Fee</span><span id="sumBase">₹—</span></div>
-    <div class="price-row"><span>Urgency Charges</span><span id="sumUrgency">₹0</span></div>
-    <div class="discount-row" id="discountRow" style="display:none">
-      <span id="discountLabel">Pro Discount</span>
-      <span id="discountAmt">−₹0</span>
-    </div>
-    <div class="price-row"><span>Platform Fee</span><span>₹49</span></div>
-    <div class="price-row"><span>Total Estimate</span><span id="sumTotal">₹—</span></div>
+  <div class="pc">
+    <div class="pr"><span id="baseLbl">Service Fee</span><span id="sumBase">₹—</span></div>
+    <div class="pr" id="urgRow"><span>Urgency</span><span id="sumUrg">₹0</span></div>
+    <div class="pr disc" id="discRow" style="display:none"><span id="discLbl">Discount</span><span id="discAmt">—</span></div>
+    <div class="pr"><span>Platform Fee</span><span id="platFee">₹49</span></div>
+    <div class="pr"><span>Total</span><span id="sumTotal">₹—</span></div>
   </div>
 </div>
 
 <div class="spacer"></div>
-
-<!-- Bottom CTA -->
-<div class="bottom-cta">
-  <div class="cta-row">
-    <div class="cta-label">Total Estimate</div>
-    <div class="cta-price" id="ctaPrice">₹—</div>
-  </div>
+<div class="cta">
+  <div class="cta-row"><div class="cta-lbl">Total Estimate</div><div class="cta-price" id="ctaPrice">₹—</div></div>
   <button class="btn-find" onclick="findWorker()">🔍 Find Worker Now</button>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  if(!localStorage.getItem('phoneNumber')){window.location.href='login.html';}
+if(!localStorage.getItem('phoneNumber'))window.location.href='login.html';
+const db=supabase.createClient('https://wenvdgvyuhqdiktetvfj.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4');
+const svc=new URLSearchParams(window.location.search).get('service')||localStorage.getItem('bookingService')||'Plumber';
+const isElder=svc==='Elder Companion', isErrand=svc==='Personal Errand', isSpec=isElder||isErrand;
+const SMAP={Plumber:{icon:'🔧',bg:'bg-blue',base:349,urg:150,eme:300,dur:'45–90 min'},Electrician:{icon:'⚡',bg:'bg-yellow',base:299,urg:150,eme:300,dur:'30–60 min'},Locksmith:{icon:'🔑',bg:'bg-orange',base:249,urg:100,eme:200,dur:'20–40 min'},'AC Repair':{icon:'❄️',bg:'bg-blue',base:499,urg:200,eme:400,dur:'60–120 min'},Carpenter:{icon:'🪛',bg:'bg-purple',base:399,urg:150,eme:300,dur:'60–120 min'},Painter:{icon:'🖌️',bg:'bg-orange',base:549,urg:200,eme:400,dur:'Varies'},'Pest Control':{icon:'🐛',bg:'bg-red',base:799,urg:300,eme:600,dur:'90–120 min'},'Home Cleaning':{icon:'🧹',bg:'bg-teal',base:499,urg:200,eme:400,dur:'2–4 hrs'},'TV / Electronics Repair':{icon:'📺',bg:'bg-purple',base:349,urg:150,eme:300,dur:'45–90 min'},'Water Purifier Service':{icon:'🫧',bg:'bg-teal',base:299,urg:100,eme:200,dur:'30–60 min'},'Appliance Repair':{icon:'🔩',bg:'bg-orange',base:399,urg:150,eme:300,dur:'45–90 min'},'Bathroom Renovation':{icon:'🛁',bg:'bg-blue',base:999,urg:400,eme:800,dur:'1–3 days'},'Packers & Movers':{icon:'📦',bg:'bg-yellow',base:1499,urg:500,eme:1000,dur:'Half/Full day'},'CCTV Installation':{icon:'🔒',bg:'bg-red',base:699,urg:300,eme:600,dur:'2–4 hrs'},'Elder Companion':{icon:'🤝',bg:'bg-purple',base:299,urg:0,eme:0,dur:'1–4 hrs'},'Personal Errand':{icon:'🏃',bg:'bg-orange',base:149,urg:0,eme:0,dur:'₹149/hr'}};
+const catBg={plumbing:'bg-blue',electrical:'bg-yellow',security:'bg-orange',appliance:'bg-orange',cleaning:'bg-teal',home:'bg-purple',care:'bg-purple',errands:'bg-orange'};
+let cfg=SMAP[svc]||SMAP.Plumber, pFee=49, urgen='normal', dur=1;
+let elderType='Walk & Company', errandType='Parcel Pickup / Drop';
 
-  const urlParams=new URLSearchParams(window.location.search);
-  const service=urlParams.get('service')||localStorage.getItem('bookingService')||'Plumber';
-
-  // Static fallback (used if Supabase table not ready)
-  const STATIC_CONFIG={
-    'Plumber':{icon:'🔧',bg:'bg-blue',base:349,urgent:150,emergency:300},
-    'Electrician':{icon:'⚡',bg:'bg-yellow',base:299,urgent:150,emergency:300},
-    'Locksmith':{icon:'🔑',bg:'bg-orange',base:249,urgent:100,emergency:200},
-    'AC Repair':{icon:'❄️',bg:'bg-blue',base:499,urgent:200,emergency:400},
-    'Carpenter':{icon:'🪛',bg:'bg-purple',base:399,urgent:150,emergency:300},
-    'Painter':{icon:'🖌️',bg:'bg-orange',base:549,urgent:200,emergency:400},
-    'Pest Control':{icon:'🐛',bg:'bg-red',base:799,urgent:300,emergency:600},
-    'Home Cleaning':{icon:'🧹',bg:'bg-teal',base:499,urgent:200,emergency:400},
-    'TV / Electronics Repair':{icon:'📺',bg:'bg-purple',base:349,urgent:150,emergency:300},
-    'Water Purifier Service':{icon:'🫧',bg:'bg-teal',base:299,urgent:100,emergency:200},
-    'Appliance Repair':{icon:'🔩',bg:'bg-orange',base:399,urgent:150,emergency:300},
-    'Bathroom Renovation':{icon:'🛁',bg:'bg-blue',base:999,urgent:400,emergency:800},
-    'Packers & Movers':{icon:'📦',bg:'bg-yellow',base:1499,urgent:500,emergency:1000},
-    'CCTV Installation':{icon:'🔒',bg:'bg-red',base:699,urgent:300,emergency:600},
-  };
-  const catBg={plumbing:'bg-blue',electrical:'bg-yellow',security:'bg-orange',appliance:'bg-orange',cleaning:'bg-teal',home:'bg-purple',other:'bg-green'};
-  let config=STATIC_CONFIG[service]||{icon:'🔧',bg:'bg-green',base:349,urgent:150,emergency:300};
-  let platformFee=49;
-
-  async function loadServiceConfig(){
-    try{
-      const{data:svcData}=await db.from('services').select('*').eq('name',service).single();
-      const{data:settings}=await db.from('platform_settings').select('key,value').eq('key','platform_fee').single();
-      if(svcData){
-        config={icon:svcData.icon,bg:catBg[svcData.category]||'bg-green',base:svcData.base_price,urgent:svcData.urgent_extra,emergency:svcData.emergency_extra};
-      }
-      if(settings)platformFee=parseInt(settings.value)||49;
-    }catch(e){/* use static fallback */}
-    // Init UI with loaded (or fallback) config
-    document.getElementById('svcIcon').innerText   = config.icon;
-    document.getElementById('svcIconBox').className = 'svc-icon-box '+config.bg;
-    document.getElementById('svcName').innerText   = service;
-    document.getElementById('navTitle').innerText  = service;
-    document.getElementById('price-normal').innerText    = '₹'+config.base;
-    document.getElementById('price-urgent').innerText    = '₹'+(config.base+config.urgent);
-    document.getElementById('price-emergency').innerText = '₹'+(config.base+config.emergency);
-    updatePrice();
-  }
-
-  document.getElementById('svcIcon').innerText   = config.icon;
-  document.getElementById('svcIconBox').className = 'svc-icon-box '+config.bg;
-  document.getElementById('svcName').innerText   = service;
-  document.getElementById('navTitle').innerText  = service;
-  document.getElementById('price-normal').innerText    = '₹'+config.base;
-  document.getElementById('price-urgent').innerText    = '₹'+(config.base+config.urgent);
-  document.getElementById('price-emergency').innerText = '₹'+(config.base+config.emergency);
-
-  // Subscription discount (optional — doesn't block booking)
+async function init(){
+  try{
+    const{data:s}=await db.from('services').select('*').eq('name',svc).single();
+    const{data:pf}=await db.from('platform_settings').select('value').eq('key','platform_fee').single();
+    if(s)cfg={icon:s.icon,bg:catBg[s.category]||cfg.bg,base:s.base_price,urg:s.urgent_extra||0,eme:s.emergency_extra||0,dur:s.duration||cfg.dur};
+    if(pf)pFee=parseInt(pf.value)||49;
+  }catch(e){}
   const sp=localStorage.getItem('subscriptionPlan'),se=localStorage.getItem('subscriptionExpiry');
-  const subDiscount=(sp&&se&&new Date(se)>new Date())?(sp==='premium'?0.30:sp==='standard'?0.20:0.10):0;
-  const subDiscLabels={premium:'30%',standard:'20%',basic:'10%'};
-  if(subDiscount>0){
-    document.getElementById('proDiscountBanner').classList.add('show');
-    document.getElementById('proDiscountLabel').innerText='Saving '+subDiscLabels[sp]+' as '+sp.charAt(0).toUpperCase()+sp.slice(1)+' member';
-    document.getElementById('proDiscountBadge').innerText='−'+subDiscLabels[sp];
+  window._sub=(sp&&se&&new Date(se)>new Date())?(sp==='premium'?.30:sp==='standard'?.20:.10):0;
+  window._sp=sp||'';
+  if(window._sub>0){
+    document.getElementById('proBanner').classList.add('show');
+    const pct={premium:'30%',standard:'20%',basic:'10%'}[sp];
+    document.getElementById('proLbl').innerText='Saving '+pct+' as '+sp.charAt(0).toUpperCase()+sp.slice(1)+' member';
+    document.getElementById('proBadge').innerText='−'+pct;
   }
-
-  let selectedUrgency='normal';
-
-  function selectUrgency(u){
-    selectedUrgency=u;
-    document.querySelectorAll('.urg-card').forEach(c=>c.className='urg-card');
-    document.getElementById('urg-'+u).classList.add('sel-'+u);
-    updatePrice();
+  document.getElementById('svcIcon').innerText=cfg.icon;
+  document.getElementById('svcIconBox').className='svc-icon-box '+cfg.bg;
+  document.getElementById('svcName').innerText=svc;
+  document.getElementById('navTitle').innerText=svc;
+  document.getElementById('durBadge').innerText='⏱ '+cfg.dur;
+  document.getElementById('platFee').innerText='₹'+pFee;
+  const today=new Date().toISOString().split('T')[0];
+  if(isElder){
+    document.getElementById('elderSec').style.display='block';
+    document.getElementById('problemSec').style.display='none';
+    document.getElementById('urgSec').style.display='none';
+    document.getElementById('urgRow').style.display='none';
+    document.getElementById('svcTagline').innerText='Background-verified · Trusted companions';
+    document.getElementById('addressLbl').innerText='COMPANION ARRIVAL ADDRESS';
+    document.getElementById('address').placeholder='Home address where companion should arrive';
+    document.getElementById('baseLbl').innerText='Hourly Rate';
+    [1,2,3,4].forEach(h=>{document.getElementById('dp'+h).innerText='₹'+(cfg.base*h+pFee);});
+    document.getElementById('elderDate').min=today;
+  } else if(isErrand){
+    document.getElementById('errandSec').style.display='block';
+    document.getElementById('problemSec').style.display='none';
+    document.getElementById('urgSec').style.display='none';
+    document.getElementById('urgRow').style.display='none';
+    document.getElementById('svcTagline').innerText='We handle it · You save the time';
+    document.getElementById('addressLbl').innerText='YOUR CONTACT ADDRESS';
+    document.getElementById('address').placeholder='Your home or office address (for contact)';
+    document.getElementById('baseLbl').innerText='Base Rate (1 hr)';
+    document.getElementById('errandDate').min=today;
+  } else {
+    document.getElementById('pr-normal').innerText='₹'+cfg.base;
+    document.getElementById('pr-urgent').innerText='₹'+(cfg.base+cfg.urg);
+    document.getElementById('pr-emergency').innerText='₹'+(cfg.base+cfg.eme);
   }
+  calcPrice();
+}
 
-  function updatePrice(){
-    const urgExtra=selectedUrgency==='urgent'?config.urgent:selectedUrgency==='emergency'?config.emergency:0;
-    const beforeDiscount=config.base+urgExtra+platformFee;
-    const discount=Math.round(beforeDiscount*subDiscount);
-    const total=beforeDiscount-discount;
-    document.getElementById('sumBase').innerText='₹'+config.base;
-    document.getElementById('sumUrgency').innerText=urgExtra?'+₹'+urgExtra:'₹0';
-    if(discount>0){
-      document.getElementById('discountRow').style.display='flex';
-      document.getElementById('discountLabel').innerText=(sp.charAt(0).toUpperCase()+sp.slice(1))+' Discount';
-      document.getElementById('discountAmt').innerText='−₹'+discount;
-    }
-    document.getElementById('sumTotal').innerText='₹'+total;
-    document.getElementById('ctaPrice').innerText='₹'+total;
+function pickChip(el,groupId,val){
+  document.querySelectorAll('#'+groupId+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  if(groupId==='elderChips')elderType=val;
+  else errandType=val;
+}
+function selDur(h,el){dur=h;document.querySelectorAll('.dc').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');calcPrice();}
+function selUrg(u){urgen=u;document.querySelectorAll('.uc').forEach(c=>c.className='uc');document.getElementById('urg-'+u).classList.add(u==='normal'?'sn':u==='urgent'?'su':'se');calcPrice();}
+
+function calcPrice(){
+  const sub=window._sub||0,sp=window._sp||'';
+  let base=isElder?cfg.base*dur:cfg.base;
+  let urgA=isSpec?0:(urgen==='urgent'?cfg.urg:urgen==='emergency'?cfg.eme:0);
+  if(!isSpec)document.getElementById('sumUrg').innerText=urgA?'+₹'+urgA:'₹0';
+  if(isElder)document.getElementById('baseLbl').innerText=dur+' hr'+(dur>1?'s':'')+' @ ₹'+cfg.base+'/hr';
+  const before=base+urgA+pFee;
+  const disc=Math.round(before*sub);
+  const total=before-disc;
+  document.getElementById('sumBase').innerText='₹'+base;
+  if(disc>0){document.getElementById('discRow').style.display='flex';document.getElementById('discLbl').innerText=(sp.charAt(0).toUpperCase()+sp.slice(1))+' Discount';document.getElementById('discAmt').innerText='−₹'+disc;}
+  document.getElementById('sumTotal').innerText='₹'+total;
+  document.getElementById('ctaPrice').innerText='₹'+total;
+}
+
+function clr(id,eid){const e=document.getElementById(id);const er=document.getElementById(eid);if(e)e.classList.remove('eb');if(er)er.style.display='none';}
+function bad(id,eid){const e=document.getElementById(id);const er=document.getElementById(eid);if(e)e.classList.add('eb');if(er)er.style.display='block';return true;}
+
+function getGPS(){
+  const st=document.getElementById('gpsNote');
+  if(!navigator.geolocation){st.innerText='❌ GPS not supported';return;}
+  st.innerText='📡 Detecting...';
+  navigator.geolocation.getCurrentPosition(async p=>{
+    try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${p.coords.latitude}&lon=${p.coords.longitude}&format=json`);const d=await r.json();document.getElementById('address').value=d.display_name||(p.coords.latitude.toFixed(4)+','+p.coords.longitude.toFixed(4));st.innerText='✅ Location detected!';clr('address','errAddress');}
+    catch(e){st.innerText='✅ Saved';}
+  },()=>{st.style.color='#e74c3c';st.innerText='❌ Denied. Enter manually.';},{timeout:10000});
+}
+
+function findWorker(){
+  const addr=document.getElementById('address').value.trim();
+  let ok=true,prob='';
+  if(!addr)ok=bad('address','errAddress');
+  if(isElder){
+    const dt=document.getElementById('elderDate').value, tm=document.getElementById('elderTime').value;
+    if(!dt)ok=bad('elderDate','errElderDate');
+    if(!tm)ok=bad('elderTime','errElderTime');
+    if(!ok){document.querySelector('.eb')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
+    const notes=document.getElementById('elderNotes').value.trim();
+    prob=`${elderType} | Duration: ${dur}hr | When: ${dt} at ${tm}${notes?' | Notes: '+notes:''}`;
+  } else if(isErrand){
+    const desc=document.getElementById('errandDesc').value.trim();
+    const pu=document.getElementById('pickupLoc').value.trim();
+    const dr=document.getElementById('dropLoc').value.trim();
+    const dt=document.getElementById('errandDate').value, tm=document.getElementById('errandTime').value;
+    if(!desc)ok=bad('errandDesc','errErrandDesc');
+    if(!pu)ok=bad('pickupLoc','errPickup');
+    if(!dr)ok=bad('dropLoc','errDrop');
+    if(!dt)ok=bad('errandDate','errErrandDate');
+    if(!tm)ok=bad('errandTime','errErrandTime');
+    if(!ok){document.querySelector('.eb')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
+    prob=`${errandType} | ${desc} | From: ${pu} | To: ${dr} | By: ${dt} ${tm}`;
+  } else {
+    prob=document.getElementById('problem').value.trim();
+    if(!prob)ok=bad('problem','errProblem');
+    if(!ok){document.querySelector('.eb')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
   }
-
-  loadServiceConfig();
-  updatePrice();
-
-  function getGPS(){
-    const btn=document.getElementById('gpsBtn'),st=document.getElementById('gpsStatus');
-    if(!navigator.geolocation){st.innerText='❌ GPS not supported';return;}
-    btn.innerText='⏳';st.innerText='📡 Detecting your location...';
-    navigator.geolocation.getCurrentPosition(async(pos)=>{
-      try{
-        const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
-        const d=await r.json();
-        document.getElementById('address').value=d.display_name||(pos.coords.latitude.toFixed(4)+', '+pos.coords.longitude.toFixed(4));
-        st.innerText='✅ Location detected!';
-        clearField('address','errAddress');
-      }catch(e){document.getElementById('address').value=pos.coords.latitude.toFixed(5)+', '+pos.coords.longitude.toFixed(5);st.innerText='✅ Coordinates saved';}
-      btn.innerText='📍';
-    },(err)=>{btn.innerText='📍';st.style.color='#e74c3c';st.innerText='❌ Location denied. Please enter manually.';},{timeout:10000,enableHighAccuracy:true});
-  }
-
-  function clearField(id,errId){
-    document.getElementById(id).classList.remove('err');
-    document.getElementById(errId).style.display='none';
-  }
-
-  function findWorker(){
-    const problem=document.getElementById('problem').value.trim();
-    const address=document.getElementById('address').value.trim();
-    let ok=true;
-    if(!problem){document.getElementById('problem').classList.add('err');document.getElementById('errProblem').style.display='block';ok=false;}
-    if(!address){document.getElementById('address').classList.add('err');document.getElementById('errAddress').style.display='block';ok=false;}
-    if(!ok)return;
-
-    const urgExtra=selectedUrgency==='urgent'?config.urgent:selectedUrgency==='emergency'?config.emergency:0;
-    const beforeDiscount=config.base+urgExtra+platformFee;
-    const discount=Math.round(beforeDiscount*subDiscount);
-    const finalAmount=beforeDiscount-discount;
-
-    localStorage.setItem('bookingService', service);
-    localStorage.setItem('bookingProblem', problem);
-    localStorage.setItem('bookingAddress', address);
-    localStorage.setItem('bookingUrgency', selectedUrgency);
-    localStorage.setItem('bookingAmount',  finalAmount);
-    localStorage.setItem('bookingIcon',    config.icon);
-    window.location.href='finding.html';
-  }
+  const sub=window._sub||0;
+  const base=isElder?cfg.base*dur:cfg.base;
+  const urgA=isSpec?0:(urgen==='urgent'?cfg.urg:urgen==='emergency'?cfg.eme:0);
+  const total=(base+urgA+pFee)-Math.round((base+urgA+pFee)*sub);
+  localStorage.setItem('bookingService',svc);
+  localStorage.setItem('bookingProblem',prob);
+  localStorage.setItem('bookingAddress',addr);
+  localStorage.setItem('bookingUrgency',isSpec?'normal':urgen);
+  localStorage.setItem('bookingAmount',total);
+  localStorage.setItem('bookingIcon',cfg.icon);
+  window.location.href='finding.html';
+}
+init();
 </script>
 </body>
 </html>

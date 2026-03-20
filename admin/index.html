@@ -156,6 +156,12 @@
       <p>Currently in progress</p>
       <div class="nc-badge green" id="badgeLive">— Live</div>
     </div>
+    <div class="nav-card" onclick="window.location.href='payments.html'">
+      <div class="nc-icon">💰</div>
+      <h4>Payments</h4>
+      <p>Transactions & revenue</p>
+      <div class="nc-badge green" id="badgeRevenue">₹—</div>
+    </div>
     <div class="nav-card" onclick="window.location.href='ratings.html'">
       <div class="nc-icon">⭐</div>
       <h4>Ratings</h4>
@@ -207,6 +213,7 @@
         document.getElementById('totalJobs').innerText=jobs.length;
         document.getElementById('subJobs').innerText=done.length+' completed';
         document.getElementById('totalRevenue').innerText='₹'+revenue.toLocaleString('en-IN');
+      document.getElementById('badgeRevenue').innerText='₹'+revenue.toLocaleString('en-IN');
         document.getElementById('badgeLive').innerText=live.length+' Live';
         document.getElementById('badgeCancelled').innerText=cancelled.length+' Cancelled';
         // Recent jobs list

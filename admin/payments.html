@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ZipFix Admin — Payments</title>
+</head>
+<body>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+  body{background:#f5f5f5;color:#1a1a1a;min-height:100vh;}
+  .navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100;}
+  .nav-left{display:flex;align-items:center;gap:14px;}
+  .back-btn{font-size:22px;color:#00b894;cursor:pointer;text-decoration:none;font-weight:700;}
+  .logo{font-size:20px;font-weight:900;color:#00b894;letter-spacing:2px;}
+  .nav-tag{font-size:11px;color:#aaa;margin-top:2px;}
+  .logout-btn{padding:9px 18px;background:#f5f5f5;color:#888;font-size:13px;font-weight:700;border:none;border-radius:50px;cursor:pointer;}
+  .logout-btn:hover{background:#e74c3c;color:#fff;}
+  .content{padding:20px;}
+
+  /* Revenue hero card */
+  .revenue-hero{background:linear-gradient(135deg,#00b894,#009e7f);border-radius:22px;padding:26px 22px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .rh-left h2{font-size:14px;font-weight:700;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+  .rh-left .amount{font-size:44px;font-weight:900;color:#fff;line-height:1;}
+  .rh-left .sub{font-size:13px;color:rgba(255,255,255,0.7);margin-top:6px;}
+  .rh-right{display:flex;gap:12px;}
+  .rh-stat{background:rgba(255,255,255,0.15);border-radius:14px;padding:14px 18px;text-align:center;min-width:80px;}
+  .rh-stat h4{font-size:20px;font-weight:900;color:#fff;}
+  .rh-stat p{font-size:11px;color:rgba(255,255,255,0.75);margin-top:3px;}
+
+  /* Method breakdown */
+  .methods-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+  .method-stat{background:#fff;border-radius:16px;padding:16px 14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .method-stat .ms-icon{font-size:24px;margin-bottom:6px;}
+  .method-stat h3{font-size:19px;font-weight:900;color:#1a1a1a;}
+  .method-stat .ms-label{font-size:11px;color:#888;margin-top:3px;}
+  .method-stat .ms-amt{font-size:13px;font-weight:800;color:#00b894;margin-top:2px;}
+
+  /* Period tabs */
+  .period-tabs{display:flex;gap:8px;margin-bottom:16px;}
+  .ptab{flex:1;padding:11px 8px;background:#fff;border:2px solid #e0e0e0;border-radius:13px;text-align:center;cursor:pointer;font-size:13px;font-weight:800;color:#888;transition:all 0.2s;box-shadow:0 2px 4px rgba(0,0,0,0.04);}
+  .ptab.active{border-color:#00b894;color:#00b894;background:#e8f8f4;}
+
+  /* Filter row */
+  .filter-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .search-bar{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid #e0e0e0;border-radius:13px;padding:10px 14px;flex:1;min-width:180px;box-shadow:0 2px 4px rgba(0,0,0,0.04);}
+  .search-bar:focus-within{border-color:#00b894;}
+  .search-bar input{background:none;border:none;outline:none;font-size:14px;color:#1a1a1a;width:100%;}
+  .filter-select{padding:11px 14px;background:#fff;border:2px solid #e0e0e0;border-radius:13px;font-size:13px;font-weight:700;color:#555;outline:none;cursor:pointer;}
+  .filter-select:focus{border-color:#00b894;}
+
+  /* Status tabs */
+  .tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:1;min-width:80px;padding:10px 8px;background:#fff;border:2px solid #e0e0e0;border-radius:12px;text-align:center;cursor:pointer;font-size:12px;font-weight:800;color:#888;white-space:nowrap;transition:all 0.2s;}
+  .tab.active{border-color:#00b894;color:#00b894;background:#e8f8f4;}
+  .tc{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:50px;font-size:10px;font-weight:900;margin-left:4px;background:#00b894;color:#fff;vertical-align:middle;}
+  .tc.or{background:#e67e00;} .tc.rd{background:#e74c3c;} .tc.gr{background:#aaa;}
+
+  /* Payment row card */
+  .pcard{background:#fff;border-radius:16px;padding:16px 18px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+  .pcard.paid{border-left:4px solid #00b894;}
+  .pcard.cash{border-left:4px solid #e67e00;}
+  .pcard.unpaid{border-left:4px solid #e0e0e0;}
+  .pc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px;}
+  .pc-service{font-size:15px;font-weight:800;}
+  .pc-id{font-size:11px;color:#aaa;margin-top:2px;}
+  .pay-status-pill{padding:5px 12px;border-radius:50px;font-size:12px;font-weight:800;white-space:nowrap;flex-shrink:0;}
+  .ps-paid{background:#e8f8f4;color:#00b894;}
+  .ps-cash{background:#fff8e6;color:#e67e00;}
+  .ps-unpaid{background:#f5f5f5;color:#aaa;}
+  .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+  .di{font-size:12px;color:#888;}
+  .di strong{display:block;font-size:13px;color:#1a1a1a;font-weight:700;margin-top:2px;}
+  .txn-box{background:#f5f5f5;border-radius:10px;padding:10px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+  .txn-box .tl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+  .txn-box .tv{font-size:13px;font-weight:800;color:#1a1a1a;word-break:break-all;text-align:right;max-width:200px;}
+  .pc-footer{display:flex;justify-content:space-between;align-items:center;}
+  .pc-date{font-size:11px;color:#aaa;}
+  .pc-amount{font-size:18px;font-weight:900;color:#00b894;}
+  .pc-amount.cash-col{color:#e67e00;}
+  .pc-amount.grey-col{color:#aaa;}
+
+  /* Mark paid button */
+  .btn-mark-paid{padding:7px 14px;background:#e8f8f4;color:#00b894;font-size:12px;font-weight:800;border:2px solid #00b89422;border-radius:9px;cursor:pointer;transition:all 0.2s;}
+  .btn-mark-paid:hover{background:#00b894;color:#fff;}
+
+  .empty{text-align:center;padding:50px 16px;color:#aaa;background:#fff;border-radius:18px;}
+  .empty .ei{font-size:44px;margin-bottom:12px;}
+  .spacer{height:30px;}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:12px 22px;border-radius:50px;font-size:14px;font-weight:700;z-index:9999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
+  .tg{background:#00b894;color:#fff;} .tr{background:#e74c3c;color:#fff;} .td{background:#1a1a1a;color:#fff;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="toast" id="toast"></div>
+
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="back-btn" href="index.html">←</a>
+    <div>
+      <div class="logo">ZIPFIX</div>
+      <div class="nav-tag">💰 Payments</div>
+    </div>
+  </div>
+  <button class="logout-btn" onclick="adminLogout()">Logout</button>
+</nav>
+
+<div class="content">
+  <!-- Revenue hero -->
+  <div class="revenue-hero">
+    <div class="rh-left">
+      <h2>Total Revenue</h2>
+      <div class="amount" id="heroRevenue">₹—</div>
+      <div class="sub" id="heroSub">Loading...</div>
+    </div>
+    <div class="rh-right">
+      <div class="rh-stat"><h4 id="heroJobs">—</h4><p>Paid Jobs</p></div>
+      <div class="rh-stat"><h4 id="heroAvg">₹—</h4><p>Avg/Job</p></div>
+    </div>
+  </div>
+
+  <!-- Payment method breakdown -->
+  <div class="methods-grid">
+    <div class="method-stat">
+      <div class="ms-icon">📱</div>
+      <h3 id="upiCount">—</h3>
+      <div class="ms-label">UPI Payments</div>
+      <div class="ms-amt" id="upiAmt">₹—</div>
+    </div>
+    <div class="method-stat">
+      <div class="ms-icon">💳</div>
+      <h3 id="cardCount">—</h3>
+      <div class="ms-label">Card Payments</div>
+      <div class="ms-amt" id="cardAmt">₹—</div>
+    </div>
+    <div class="method-stat">
+      <div class="ms-icon">🏦</div>
+      <h3 id="nbCount">—</h3>
+      <div class="ms-label">Net Banking</div>
+      <div class="ms-amt" id="nbAmt">₹—</div>
+    </div>
+    <div class="method-stat">
+      <div class="ms-icon">💵</div>
+      <h3 id="cashCount">—</h3>
+      <div class="ms-label">Cash Collected</div>
+      <div class="ms-amt" id="cashAmt">₹—</div>
+    </div>
+    <div class="method-stat">
+      <div class="ms-icon">⏳</div>
+      <h3 id="cashPendCount">—</h3>
+      <div class="ms-label">Cash Pending</div>
+      <div class="ms-amt" id="cashPendAmt" style="color:#e67e00">₹—</div>
+    </div>
+    <div class="method-stat">
+      <div class="ms-icon">❌</div>
+      <h3 id="unpaidCount">—</h3>
+      <div class="ms-label">Unpaid</div>
+      <div class="ms-amt" id="unpaidAmt" style="color:#e74c3c">₹—</div>
+    </div>
+  </div>
+
+  <!-- Period filter -->
+  <div class="period-tabs">
+    <div class="ptab active" onclick="setPeriod('all',this)">All Time</div>
+    <div class="ptab" onclick="setPeriod('today',this)">Today</div>
+    <div class="ptab" onclick="setPeriod('week',this)">This Week</div>
+    <div class="ptab" onclick="setPeriod('month',this)">This Month</div>
+  </div>
+
+  <!-- Search + method filter -->
+  <div class="filter-row">
+    <div class="search-bar">
+      <span style="color:#aaa;font-size:16px">🔍</span>
+      <input type="text" id="srch" placeholder="Search customer, phone, txn ID..." oninput="applyFilters()"/>
+    </div>
+    <select class="filter-select" id="methodFilter" onchange="applyFilters()">
+      <option value="">All Methods</option>
+      <option value="UPI">UPI</option>
+      <option value="Credit/Debit Card">Card</option>
+      <option value="Net Banking">Net Banking</option>
+      <option value="Cash to Worker">Cash</option>
+    </select>
+  </div>
+
+  <!-- Status tabs -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('all',this)">All <span class="tc" id="cnt-all">0</span></div>
+    <div class="tab" onclick="switchTab('paid',this)">✅ Paid <span class="tc" id="cnt-paid">0</span></div>
+    <div class="tab" onclick="switchTab('cash_pending',this)">💵 Cash <span class="tc or" id="cnt-cash">0</span></div>
+    <div class="tab" onclick="switchTab('unpaid',this)">⏳ Unpaid <span class="tc gr" id="cnt-unpaid">0</span></div>
+  </div>
+
+  <div id="paymentList"><div style="text-align:center;padding:40px;color:#aaa">⏳ Loading payments...</div></div>
+  <div class="spacer"></div>
+</div>
+
+<script>
+  const db=supabase.createClient(
+    'https://wenvdgvyuhqdiktetvfj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlbnZkZ3Z5dWhxZGlrdGV0dmZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3MDUyNjksImV4cCI6MjA4ODI4MTI2OX0.3N1prPO5WiH0Qt_UV5g86cRqV7p3DcUUgqNi5w0WkB4'
+  );
+
+  if(!localStorage.getItem('adminLoggedIn'))window.location.href='login.html';
+  if(Date.now()-parseInt(localStorage.getItem('adminLoginTime')||0)>8*60*60*1000){localStorage.removeItem('adminLoggedIn');window.location.href='login.html';}
+
+  const SI={Plumber:'🔧',Electrician:'⚡',Locksmith:'🔑','AC Repair':'❄️',Carpenter:'🪛',Painter:'🖌️','Pest Control':'🐛','Home Cleaning':'🧹','TV / Electronics Repair':'📺','Water Purifier Service':'🫧','Appliance Repair':'🔩','Bathroom Renovation':'🛁','Packers & Movers':'📦','CCTV Installation':'🔒','Elder Companion':'🤝','Hospital Escort':'🏥','Errand Runner':'⚡','Queue Standing':'🏦','Document Pickup':'📋'};
+
+  let ALL=[], TAB='all', PERIOD='all';
+
+  async function load(){
+    try{
+      const{data,error}=await db.from('jobs').select('*').eq('status','completed').order('created_at',{ascending:false});
+      if(error)throw error;
+      ALL=data||[];
+      updateStats(ALL);
+      applyFilters();
+    }catch(e){
+      document.getElementById('paymentList').innerHTML=`<div class="empty"><div class="ei">⚠️</div><p>${e.message}</p></div>`;
+    }
+  }
+
+  function dateBound(p){
+    const n=new Date();
+    if(p==='today')return new Date(n.getFullYear(),n.getMonth(),n.getDate()).toISOString();
+    if(p==='week'){const d=new Date(n);d.setDate(n.getDate()-7);return d.toISOString();}
+    if(p==='month')return new Date(n.getFullYear(),n.getMonth(),1).toISOString();
+    return null;
+  }
+
+  function getList(period){
+    const bound=dateBound(period);
+    return bound?ALL.filter(j=>j.created_at>=bound):ALL;
+  }
+
+  function updateStats(jobs){
+    const paid=jobs.filter(j=>j.payment_status==='paid');
+    const cashPend=jobs.filter(j=>j.payment_status==='cash_pending');
+    const unpaid=jobs.filter(j=>!j.payment_status||j.payment_status==='unpaid');
+    const totalRev=paid.reduce((s,j)=>s+(j.amount||0),0);
+    const avgAmt=paid.length?Math.round(totalRev/paid.length):0;
+
+    document.getElementById('heroRevenue').innerText='₹'+totalRev.toLocaleString('en-IN');
+    document.getElementById('heroSub').innerText=paid.length+' paid transactions recorded';
+    document.getElementById('heroJobs').innerText=paid.length;
+    document.getElementById('heroAvg').innerText='₹'+avgAmt.toLocaleString('en-IN');
+
+    // Method breakdown
+    const byMethod=(method,field)=>{
+      const list=paid.filter(j=>(j.payment_method||'').toLowerCase().includes(field));
+      return{count:list.length,amt:list.reduce((s,j)=>s+(j.amount||0),0)};
+    };
+    const upi=byMethod('upi','upi');
+    const card=byMethod('card','card');
+    const nb=byMethod('net','net bank');
+    const cash=jobs.filter(j=>j.payment_status==='cash_pending'||((j.payment_method||'').toLowerCase().includes('cash')&&j.payment_status==='paid'));
+    const cashPaidList=paid.filter(j=>(j.payment_method||'').toLowerCase().includes('cash'));
+
+    document.getElementById('upiCount').innerText=upi.count;
+    document.getElementById('upiAmt').innerText='₹'+upi.amt.toLocaleString('en-IN');
+    document.getElementById('cardCount').innerText=card.count;
+    document.getElementById('cardAmt').innerText='₹'+card.amt.toLocaleString('en-IN');
+    document.getElementById('nbCount').innerText=nb.count;
+    document.getElementById('nbAmt').innerText='₹'+nb.amt.toLocaleString('en-IN');
+    document.getElementById('cashCount').innerText=cashPaidList.length;
+    document.getElementById('cashAmt').innerText='₹'+cashPaidList.reduce((s,j)=>s+(j.amount||0),0).toLocaleString('en-IN');
+    document.getElementById('cashPendCount').innerText=cashPend.length;
+    document.getElementById('cashPendAmt').innerText='₹'+cashPend.reduce((s,j)=>s+(j.amount||0),0).toLocaleString('en-IN');
+    document.getElementById('unpaidCount').innerText=unpaid.length;
+    document.getElementById('unpaidAmt').innerText='₹'+unpaid.reduce((s,j)=>s+(j.amount||0),0).toLocaleString('en-IN');
+  }
+
+  function setPeriod(p,el){
+    PERIOD=p;
+    document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    const list=getList(p);
+    updateStats(list);
+    applyFilters();
+  }
+
+  function switchTab(t,el){
+    TAB=t;
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+    applyFilters();
+  }
+
+  function applyFilters(){
+    const q=document.getElementById('srch').value.toLowerCase();
+    const method=document.getElementById('methodFilter').value;
+    let list=getList(PERIOD);
+
+    // Tab filter
+    if(TAB==='paid')list=list.filter(j=>j.payment_status==='paid');
+    else if(TAB==='cash_pending')list=list.filter(j=>j.payment_status==='cash_pending');
+    else if(TAB==='unpaid')list=list.filter(j=>!j.payment_status||j.payment_status==='unpaid');
+
+    // Method filter
+    if(method)list=list.filter(j=>(j.payment_method||'').includes(method));
+
+    // Search
+    if(q)list=list.filter(j=>
+      (j.customer_name||'').toLowerCase().includes(q)||
+      (j.customer_phone||'').includes(q)||
+      (j.transaction_id||'').toLowerCase().includes(q)||
+      (j.payment_method||'').toLowerCase().includes(q)||
+      String(j.id).includes(q)
+    );
+
+    // Update counts
+    const all2=getList(PERIOD);
+    document.getElementById('cnt-all').innerText=all2.length;
+    document.getElementById('cnt-paid').innerText=all2.filter(j=>j.payment_status==='paid').length;
+    document.getElementById('cnt-cash').innerText=all2.filter(j=>j.payment_status==='cash_pending').length;
+    document.getElementById('cnt-unpaid').innerText=all2.filter(j=>!j.payment_status||j.payment_status==='unpaid').length;
+
+    renderList(list);
+  }
+
+  function renderList(list){
+    const el=document.getElementById('paymentList');
+    if(!list.length){
+      el.innerHTML='<div class="empty"><div class="ei">💰</div><p>No payments found</p></div>';
+      return;
+    }
+    el.innerHTML=list.map(j=>card(j)).join('');
+    // Attach mark-paid events
+    el.querySelectorAll('.btn-mark-paid').forEach(btn=>{
+      btn.addEventListener('click',()=>markPaid(btn.dataset.id));
+    });
+  }
+
+  function card(j){
+    const ico=SI[j.service]||'🔧';
+    const ps=j.payment_status;
+    const isPaid=ps==='paid';
+    const isCash=ps==='cash_pending';
+    const cardClass=isPaid?'pcard paid':isCash?'pcard cash':'pcard unpaid';
+    const pillClass=isPaid?'pay-status-pill ps-paid':isCash?'pay-status-pill ps-cash':'pay-status-pill ps-unpaid';
+    const pillLabel=isPaid?'✅ Paid':isCash?'💵 Cash Pending':'⏳ Unpaid';
+    const amtClass=isPaid?'pc-amount':isCash?'pc-amount cash-col':'pc-amount grey-col';
+    const date=j.created_at?new Date(j.created_at).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+    const payDate=j.payment_at?new Date(j.payment_at).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
+    const phone=(j.customer_phone||'').replace('+91','');
+
+    return `<div class="${cardClass}">
+      <div class="pc-top">
+        <div>
+          <div class="pc-service">${ico} ${j.service||'—'}</div>
+          <div class="pc-id">Job #${j.id} · ${date}</div>
+        </div>
+        <div class="${pillClass}">${pillLabel}</div>
+      </div>
+      <div class="pc-grid">
+        <div class="di">👤 Customer<strong>${j.customer_name||'—'}</strong></div>
+        <div class="di">📞 Phone<strong>${phone||'—'}</strong></div>
+        <div class="di">💳 Method<strong>${j.payment_method||'Not recorded'}</strong></div>
+        <div class="di">💰 Amount<strong style="color:#00b894;font-size:15px">₹${j.amount||0}</strong></div>
+        <div class="di">👷 Worker ID<strong>${j.worker_id||'—'}</strong></div>
+        <div class="di">📅 Paid At<strong style="font-size:11px">${payDate}</strong></div>
+      </div>
+      ${j.transaction_id?`
+      <div class="txn-box">
+        <span class="tl">Transaction / Reference ID</span>
+        <span class="tv">${j.transaction_id}</span>
+      </div>`:''}
+      <div class="pc-footer">
+        <div class="pc-date">📅 ${date}</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          ${!isPaid?`<button class="btn-mark-paid" data-id="${j.id}">Mark as Paid</button>`:''}
+          <div class="${amtClass}">₹${j.amount||0}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  async function markPaid(jobId){
+    try{
+      await db.from('jobs').update({payment_status:'paid',payment_at:new Date().toISOString()}).eq('id',jobId);
+      toast('✅ Marked as paid','tg');
+      await load();
+    }catch(e){toast('⚠️ '+e.message,'tr');}
+  }
+
+  function adminLogout(){localStorage.removeItem('adminLoggedIn');localStorage.removeItem('adminLoginTime');window.location.href='login.html';}
+  function toast(msg,cls='td'){const t=document.getElementById('toast');t.innerText=msg;t.className='toast '+cls;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+
+  load();
+  setInterval(load,20000);
+</script>
+</body>
+</html>

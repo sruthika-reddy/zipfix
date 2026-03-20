@@ -323,6 +323,8 @@ function buildCard(w) {
       <div class="wid-display">🪪 ${esc(w.worker_id)}</div>
       <div class="sub-actions">
         <div class="sb sb-ap">✅ Approved</div>
+        ${w.is_busy?'<div class="sb" style="background:#fff8e6;color:#e67e00">⏸ Busy</div>':''}
+        <button class="sm" style="background:${w.is_busy?'#e8f8f4':'#fff8e6'};color:${w.is_busy?'#00b894':'#e67e00'};border:2px solid ${w.is_busy?'#00b89422':'#e67e0022'}" data-action="togglebusy" data-id="${w.id}" data-name="${esc(w.name)}" data-busy="${w.is_busy?'true':'false'}">${w.is_busy?'✅ Set Available':'⏸ Set Busy'}</button>
         <button class="sm sm-reject-ap" data-action="rejectnow" data-id="${w.id}" data-name="${esc(w.name)}" data-phone="${esc(w.phone)}">❌ Reject</button>
         <button class="sm sm-revoke" data-action="revoke" data-id="${w.id}" data-name="${esc(w.name)}">↩ Revoke</button>
         <button class="sm sm-ban" data-action="ban" data-id="${w.id}" data-name="${esc(w.name)}">🚫 Ban</button>
@@ -412,6 +414,11 @@ function attachEvents() {
 
     if (action === 'rejectnow') {
       openRejectModal(id, name, phone);
+      return;
+    }
+    if (action === 'togglebusy') {
+      const isBusy = btn.dataset.busy === 'true';
+      await doToggleBusy(id, name, isBusy);
       return;
     }
 
@@ -623,6 +630,15 @@ document.addEventListener('click', function(e) {
   if (e.target === document.getElementById('updateModal'))
     document.getElementById('updateModal').classList.remove('show');
 });
+
+async function doToggleBusy(id, name, currentlyBusy) {
+  try {
+    const { error } = await db.from('workers').update({ is_busy: !currentlyBusy }).eq('id', id);
+    if (error) throw error;
+    toast((currentlyBusy ? '✅ ' + name + ' set as Available' : '⏸ ' + name + ' set as Busy'), currentlyBusy ? 'tg' : 'td');
+    await load();
+  } catch(e) { toast('⚠️ ' + e.message, 'tr'); }
+}
 
 function adminLogout() {
   localStorage.removeItem('adminLoggedIn');

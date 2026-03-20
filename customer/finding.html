@@ -107,7 +107,7 @@
     document.getElementById('subText').innerText=wName+' is on the way!';
     document.getElementById('centerIcon').innerText='🎉';
     document.getElementById('waitNote').innerText='✅ '+wName+' accepted your job!';
-    setTimeout(()=>{window.location.href='worker.html';},2000);
+    setTimeout(()=>{window.location.href='confirmed.html';},2000);
   }
   async function cancelBooking(){
     if(!confirm('Are you sure you want to cancel?'))return;

@@ -152,6 +152,18 @@
   <div class="ab-track">Track →</div>
 </div>
 
+<!-- SOS Emergency Button -->
+<div style="padding:14px 20px 0">
+  <div onclick="openSOS()" style="background:linear-gradient(135deg,#e74c3c,#c0392b);border-radius:18px;padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;box-shadow:0 4px 16px rgba(231,76,60,0.3);">
+    <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;animation:sosPulse 1.5s infinite;">🚨</div>
+    <div style="flex:1;">
+      <div style="font-size:16px;font-weight:900;color:#fff;margin-bottom:2px;">Emergency? Tap Here</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.8);">Burst pipe · No power · Locked out · Urgent help</div>
+    </div>
+    <div style="color:rgba(255,255,255,0.8);font-size:20px;">›</div>
+  </div>
+</div>
+
 <!-- Promo Banners -->
 <div class="promo-scroll">
   <div class="promo-card c-green">
@@ -214,6 +226,18 @@
     <div class="cat-icon bg-red">🔒</div>
     <div class="cat-label">Security</div>
   </div>
+  <div class="cat-pill" onclick="filterCat('care',this)">
+    <div class="cat-icon bg-purple">🤝</div>
+    <div class="cat-label">Elder Care</div>
+  </div>
+  <div class="cat-pill" onclick="filterCat('errands',this)">
+    <div class="cat-icon bg-orange">⚡</div>
+    <div class="cat-label">Errands</div>
+  </div>
+  <div class="cat-pill" onclick="filterCat('waste',this)">
+    <div class="cat-icon bg-green">♻️</div>
+    <div class="cat-label">Waste</div>
+  </div>
 </div>
 
 <!-- Popular -->
@@ -235,6 +259,47 @@
 </div>
 
 <div class="spacer"></div>
+
+<!-- SOS Emergency Modal -->
+<div class="sos-overlay" id="sosOverlay" onclick="if(event.target.id==='sosOverlay')closeSOS()">
+  <div class="sos-sheet">
+    <h3>🚨 Emergency Help</h3>
+    <p>Select what you need — we'll find the nearest available worker immediately.</p>
+    <div class="sos-grid">
+      <div class="sos-card" onclick="sosBook('Plumber')">
+        <div class="sc-icon">🔧</div>
+        <div class="sc-name">Burst Pipe</div>
+        <div class="sc-price">Plumber · ₹349</div>
+      </div>
+      <div class="sos-card" onclick="sosBook('Electrician')">
+        <div class="sc-icon">⚡</div>
+        <div class="sc-name">No Power / Sparks</div>
+        <div class="sc-price">Electrician · ₹299</div>
+      </div>
+      <div class="sos-card" onclick="sosBook('Locksmith')">
+        <div class="sc-icon">🔑</div>
+        <div class="sc-name">Locked Out</div>
+        <div class="sc-price">Locksmith · ₹249</div>
+      </div>
+      <div class="sos-card" onclick="sosBook('AC Repair')">
+        <div class="sc-icon">❄️</div>
+        <div class="sc-name">AC Not Working</div>
+        <div class="sc-price">AC Repair · ₹499</div>
+      </div>
+      <div class="sos-card" onclick="sosBook('Carpenter')">
+        <div class="sc-icon">🪛</div>
+        <div class="sc-name">Door / Window</div>
+        <div class="sc-price">Carpenter · ₹399</div>
+      </div>
+      <div class="sos-card" onclick="window.location.href='tel:112'">
+        <div class="sc-icon">🚑</div>
+        <div class="sc-name">Medical / Police</div>
+        <div class="sc-price">Call 112</div>
+      </div>
+    </div>
+    <button class="sos-close" onclick="closeSOS()">Cancel</button>
+  </div>
+</div>
 
 <nav class="bottom-nav">
   <div class="nav-item active"><div class="nav-icon">🏠</div><div>Home</div></div>
@@ -369,6 +434,19 @@
   function bookService(s) {
     localStorage.setItem('bookingService', s);
     window.location.href = 'booking.html?service=' + encodeURIComponent(s);
+  }
+
+  // SOS functions
+  function openSOS(){ document.getElementById('sosOverlay').classList.add('show'); }
+  function closeSOS(){ document.getElementById('sosOverlay').classList.remove('show'); }
+  function sosBook(service){
+    closeSOS();
+    localStorage.setItem('bookingService', service);
+    localStorage.setItem('bookingUrgency', 'emergency');
+    // Pre-fill saved address if available
+    const savedAddr = localStorage.getItem('userArea');
+    if(savedAddr) localStorage.setItem('bookingAddress', savedAddr + ', Hyderabad');
+    window.location.href = 'booking.html?service=' + encodeURIComponent(service) + '&urgency=emergency';
   }
 
   loadServices();
